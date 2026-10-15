@@ -14,7 +14,10 @@ import { fileURLToPath } from 'node:url';
  * editable by hand, and backed up by committing it.
  */
 
-const FILE = fileURLToPath(new URL('../brain.json', import.meta.url));
+// BRAIN_FILE lets a deployment point this at writable storage. On a serverless
+// host the application directory is read-only, so without it nothing can be
+// taught — which the save path reports rather than failing silently.
+const FILE = process.env.BRAIN_FILE || fileURLToPath(new URL('../brain.json', import.meta.url));
 
 const STOPWORDS = new Set(
   `a an the and or but of in on at to for from by with about is are was were be been am do does did
@@ -42,13 +45,24 @@ async function load() {
   }
 }
 
+export class ReadOnlyBrain extends Error {}
+
 // Written to a temporary file and moved into place, so a crash mid-write
 // cannot leave the brain truncated.
 async function save(facts) {
   const temp = `${FILE}.tmp`;
-  await writeFile(temp, JSON.stringify(facts, null, 2), 'utf8');
-  await rename(temp, FILE);
+  try {
+    await writeFile(temp, JSON.stringify(facts, null, 2), 'utf8');
+    await rename(temp, FILE);
+  } catch (err) {
+    if (['EROFS', 'EACCES', 'EPERM', 'ENOENT'].includes(err.code)) throw new ReadOnlyBrain();
+    throw err;
+  }
 }
+
+const CANNOT_SAVE =
+  "I can't save anything here — this copy is running somewhere with a read-only disk, " +
+  'so nothing I learn would survive. Run it on your own machine and teaching works.';
 
 // ------------------------------------------------------------- the commands
 
@@ -90,7 +104,16 @@ export function detectBrainCommand(message) {
   return null;
 }
 
-export async function runBrainCommand({ kind, payload }) {
+export async function runBrainCommand(command) {
+  try {
+    return await execute(command);
+  } catch (err) {
+    if (err instanceof ReadOnlyBrain) return CANNOT_SAVE;
+    throw err;
+  }
+}
+
+async function execute({ kind, payload }) {
   const facts = await load();
 
   if (kind === 'forgetAll') {
