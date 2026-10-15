@@ -1,11 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "services": {
-    "f0undr-ai": {
+    "foundr-ai": {
       "root": "web-chat",
       "runtime": "node",
       "entrypoint": "server.js"
     }
   },
-  "rewrites": [{ "source": "/(.*)", "destination": { "service": "f0undr-ai" } }]
+  "rewrites": [{ "source": "/(.*)", "destination": { "service": "foundr-ai" } }]
 }
