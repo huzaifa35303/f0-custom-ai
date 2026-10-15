@@ -172,8 +172,29 @@ lib/answer.js      scoring and composition — the part that decides what to say
 lib/search.js      DuckDuckGo + Wikipedia, and page fetching
 lib/clean.js       strips links and "according to" phrasing
 lib/config.js      every tunable, all env-overridable
-public/            the chat UI (one HTML file, one CSS file, one JS module)
+public/            the chat UI, plus the PWA manifest, service worker and icons
 ```
+
+## Publishing it
+
+`render.yaml` deploys it on Render's free tier, which runs a real Node server
+rather than serverless functions, so the app runs exactly as written. Point
+Render at this repo and it reads the file; nothing to install, nothing to
+build.
+
+The free plan has **no persistent disk**. The 135 facts in `brain.json` ship
+with the code and are always there, but anything taught on the live site is
+lost when the service sleeps after 15 minutes idle or when it redeploys. To
+add knowledge durably, teach locally or edit `knowledge/*.txt`, run
+`node ingest.js ../knowledge/*.txt`, and commit `brain.json`.
+
+Free instances also sleep when idle, so the first visit after a quiet spell
+takes about a minute to wake.
+
+It is also a **progressive web app**: `manifest.webmanifest` and `sw.js` make
+it installable to a phone home screen or desktop, and the interface opens
+offline. Answers are never cached - the brain and live search are always
+asked - so offline you get the app, not stale replies.
 
 ## Trying it without the browser
 

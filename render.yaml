@@ -1,0 +1,18 @@
+# Render deployment. Free tier: a real Node server, unlike a serverless host,
+# so the app runs as written and needs no adapter.
+#
+# The free plan has no persistent disk and an ephemeral filesystem, so anything
+# taught on the live site is lost when the service sleeps or redeploys. The 135
+# facts in web-chat/brain.json ship with the code and are always there; to add
+# more durably, teach locally and commit brain.json.
+services:
+  - type: web
+    name: foundr-ai
+    runtime: node
+    plan: free
+    rootDir: web-chat
+    # No dependencies, so there is nothing to install or build.
+    buildCommand: ''
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    autoDeploy: true

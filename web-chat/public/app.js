@@ -15,6 +15,16 @@ let busy = false;
 
 checkHealth();
 
+// Installable, and opens offline. Localhost and HTTPS only, which is every
+// place this actually runs.
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {
+      /* no offline support, everything else still works */
+    });
+  });
+}
+
 resetBtn.addEventListener('click', () => {
   history = [];
   thread.innerHTML = WELCOME;
