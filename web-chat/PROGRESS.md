@@ -48,6 +48,25 @@ help - each with trigger patterns and a reply per language.
   font stack falls through to system Devanagari, Gurmukhi and Nastaliq faces,
   since Inter has no glyphs for them.
 
+## Direct-answer lead and follow-ups
+
+- `directness()` picks one sentence to open the answer: scoring finds what is
+  about the question, this finds what answers it. Shape-aware (date for "when",
+  figure for "how many", name for "who") plus a bonus for a sentence that opens
+  by naming something the question did not contain - that is what moved
+  "capital of Australia" from the ACT article to the Canberra sentence.
+  Stem-matched, so "Australian" does not pass as a new name for "Australia".
+- `resolveFollowUp()` folds the previous question's subject into a pronoun or
+  fragment. Gated on a pronoun or an opener like "what about": a length rule
+  grabbed self-contained short questions like "capital of France".
+- `searchWeb()` now returns `{ results, limited }` and takes the stripped
+  subject as a second argument. The Wikipedia fallback was being handed the raw
+  question, which matches nothing - "who invented the thermos flask" found zero
+  while "thermos flask" finds the article. That bug was invisible until
+  DuckDuckGo started throttling and the fallback became the only path.
+- DuckDuckGo throttling answers 202 with a challenge page, not an error. It is
+  now detected and reported as throttling rather than as an empty web.
+
 ## Known weak spots
 
 - "Latest news" questions read as a digest of headlines, not a briefing.

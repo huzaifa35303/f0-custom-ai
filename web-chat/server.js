@@ -73,8 +73,13 @@ async function handleChat(req, res) {
     if (open && !res.writableEnded) res.write(`data: ${JSON.stringify({ event, ...data })}\n\n`);
   };
 
+  // The question before this one, so a follow-up like "how old is he" can
+  // borrow its subject.
+  const asked = messages.filter((m) => m.role === 'user');
+  const previous = asked.at(-2)?.content ?? '';
+
   try {
-    const text = await answer(messages.at(-1).content, emit);
+    const text = await answer(asked.at(-1).content, emit, { previous });
     emit('final', { text });
   } catch (err) {
     emit('error', { text: err.message });

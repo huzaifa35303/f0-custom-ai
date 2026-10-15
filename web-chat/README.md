@@ -77,16 +77,26 @@ not fabrication.
    prose. The question is stripped to its subject first: searching Wikipedia for
    *"what is the capital of Australia"* matches the article **Question**.
    The article found is then checked against the subject before it is used.
-5. **Score every sentence** — by how much of the question it covers, weighted so
+5. **Carry the last question across** — a question leaning on the one before
+   it ("how old is he", "when was it built", "why") borrows the earlier
+   subject, so a follow-up searches for something the web can actually find.
+   Only a pronoun or an opener like "what about" triggers this: judging by
+   length would drag in "capital of France", which is short but self-contained.
+6. **Score every sentence** — by how much of the question it covers, weighted so
    rarer words count for more (a crude idf over the fetched pages), with a boost
    for figures when the question asks for one, for sentences near the top of a
    page, and for `.gov`, `.edu` and Wikipedia.
-6. **Throw out the furniture** — cookie banners, sign-up pitches, navigation
+7. **Throw out the furniture** — cookie banners, sign-up pitches, navigation
    strips, Title Case Headlines, cross-references, scraped table rows, embedded
    markup, and any sentence that is itself a question.
-7. **Pick and de-duplicate** — the best sentences, skipping any that mostly
+8. **Pick and de-duplicate** — the best sentences, skipping any that mostly
    repeats one already chosen.
-8. **Clean and stream** — strip links and attribution phrases, then emit the
+9. **Lead with the answer** — one sentence is promoted to the front and set on
+   its own. Scoring finds the sentences that are *about* the question; a second
+   pass finds the one that *answers* it, preferring a date for "when", a figure
+   for "how many", a name for "who", and in every case a sentence that opens by
+   naming something the question did not already contain.
+10. **Clean and stream** — strip links and attribution phrases, then emit the
    result word by word.
 
 ## Layout
@@ -152,3 +162,7 @@ in the header reads from it.
 - **If you want reasoning back**, the place to add a model is `answer()`: keep
   steps 1–4 and hand the retrieved text to it instead of scoring sentences.
   `lib/search.js` already returns exactly the structure such a call would need.
+- **Rate limiting is reported as itself.** Asked too often, DuckDuckGo answers
+  with a challenge page rather than an error; the app recognises that and says
+  it is being throttled instead of claiming the web had no answer. Wikipedia
+  still answers in the meantime.

@@ -147,6 +147,35 @@ function subject(question) {
     .trim();
 }
 
+// A question that leans on the one before it: a pronoun with no antecedent, or
+// a fragment too short to search on its own.
+const PRONOUN = /\b(he|him|his|she|her|hers|it|its|they|them|their|that|this|those|there)\b/i;
+const FRAGMENT = /^(and|also|what about|how about|why|and what|ok(ay)? and)\b/i;
+
+/**
+ * Fold the previous question's subject into this one.
+ *
+ * "who is the CEO of OpenAI" then "how old is he" searches for *how old is he*
+ * and finds nothing, because the web has no idea who "he" is. Carrying the
+ * earlier subject across turns is what makes a sequence of questions feel like
+ * a conversation rather than a series of unrelated lookups.
+ */
+export function resolveFollowUp(question, previous) {
+  const q = question.trim();
+  if (!previous) return q;
+
+  const topic = subject(previous);
+  if (!topic) return q;
+
+  // Only a pronoun or an opening like "what about" earns the previous subject.
+  // Judging by length instead would drag it into "capital of France", which is
+  // short but perfectly self-contained.
+  if (!PRONOUN.test(q) && !FRAGMENT.test(q)) return q;
+
+  const swapped = q.replace(PRONOUN, topic);
+  return swapped === q ? `${q} ${topic}`.trim() : swapped;
+}
+
 function looksLikeDefinition(question) {
   return /^(who|what|whats|what's|where)\b/i.test(question.trim());
 }
@@ -182,6 +211,67 @@ function paragraphs(lines) {
   return out.join('\n\n');
 }
 
+// --------------------------------------------------------------- the lead
+
+const MONTHS =
+  /\b(january|february|march|april|may|june|july|august|september|october|november|december)\b/i;
+
+/** What shape of thing the question is asking for. */
+function shapeOf(query) {
+  const q = query.trim();
+  if (/^who\b/i.test(q)) return 'who';
+  if (/^when\b|\bwhat year\b|\bwhat date\b/i.test(q)) return 'when';
+  if (/^where\b/i.test(q)) return 'where';
+  // "what is the population of X" wants a figure just as much as "how many".
+  if (WANTS_NUMBER.test(q)) return 'amount';
+  return 'general';
+}
+
+/**
+ * How much a sentence reads like *the* answer rather than background.
+ *
+ * Scoring alone finds the sentences that are about the question; this finds the
+ * one that answers it. A "when" question wants the sentence with the date in
+ * it, a "who" question wants the one with a name, and in every case a statement
+ * of the form "X is ..." beats a sentence that merely mentions X.
+ */
+function directness(sentence, shape, head, asked) {
+  let factor = 1;
+
+  if (/\b(is|are|was|were|refers to|means|became|serves as|known as)\b/i.test(sentence)) {
+    factor *= 1.3;
+  }
+
+  // "Canberra, the capital city of Australia, is ..." opens with a name the
+  // question did not contain, which is what naming an answer looks like.
+  // "The Australian Capital Territory is ..." only restates the question.
+  // Matched on a stem, so "Australian" counts as the question's "Australia"
+  // and does not pass as a new name.
+  const opener = words(sentence)[0];
+  const restated =
+    !opener ||
+    [...asked].some(
+      (t) => t.startsWith(opener.slice(0, 5)) || opener.startsWith(t.slice(0, 5))
+    );
+  if (/^[A-Z]/.test(sentence) && !restated) factor *= 1.3;
+  if (head && new RegExp(`\\b${head.replace(/[^\w'-]/g, '')}\\b`, 'i').test(sentence)) {
+    factor *= 1.25;
+  }
+  if (shape === 'when' && (/\b(1\d{3}|20\d{2})\b/.test(sentence) || MONTHS.test(sentence))) {
+    factor *= 1.45;
+  }
+  if (shape === 'amount' && /\d/.test(sentence)) factor *= 1.45;
+  if (shape === 'who' && /\b[A-Z][a-z]+\s+[A-Z][a-z]+\b/.test(sentence)) factor *= 1.3;
+  if (shape === 'where' && /\b(in|at|near|on)\s+[A-Z]/.test(sentence)) factor *= 1.25;
+
+  // The lead is the line someone could read out as the answer, so a paragraph
+  // of qualifications makes a poor one and so does a four-word fragment.
+  if (sentence.length > 220) factor *= 0.7;
+  else if (sentence.length < 60) factor *= 0.9;
+
+  return factor;
+}
+
 /**
  * Answer a question using only the web.
  *
@@ -190,7 +280,7 @@ function paragraphs(lines) {
  * That makes it good at facts and useless at reasoning, which is the trade this
  * app is making.
  */
-export async function answer(question, emit = () => {}) {
+export async function answer(question, emit = () => {}, { previous = '' } = {}) {
   const canned = chatReply(question);
   if (canned) {
     emit('token', { text: canned });
@@ -198,17 +288,20 @@ export async function answer(question, emit = () => {}) {
   }
 
   emit('status', { text: 'Searching the web' });
-  const query = question.replace(/\s+/g, ' ').trim().slice(0, 300);
+  const query = resolveFollowUp(question, previous).replace(/\s+/g, ' ').trim().slice(0, 300);
 
   const topic = subject(query);
-  const [results, found] = await Promise.all([
-    searchWeb(query),
+  const [search, found] = await Promise.all([
+    searchWeb(query, topic),
     looksLikeDefinition(query) && topic ? wikipediaSummary(topic) : Promise.resolve(null),
   ]);
+  const { results, limited } = search;
   const summary = found && relevant(found, topic) ? found : null;
 
   if (!results.length && !summary) {
-    return "I couldn't find anything on that. Try rephrasing it, or give me a bit more to go on.";
+    return limited
+      ? 'The search engine is throttling this machine right now, so I could not look that up. Give it a minute and ask again.'
+      : "I couldn't find anything on that. Try rephrasing it, or give me a bit more to go on.";
   }
 
   emit('status', { text: 'Reading the results' });
@@ -229,25 +322,57 @@ export async function answer(question, emit = () => {}) {
       if (score > 0) pool.push({ sentence, score });
     });
   }
+  // Wikipedia's own prose is already written as an explanation, so its
+  // sentences join the pool with a thumb on the scale rather than being
+  // bolted on in front of it.
+  if (summary) {
+    const best = pool[0]?.score ?? 1;
+    sentences(summary.text)
+      .slice(0, 4)
+      .forEach((raw, i) => {
+        const sentence = tidy(raw);
+        if (sentence.length < 25) return;
+        const scored = scoreSentence(sentence, { idf, wantsNumber, weight: 1.2, position: i });
+        pool.push({ sentence, score: Math.max(scored, best * (1.15 - i * 0.1)) });
+      });
+  }
+
   pool.sort((a, b) => b.score - a.score);
 
-  // Wikipedia's own prose opens the answer when the question asks what something is.
-  const chosen = summary ? sentences(summary.text).slice(0, 3) : [];
-  const seen = chosen.map((s) => new Set(words(s)));
+  if (!pool.length) {
+    return 'I searched for that, but the pages that came back were mostly navigation and boilerplate. Try wording it differently.';
+  }
+
+  // The lead: the one sentence that most reads like the answer itself. It goes
+  // first and alone, so the answer opens with the answer instead of with
+  // background the reader has to wade through.
+  const shape = shapeOf(query);
+  const head = words(topic).at(-1);
+  const asked = new Set(terms);
+  let lead = pool[0];
+  let bestRank = 0;
+  pool.slice(0, 12).forEach((item) => {
+    const rank = item.score * directness(item.sentence, shape, head, asked);
+    if (rank > bestRank) {
+      bestRank = rank;
+      lead = item;
+    }
+  });
+
+  const chosen = [lead.sentence];
+  const seen = [new Set(words(lead.sentence))];
 
   for (const item of pool) {
     if (chosen.length >= config.maxSentences) break;
+    if (item === lead) continue;
     const tokens = new Set(words(item.sentence));
     if (seen.some((other) => overlap(tokens, other) > 0.6)) continue;
     seen.push(tokens);
     chosen.push(item.sentence);
   }
 
-  if (!chosen.length) {
-    return 'I searched for that, but the pages that came back were mostly navigation and boilerplate. Try wording it differently.';
-  }
-
-  const text = clean(paragraphs(chosen.map((s) => (/[.!?]$/.test(s) ? s : s + '.'))));
+  const full = chosen.map((s) => (/[.!?]$/.test(s) ? s : s + '.'));
+  const text = clean([full[0], paragraphs(full.slice(1))].filter(Boolean).join('\n\n'));
 
   // Stream it out a word at a time, so the page fills in the way a reply would.
   emit('status', { text: 'Writing the answer' });

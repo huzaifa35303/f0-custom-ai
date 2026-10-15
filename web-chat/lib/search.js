@@ -58,10 +58,19 @@ function domainOf(url) {
   }
 }
 
+export class RateLimited extends Error {}
+
 // DuckDuckGo's no-JS endpoint: no API key, no account, no quota.
 async function duckduckgo(query) {
   const res = await get(`https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`);
   const html = await res.text();
+
+  // Asked too often, it answers 202 with a challenge page instead of refusing
+  // outright. That is throttling, not an absence of results, and the two want
+  // very different things said about them.
+  if (res.status === 202 || /anomaly|unusual traffic|challenge-form/i.test(html)) {
+    throw new RateLimited('DuckDuckGo is throttling this machine');
+  }
 
   const links = [
     ...html.matchAll(/<a[^>]+class="result__a"[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g),
@@ -136,27 +145,38 @@ async function readPage(result) {
 
 /**
  * Run a search and read the top pages.
- * Returns [{ title, url, domain, snippet, text }] — `text` is '' when the page
- * could not be opened, in which case the snippet is all we have.
+ *
+ * `alt` is the question stripped to its subject. Wikipedia's search wants a
+ * topic, not a sentence: "who invented the thermos flask" matches nothing,
+ * while "thermos flask" finds the article. DuckDuckGo handles either, so the
+ * full question goes there and the subject is kept for the fallback.
+ *
+ * Returns { results, limited }. `results` is [{ title, url, domain, snippet,
+ * text }], where `text` is '' when the page could not be opened and the
+ * snippet is all we have. `limited` says the search engine was throttling us,
+ * which is a different thing from the web having no answer.
  */
-export async function searchWeb(query) {
+export async function searchWeb(query, alt = '') {
   const q = String(query || '').trim();
-  if (!q) return [];
+  if (!q) return { results: [], limited: false };
 
   let results = [];
+  let limited = false;
   try {
     results = await duckduckgo(q);
-  } catch {
-    /* fall through to Wikipedia */
+  } catch (err) {
+    limited = err instanceof RateLimited;
   }
-  if (!results.length) {
+
+  for (const attempt of [q, alt]) {
+    if (results.length || !attempt) break;
     try {
-      results = await wikipediaSearch(q);
+      results = await wikipediaSearch(attempt);
     } catch {
-      return [];
+      /* try the next wording, then give up */
     }
   }
 
   const pages = await Promise.all(results.slice(0, config.pagesPerSearch).map(readPage));
-  return results.map((r, i) => ({ ...r, text: pages[i] || '' }));
+  return { results: results.map((r, i) => ({ ...r, text: pages[i] || '' })), limited };
 }
