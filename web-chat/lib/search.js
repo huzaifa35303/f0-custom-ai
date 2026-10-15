@@ -3,6 +3,11 @@ import { config } from './config.js';
 const UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36';
 
+// Wikipedia's API policy asks for a descriptive agent that identifies the
+// caller, and throttles anonymous browser-shaped traffic harder - which is
+// exactly what this sends from a datacentre.
+const WIKI_UA = 'f0undr-ai/1.0 (https://github.com/huzaifa35303/f0-custom-ai)';
+
 function decodeEntities(s) {
   return s
     .replace(/&amp;/g, '&')
@@ -32,8 +37,9 @@ function stripTags(html) {
 }
 
 async function get(url, { timeout = 10000, accept = 'text/html' } = {}) {
+  const agent = url.includes('wikipedia.org') ? WIKI_UA : UA;
   const res = await fetch(url, {
-    headers: { 'user-agent': UA, accept, 'accept-language': 'en-US,en;q=0.9' },
+    headers: { 'user-agent': agent, accept, 'accept-language': 'en-US,en;q=0.9' },
     redirect: 'follow',
     signal: AbortSignal.timeout(timeout),
   });
@@ -58,10 +64,30 @@ function domainOf(url) {
   }
 }
 
-class RateLimited extends Error {}
+export class RateLimited extends Error {}
 
-// DuckDuckGo's no-JS endpoint: no API key, no account, no quota.
-async function duckduckgo(query) {
+/**
+ * DuckDuckGo, by whichever door opens.
+ *
+ * From a home connection the HTML endpoint is fine. From a datacentre - which
+ * is where this runs once deployed - it answers 403 outright, so two quieter
+ * endpoints are tried before giving up on it.
+ */
+export async function duckduckgo(query) {
+  let blocked = false;
+  for (const attempt of [duckduckgoHtml, duckduckgoLite, duckduckgoInstant]) {
+    try {
+      const results = await attempt(query);
+      if (results.length) return results;
+    } catch (err) {
+      blocked = blocked || err instanceof RateLimited || /40[39]|429/.test(err.message);
+    }
+  }
+  if (blocked) throw new RateLimited('DuckDuckGo refused this request');
+  return [];
+}
+
+async function duckduckgoHtml(query) {
   const res = await get(`https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`);
   const html = await res.text();
 
@@ -90,8 +116,59 @@ async function duckduckgo(query) {
   return out;
 }
 
+// The text-only endpoint, which is sometimes served where the HTML one is not.
+async function duckduckgoLite(query) {
+  const res = await get(`https://lite.duckduckgo.com/lite/?q=${encodeURIComponent(query)}`);
+  const html = await res.text();
+  if (res.status === 202 || /anomaly|challenge-form/i.test(html)) {
+    throw new RateLimited('DuckDuckGo lite is throttling this machine');
+  }
+
+  const out = [];
+  const seen = new Set();
+  for (const m of html.matchAll(/<a[^>]+class="result-link"[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)) {
+    const url = realUrl(m[1]);
+    if (!url || seen.has(url) || out.length >= config.results) continue;
+    seen.add(url);
+    out.push({ title: stripTags(m[2]), url, domain: domainOf(url), snippet: '' });
+  }
+  return out;
+}
+
+// The instant-answer JSON API. It returns one summary and a pile of related
+// topics rather than ranked results, so it is thin - but it is a documented
+// API rather than a scrape, and it answers where the scrapes are refused.
+async function duckduckgoInstant(query) {
+  const res = await get(
+    `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`,
+    { accept: 'application/json' }
+  );
+  const data = await res.json();
+  const out = [];
+
+  if (data.AbstractText) {
+    out.push({
+      title: data.Heading || query,
+      url: data.AbstractURL || '',
+      domain: data.AbstractSource || 'duckduckgo.com',
+      snippet: data.AbstractText,
+    });
+  }
+  for (const topic of data.RelatedTopics || []) {
+    if (out.length >= config.results) break;
+    if (!topic.Text) continue;
+    out.push({
+      title: topic.Text.split(' - ')[0],
+      url: topic.FirstURL || '',
+      domain: domainOf(topic.FirstURL || '') || 'duckduckgo.com',
+      snippet: topic.Text,
+    });
+  }
+  return out;
+}
+
 // Fallback for when DuckDuckGo blocks the request or finds nothing.
-async function wikipediaSearch(query) {
+export async function wikipediaSearch(query) {
   const res = await get(
     `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(
       query

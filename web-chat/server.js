@@ -4,6 +4,7 @@ import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { config } from './lib/config.js';
 import { answer } from './lib/answer.js';
+import { duckduckgo, wikipediaSearch } from './lib/search.js';
 
 const PUBLIC = fileURLToPath(new URL('./public/', import.meta.url));
 const TYPES = {
@@ -33,20 +34,33 @@ export default async function handler(req, res) {
 
 const server = createServer(handler);
 
-// The only thing this app depends on is being able to reach the search engine.
+/**
+ * What this copy can actually do right now.
+ *
+ * A datacentre gets 403 from DuckDuckGo where a home connection does not, but
+ * Wikipedia still answers and the app still works - just on a narrower slice
+ * of the web. Reporting that as a failure would be wrong, so there are three
+ * states rather than two.
+ */
 async function handleHealth(res) {
-  const body = { ok: false, error: null };
-  try {
-    const probe = await fetch('https://html.duckduckgo.com/html/?q=test', {
-      headers: { 'user-agent': 'Mozilla/5.0' },
-      signal: AbortSignal.timeout(6000),
+  const [web, encyclopedia] = await Promise.all([
+    reachable(await Promise.allSettled([duckduckgo('test')])),
+    reachable(await Promise.allSettled([wikipediaSearch('test')])),
+  ]);
+
+  if (web) return json(res, 200, { ok: true, mode: 'full', error: null });
+  if (encyclopedia) {
+    return json(res, 200, {
+      ok: true,
+      mode: 'limited',
+      error: 'Web search is blocked here, so answers come from Wikipedia only',
     });
-    body.ok = probe.ok;
-    if (!body.ok) body.error = `Search engine answered ${probe.status}`;
-  } catch {
-    body.error = 'No internet connection';
   }
-  json(res, 200, body);
+  json(res, 200, { ok: false, mode: 'down', error: 'Cannot reach any search source' });
+}
+
+function reachable([outcome]) {
+  return outcome.status === 'fulfilled' && outcome.value.length > 0;
 }
 
 async function handleChat(req, res) {

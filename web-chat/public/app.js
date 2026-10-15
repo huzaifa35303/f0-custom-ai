@@ -46,8 +46,11 @@ async function checkHealth() {
   try {
     const res = await fetch('/api/health');
     const h = await res.json();
-    statusPill.textContent = h.ok ? 'web search ready' : h.error;
-    statusPill.className = 'status ' + (h.ok ? 'good' : 'bad');
+    const label = { full: 'web search ready', limited: 'Wikipedia only', down: h.error };
+    const tone = { full: 'good', limited: 'warn', down: 'bad' };
+    statusPill.textContent = label[h.mode] ?? (h.ok ? 'ready' : h.error);
+    statusPill.className = 'status ' + (tone[h.mode] ?? (h.ok ? 'good' : 'bad'));
+    if (h.error) statusPill.title = h.error;
   } catch {
     statusPill.textContent = 'server unreachable';
     statusPill.className = 'status bad';
