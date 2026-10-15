@@ -1,3 +1,6 @@
+try { process.loadEnvFile(); } catch {}
+try { process.loadEnvFile('../.env'); } catch {}
+
 export const config = {
   port: Number(process.env.PORT || 3000),
   // Results asked of the search engine, and how many of them we open and read.
