@@ -378,13 +378,13 @@ export async function answer(
   const { results, limited } = search;
   const summary = found && relevant(found, topic) ? found : null;
 
-  // Build context from web search & Wikipedia summary
+  // Build context from live web search & Wikipedia summary (fresh live search prioritized)
   const contextPieces = [];
-  if (summary) contextPieces.push(`Wikipedia (${summary.title}):\n${summary.text}`);
   for (const r of results.slice(0, 4)) {
     const body = r.text || r.snippet;
     if (body) contextPieces.push(`${r.title} (${r.domain}):\n${body.slice(0, 1200)}`);
   }
+  if (summary) contextPieces.push(`Wikipedia (${summary.title}):\n${summary.text}`);
   const contextText = contextPieces.join('\n\n');
 
   if (contextText.length > 50) {

@@ -391,6 +391,7 @@ form.addEventListener('submit', (e) => {
 });
 
 async function checkHealth() {
+  if (!statusPill) return;
   try {
     const res = await fetch('/api/health');
     const h = await res.json();

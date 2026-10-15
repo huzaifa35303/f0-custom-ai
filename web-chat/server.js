@@ -46,6 +46,10 @@ const server = createServer(handler);
  * states rather than two.
  */
 async function handleHealth(res) {
+  if (config.langsearchApiKey) {
+    return json(res, 200, { ok: true, mode: 'full', error: null, source: 'langsearch' });
+  }
+
   const [web, encyclopedia] = await Promise.all([
     reachable(await Promise.allSettled([duckduckgo('test')])),
     reachable(await Promise.allSettled([wikipediaSearch('test')])),
