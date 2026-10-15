@@ -235,7 +235,24 @@
               <!-- Claude-Style Dropdown Menu -->
               <div class="model-dropdown-menu hidden" id="model-dropdown-menu" role="menu">
                 <div class="model-dropdown-list">
-                  <div class="model-menu-section-title">Official Models</div>
+                  <!-- genni 2 Option -->
+                  <button type="button" class="model-menu-item" data-model-option="genni 2" role="menuitem">
+                    <div class="model-item-main">
+                      <div class="model-item-header">
+                        <div class="model-item-left">
+                          <span class="model-item-icon reasoning-icon">⚡</span>
+                          <span class="model-item-title">genni 2</span>
+                          <span class="model-item-pill pill-reasoning">Deep Think</span>
+                        </div>
+                        <div class="model-item-check" id="check-genni-2" style="display: none;">
+                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="model-item-desc">For complex reasoning, file analysis &amp; live code runner</div>
+                    </div>
+                  </button>
 
                   <!-- genni 1 Option -->
                   <button type="button" class="model-menu-item selected" data-model-option="genni 1" role="menuitem">
@@ -256,25 +273,6 @@
                     </div>
                   </button>
 
-                  <!-- genni 2 Option -->
-                  <button type="button" class="model-menu-item" data-model-option="genni 2" role="menuitem">
-                    <div class="model-item-main">
-                      <div class="model-item-header">
-                        <div class="model-item-left">
-                          <span class="model-item-icon reasoning-icon">⚡</span>
-                          <span class="model-item-title">genni 2</span>
-                          <span class="model-item-pill pill-reasoning">Deep Think</span>
-                        </div>
-                        <div class="model-item-check" id="check-genni-2" style="display: none;">
-                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="model-item-desc">Advanced reasoning, file analysis &amp; live code runner</div>
-                    </div>
-                  </button>
-
                   <!-- genni 3 (Coming soon) -->
                   <div class="model-menu-item disabled" role="menuitem" aria-disabled="true">
                     <div class="model-item-main">
@@ -291,32 +289,64 @@
 
                   <div class="model-menu-divider"></div>
 
-                  <div class="model-menu-section-title">Other Models</div>
+                  <!-- More models (Claude-Style Flyout Submenu) -->
+                  <div class="model-submenu-container" id="more-models-container">
+                    <button type="button" class="model-submenu-trigger" id="more-models-trigger" aria-haspopup="true" aria-expanded="false" title="Explore more models">
+                      <span class="model-submenu-title">More models</span>
+                      <svg class="model-submenu-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                      </svg>
+                    </button>
 
-                  <!-- Liquid Neural (powered by liquid/lfm-2.5-2.6b:free) -->
-                  <button type="button" class="model-menu-item" data-model-option="liquid-neural" role="menuitem">
-                    <div class="model-item-main">
-                      <div class="model-item-header">
-                        <div class="model-item-left">
-                          <span class="model-item-icon liquid-icon">💧</span>
-                          <span class="model-item-title">Liquid Neural</span>
-                          <span class="model-item-pill pill-liquid">LFM 2.5</span>
-                        </div>
-                        <div class="model-item-check" id="check-liquid-neural" style="display: none;">
-                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                        </div>
+                    <!-- Submenu panel to the side -->
+                    <div class="model-submenu-panel" id="more-models-panel" role="menu">
+                      <div class="model-submenu-list">
+                        <!-- Auto Option -->
+                        <button type="button" class="model-menu-item model-submenu-item" data-model-option="auto" role="menuitem">
+                          <div class="model-item-main">
+                            <div class="model-item-header">
+                              <div class="model-item-left">
+                                <span class="model-item-icon">✨</span>
+                                <span class="model-item-title">Auto</span>
+                                <span class="model-item-pill pill-auto">Smart</span>
+                              </div>
+                              <div class="model-item-check" id="check-auto" style="display: none;">
+                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                                  <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                              </div>
+                            </div>
+                            <div class="model-item-desc">Automatically routes between fast &amp; deep reasoning</div>
+                          </div>
+                        </button>
+
+                        <!-- Liquid Neural Option -->
+                        <button type="button" class="model-menu-item model-submenu-item" data-model-option="liquid-neural" role="menuitem">
+                          <div class="model-item-main">
+                            <div class="model-item-header">
+                              <div class="model-item-left">
+                                <span class="model-item-icon liquid-icon">💧</span>
+                                <span class="model-item-title">Liquid Neural</span>
+                                <span class="model-item-pill pill-liquid">LFM 2.5</span>
+                              </div>
+                              <div class="model-item-check" id="check-liquid-neural" style="display: none;">
+                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                                  <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                              </div>
+                            </div>
+                            <div class="model-item-desc">powered by liquid/lfm-2.5-2.6b:free</div>
+                          </div>
+                        </button>
                       </div>
-                      <div class="model-item-desc">Powered by liquid/lfm-2.5-2.6b:free (Liquid Neural dynamic architecture)</div>
                     </div>
-                  </button>
+                  </div>
                 </div>
 
                 <div class="model-menu-divider"></div>
 
                 <div class="model-dropdown-footer">
-                  <span>f0undr Ai models are tuned for neural speed, live search &amp; deep reasoning.</span>
+                  <span>Official f0undr Ai models are tuned for neural speed, live search &amp; deep reasoning. <a href="https://f0undr.vercel.app/" target="_blank" rel="noreferrer" class="footer-link">Learn more</a></span>
                 </div>
               </div>
             </div>

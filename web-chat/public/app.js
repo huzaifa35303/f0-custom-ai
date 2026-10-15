@@ -12,8 +12,11 @@ const pickerTriggerName = document.getElementById('picker-trigger-name');
 const pickerTriggerTag = document.getElementById('picker-trigger-tag');
 const modelDropdownMenu = document.getElementById('model-dropdown-menu');
 const checkGenni1 = document.getElementById('check-genni-1');
-const checkLiquidNeural = document.getElementById('check-liquid-neural');
 const checkGenni2 = document.getElementById('check-genni-2');
+const checkAuto = document.getElementById('check-auto');
+const checkLiquidNeural = document.getElementById('check-liquid-neural');
+const moreModelsContainer = document.getElementById('more-models-container');
+const moreModelsTrigger = document.getElementById('more-models-trigger');
 const modelMenuItems = document.querySelectorAll('[data-model-option]');
 
 const attachBtn = document.getElementById('attach-btn');
@@ -401,6 +404,7 @@ function setModel(model) {
     }
     if (checkGenni2) checkGenni2.style.display = 'flex';
     if (checkGenni1) checkGenni1.style.display = 'none';
+    if (checkAuto) checkAuto.style.display = 'none';
     if (checkLiquidNeural) checkLiquidNeural.style.display = 'none';
     input.placeholder = 'Ask genni 2 with Deep Reasoning & Code Runner…';
   } else if (model === 'liquid-neural' || model === 'genni 1.1' || model === 'genni ln') {
@@ -413,7 +417,20 @@ function setModel(model) {
     if (checkLiquidNeural) checkLiquidNeural.style.display = 'flex';
     if (checkGenni1) checkGenni1.style.display = 'none';
     if (checkGenni2) checkGenni2.style.display = 'none';
+    if (checkAuto) checkAuto.style.display = 'none';
     input.placeholder = 'Send a message to Liquid Neural (lfm-2.5-2.6b)…';
+  } else if (model === 'auto') {
+    if (pickerTriggerName) pickerTriggerName.textContent = 'Auto';
+    if (pickerTriggerTag) pickerTriggerTag.textContent = 'Smart';
+    if (pickerTriggerIcon) {
+      pickerTriggerIcon.textContent = '✨';
+      pickerTriggerIcon.style.color = '#eab308';
+    }
+    if (checkAuto) checkAuto.style.display = 'flex';
+    if (checkGenni1) checkGenni1.style.display = 'none';
+    if (checkGenni2) checkGenni2.style.display = 'none';
+    if (checkLiquidNeural) checkLiquidNeural.style.display = 'none';
+    input.placeholder = 'Ask anything (Auto routes between genni 1 & 2)…';
   } else {
     if (pickerTriggerName) pickerTriggerName.textContent = 'genni 1';
     if (pickerTriggerTag) pickerTriggerTag.textContent = 'Fast';
@@ -424,6 +441,7 @@ function setModel(model) {
     if (checkGenni1) checkGenni1.style.display = 'flex';
     if (checkLiquidNeural) checkLiquidNeural.style.display = 'none';
     if (checkGenni2) checkGenni2.style.display = 'none';
+    if (checkAuto) checkAuto.style.display = 'none';
     input.placeholder = 'Send a message to genni 1…';
   }
 
@@ -460,6 +478,7 @@ function closeModelDropdown() {
   if (!modelDropdownMenu) return;
   modelDropdownMenu.classList.add('hidden');
   modelPickerContainer?.classList.remove('open');
+  moreModelsContainer?.classList.remove('open');
   modelPickerTrigger?.setAttribute('aria-expanded', 'false');
 }
 
@@ -467,6 +486,11 @@ function closeModelDropdown() {
 modelPickerTrigger?.addEventListener('click', (e) => {
   e.stopPropagation();
   toggleModelDropdown();
+});
+
+moreModelsTrigger?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  moreModelsContainer?.classList.toggle('open');
 });
 
 modelMenuItems.forEach((item) => {
@@ -612,11 +636,13 @@ async function ask(text) {
 
   const body = addMessage('assistant');
   body.classList.add('caret');
-  let note = addNote(currentModel === 'genni 2' ? 'Deep Thinking' : (currentModel === 'liquid-neural' || currentModel === 'genni 1.1' || currentModel === 'genni ln' ? 'Thinking (Liquid Neural)' : 'Thinking'));
+  const isAuto = currentModel === 'auto';
+  const autoNeedsReasoning = isAuto && (Boolean(userFile) || /(code|debug|function|algorithm|math|solve|step by step|prove|analyze|detailed|explain why)/i.test(text));
+  const isGenni2 = currentModel === 'genni 2' || autoNeedsReasoning;
+  let note = addNote(isGenni2 ? 'Deep Thinking' : (currentModel === 'liquid-neural' || currentModel === 'genni 1.1' || currentModel === 'genni ln' ? 'Thinking (Liquid Neural)' : 'Thinking'));
   let answer = '';
   let thoughtBox = null;
   let thoughtContent = null;
-  const isGenni2 = currentModel === 'genni 2';
 
   try {
     await stream({ messages: history, model: currentModel, file: userFile }, (msg) => {

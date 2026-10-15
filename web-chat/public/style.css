@@ -778,11 +778,125 @@ main {
   margin: 5px 4px;
 }
 
+/* Claude-style Flyout Submenu */
+.model-submenu-container {
+  position: relative;
+  width: 100%;
+}
+
+.model-submenu-trigger {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: background 0.15s ease;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.model-submenu-trigger:hover,
+.model-submenu-container:hover .model-submenu-trigger,
+.model-submenu-container.open .model-submenu-trigger {
+  background: var(--raised);
+}
+
+.model-submenu-title {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.model-submenu-arrow {
+  color: var(--muted);
+  transition: transform 0.15s ease, color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.model-submenu-container:hover .model-submenu-arrow,
+.model-submenu-container.open .model-submenu-arrow {
+  color: var(--text);
+  transform: translateX(2px);
+}
+
+.model-submenu-panel {
+  position: absolute;
+  left: calc(100% + 8px);
+  bottom: -6px;
+  width: 275px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px var(--line-soft);
+  padding: 6px;
+  z-index: 310;
+  backdrop-filter: blur(16px);
+  display: none;
+  flex-direction: column;
+  animation: modelSubmenuPop 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modelSubmenuPop {
+  from {
+    opacity: 0;
+    transform: translateX(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.model-submenu-container:hover .model-submenu-panel,
+.model-submenu-container.open .model-submenu-panel {
+  display: flex;
+}
+
+.model-submenu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.model-menu-item.model-submenu-item {
+  padding: 8px 10px;
+}
+
+.model-item-pill.pill-auto {
+  background: color-mix(in srgb, #eab308 18%, transparent);
+  color: #eab308;
+  border: 1px solid color-mix(in srgb, #eab308 35%, transparent);
+}
+
 .model-dropdown-footer {
   padding: 6px 10px 4px;
   font-size: 11px;
   color: var(--muted);
   line-height: 1.35;
+}
+
+.model-dropdown-footer .footer-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* If screen is narrow, position flyout nicely */
+@media (max-width: 680px) {
+  .model-submenu-panel {
+    left: 0;
+    bottom: calc(100% + 6px);
+    width: 100%;
+  }
 }
 
 /* File Attachment Preview (genni 2) */
