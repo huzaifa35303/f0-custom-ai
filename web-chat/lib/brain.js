@@ -189,27 +189,80 @@ async function execute({ kind, payload, personal }) {
 }
 
 /**
+ * Add many facts at once, for loading a document.
+ *
+ * One save at the end rather than one per fact: teaching them one at a time
+ * would rewrite the file for every line.
+ */
+export async function teachMany(lines) {
+  const facts = await load();
+  let added = 0;
+  let replaced = 0;
+
+  for (const line of lines) {
+    const text = String(line).replace(/\s+/g, ' ').trim();
+    if (text.length < 3) continue;
+
+    const words = keywords(text);
+    if (!words.length) continue;
+
+    const before = facts.length;
+    // Same ground covered again replaces the earlier wording.
+    const kept = facts.filter((f) => !words.every((w) => f.keywords.includes(w)));
+    facts.length = 0;
+    facts.push(...kept, { text, keywords: words, addedAt: new Date().toISOString() });
+    if (facts.length === before) replaced++;
+    else added++;
+  }
+
+  await save(facts);
+  return { added, replaced, total: facts.length };
+}
+
+/**
+ * Words that narrow which fact is meant. A fact carrying one of these that the
+ * question did not ask for is answering a different question: "the first
+ * FEMALE prime minister" is not the answer to "who was the first prime
+ * minister", though it shares every other word.
+ */
+const QUALIFIERS = new Set(
+  `first second third last former current acting deputy female male largest
+   smallest biggest highest lowest longest shortest oldest newest official
+   national maximum minimum total average`.split(/\s+/)
+);
+
+/**
  * Facts worth using for this question, best first.
  *
- * The bar is deliberately high: half the question's distinctive words have to
- * appear in the fact. A loose match would answer "what is Python" with
- * something you once said about your own project.
+ * The bar is deliberately high: three quarters of the question's distinctive
+ * words have to appear in the fact. A loose match would answer "what is
+ * Python" with something you once said about your own project, and at half it
+ * padded every answer with its neighbours - asking for the national animal
+ * also returned the national sport.
  */
 export async function recall(question) {
   const asked = keywords(question);
   if (!asked.length) return [];
 
+  const wanted = new Set(asked);
   const facts = await load();
   const scored = [];
 
   for (const fact of facts) {
     const hits = asked.filter((w) => fact.keywords.includes(w));
     const coverage = hits.length / asked.length;
-    if (coverage >= 0.5) scored.push({ fact, coverage });
+    if (coverage < 0.75) continue;
+
+    // Among equally covering facts, prefer the one saying least that was not
+    // asked about, and penalise an unasked qualifier hardest of all.
+    const extra = fact.keywords.filter((w) => !wanted.has(w));
+    const unasked = extra.filter((w) => QUALIFIERS.has(w)).length;
+    const score = coverage - unasked * 0.3 - extra.length * 0.01;
+    scored.push({ fact, score });
   }
 
   return scored
-    .sort((a, b) => b.coverage - a.coverage)
-    .slice(0, 3)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 2)
     .map((s) => s.fact.text);
 }

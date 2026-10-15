@@ -1,0 +1,34 @@
+# Pakistan Knowledge Overview
+# One fact per line. Lines starting with # are ignored.
+# Each line is phrased with the words someone would ask the question with,
+# because recall matches on shared words.
+
+The official name of Pakistan is the Islamic Republic of Pakistan.
+The capital of Pakistan is Islamabad.
+The founder of Pakistan is Quaid-e-Azam Muhammad Ali Jinnah.
+Pakistan gained independence on 14 August 1947.
+The currency of Pakistan is the Pakistani Rupee, PKR.
+The official languages of Pakistan are Urdu and English.
+The President of Pakistan is Asif Ali Zardari.
+The Prime Minister of Pakistan is Muhammad Shehbaz Sharif.
+
+The largest province of Pakistan by area is Balochistan.
+The highest peak in Pakistan is K2, at 8,616 metres, in the Karakoram range.
+The longest river in Pakistan is the Indus River, about 2,896 km long, and it is the lifeline of the country.
+The largest desert in Pakistan is the Thar Desert, followed by the Cholistan and Thal deserts.
+The major glaciers of Pakistan are the Siachen Glacier, Baltoro and Batura.
+The largest dam in Pakistan is the Tarbela Dam.
+
+The national sport of Pakistan is field hockey.
+The national flower of Pakistan is the jasmine.
+The national animal of Pakistan is the markhor.
+The national bird of Pakistan is the chukar partridge, also called the chakor.
+The national tree of Pakistan is the deodar cedar.
+The national poet of Pakistan is Allama Iqbal.
+The national anthem of Pakistan was written by Hafeez Jullundhri.
+
+The first Nobel Prize winner of Pakistan was Dr Abdus Salam, for Physics in 1979.
+The first female Prime Minister of Pakistan was Benazir Bhutto.
+The first Governor-General of Pakistan was Muhammad Ali Jinnah.
+The first Prime Minister of Pakistan was Liaquat Ali Khan.
+The first capital of Pakistan was Karachi.

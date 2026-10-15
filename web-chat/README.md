@@ -76,7 +76,25 @@ Ask about it later and the answer comes from what you taught, not from the web
 - you know your own business and a search result does not. Also understood:
 `what do you know`, `forget: <thing>`, `forget everything`.
 
-It lives in `brain.json` next to the code: plain JSON, yours, readable, hand
+## Loading a document
+
+For more than a handful of facts, put them in a file and load it:
+
+```bash
+node ingest.js ../knowledge/pakistan.txt
+```
+
+Takes `.txt` and `.md` (one fact per line, `#` comments ignored), `.json` (an
+array of strings) and `.csv`/`.tsv` (two columns, read as "label is value").
+PDF and Word need a library to read, and this app has no dependencies - save
+them as `.txt` first.
+
+Write each fact as one self-contained sentence carrying the words you would
+ask with. Recall matches on shared words, so "The capital of Pakistan is
+Islamabad" answers "what is the capital of pakistan"; a fact that says "it is
+Islamabad" answers nothing.
+
+The brain lives in `brain.json` next to the code: plain JSON, yours, readable, hand
 editable, and backed up by committing it. There is no model, so nothing is
 learned statistically - "training" here means what it means to a person. You
 tell it, it keeps it, it uses it.
