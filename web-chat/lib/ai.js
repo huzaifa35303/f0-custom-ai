@@ -28,6 +28,7 @@ export async function generateAI({
   try {
     const isGenni2 = model === 'genni 2';
     const isLiquidNeural = model === 'liquid-neural' || model === 'genni 1.1' || model === 'genni ln';
+    const isNorthMiniCode = model === 'north-mini-code' || model === 'cohere/north-mini-code:free';
 
     let systemPrompt;
     if (isGenni2) {
@@ -46,6 +47,21 @@ export async function generateAI({
         '- Use bullet points (- **Key Point**: explanation) or numbered steps (1. Step) with proper indentation.',
         '- NEVER output loose or unclosed pipe symbols (| item | desc |). If tabular data is needed, use standard markdown table syntax with headers and dividers (| Column 1 | Column 2 |\n|---|---|\n| Data 1 | Data 2 |).',
         '- Place code inside standard fenced code blocks with language identifiers (```html, ```css, ```javascript, ```python, etc.).',
+        '- If the user writes in Urdu, Roman Urdu / Hinglish, Hindi, or Punjabi, reply in that exact language and script.',
+        '- Keep your tone intelligent, direct, articulate, and helpful.'
+      ].join(' ');
+    } else if (isNorthMiniCode) {
+      systemPrompt = [
+        'You are f0undr Ai running on the North Mini Code model (powered by cohere/north-mini-code:free), an expert coding, debugging, and reasoning engine hosted on f0undr Ai created by f0undr and the f0undr Team.',
+        'CRITICAL IDENTITY: Never mention third-party AI platforms. You are running as North Mini Code on f0undr Ai.',
+        'As North Mini Code, you specialize in writing production-grade code, deep code analysis, debugging, and step-by-step technical problem solving.',
+        'You have real-time live internet search capabilities via LangSearch.',
+        'When live search results or context are provided, use them as real-time ground truth.',
+        'MULTI-TURN MEMORY: You maintain full multi-turn conversational context. Connect follow-up questions to prior conversation history.',
+        'FORMATTING & PRESENTATION (ChatGPT / Gemini / Claude style):',
+        '- Format all responses with clean, beautiful GitHub Flavored Markdown.',
+        '- Structure explanations with clear headings (### Section Title) and concise paragraphs.',
+        '- Always use properly tagged fenced code blocks (```python, ```javascript, ```html, etc.).',
         '- If the user writes in Urdu, Roman Urdu / Hinglish, Hindi, or Punjabi, reply in that exact language and script.',
         '- Keep your tone intelligent, direct, articulate, and helpful.'
       ].join(' ');
@@ -70,7 +86,7 @@ export async function generateAI({
     } else {
       systemPrompt = [
         'You are f0undr Ai, powered by model genni 1, created by f0undr and the f0undr Team.',
-        'Model genni 2 is active, genni 3 is coming soon, and other models like Liquid Neural are available under Other Models.',
+        'Model genni 2 is active, genni 3 is coming soon, and other models like Liquid Neural and North Mini Code are available under More models.',
         'CRITICAL IDENTITY: Never mention OpenAI, GPT-4, ChatGPT, or third-party AI companies. You are built exclusively as f0undr Ai on the genni 1 model.',
         'You have real-time live internet search capabilities via LangSearch.',
         'When live search results or context are provided, use them as real-time ground truth to answer queries about current market prices, cryptocurrency, stocks, news, events, weather, or real-world facts.',
@@ -107,9 +123,15 @@ export async function generateAI({
 
     messages.push({ role: 'user', content: userPrompt });
 
-    onStatus({ text: isGenni2 ? 'Deep thinking' : (isLiquidNeural ? 'Thinking (Liquid Neural)' : 'Thinking') });
+    onStatus({
+      text: isGenni2
+        ? 'Deep thinking'
+        : (isNorthMiniCode
+            ? 'Reasoning (North Mini Code)'
+            : (isLiquidNeural ? 'Thinking (Liquid Neural)' : 'Thinking'))
+    });
 
-    // Use OpenRouter for Liquid Neural (liquid/lfm-2.5-2.6b:free) if key is configured, otherwise fallback to Pollinations
+    // Use OpenRouter for Liquid Neural and North Mini Code if key is configured, otherwise fallback to Pollinations
     let fetchUrl = POLLINATIONS_ENDPOINT;
     let fetchHeaders = { 'Content-Type': 'application/json' };
     let fetchBody;
@@ -124,6 +146,19 @@ export async function generateAI({
       };
       fetchBody = JSON.stringify({
         model: 'liquid/lfm-2.5-2.6b:free',
+        messages,
+        stream: true
+      });
+    } else if (isNorthMiniCode && config.openrouterApiKey) {
+      fetchUrl = OPENROUTER_ENDPOINT;
+      fetchHeaders = {
+        'Authorization': `Bearer ${config.openrouterApiKey}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://f0undr-ai.vercel.app/',
+        'X-Title': 'f0undr Ai'
+      };
+      fetchBody = JSON.stringify({
+        model: 'cohere/north-mini-code:free',
         messages,
         stream: true
       });
@@ -170,9 +205,9 @@ export async function generateAI({
           if (delta.reasoning) {
             if (!hasReasoned) {
               hasReasoned = true;
-              onStatus({ text: isGenni2 ? 'Deep thinking' : 'Reasoning' });
+              onStatus({ text: isGenni2 ? 'Deep thinking' : (isNorthMiniCode ? 'Code reasoning' : 'Reasoning') });
             }
-            if (isGenni2) {
+            if (isGenni2 || isNorthMiniCode) {
               onThought(delta.reasoning);
             }
           }

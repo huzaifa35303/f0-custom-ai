@@ -116,9 +116,11 @@ async function handleChat(req, res) {
     const needsReasoning = Boolean(file) || /(code|debug|function|algorithm|math|solve|step by step|prove|analyze|detailed|explain why)/i.test(lastMsg);
     requestedModel = needsReasoning ? 'genni 2' : 'genni 1';
   }
-  const model = requestedModel === 'genni 2'
-    ? 'genni 2'
-    : (requestedModel === 'liquid-neural' || requestedModel === 'genni 1.1' || requestedModel === 'genni ln' ? 'liquid-neural' : 'genni 1');
+  let model = 'genni 1';
+  if (requestedModel === 'genni 2') model = 'genni 2';
+  else if (requestedModel === 'liquid-neural' || requestedModel === 'genni 1.1' || requestedModel === 'genni ln') model = 'liquid-neural';
+  else if (requestedModel === 'north-mini-code' || requestedModel === 'cohere/north-mini-code:free') model = 'north-mini-code';
+  else model = 'genni 1';
 
   try {
     const text = await answer(asked.at(-1).content, emit, {

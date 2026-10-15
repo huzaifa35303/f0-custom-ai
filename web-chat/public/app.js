@@ -15,6 +15,7 @@ const checkGenni1 = document.getElementById('check-genni-1');
 const checkGenni2 = document.getElementById('check-genni-2');
 const checkAuto = document.getElementById('check-auto');
 const checkLiquidNeural = document.getElementById('check-liquid-neural');
+const checkNorthMiniCode = document.getElementById('check-north-mini-code');
 const moreModelsContainer = document.getElementById('more-models-container');
 const moreModelsTrigger = document.getElementById('more-models-trigger');
 const modelMenuItems = document.querySelectorAll('[data-model-option]');
@@ -46,7 +47,7 @@ const WELCOME =
   '<span class="badge-active">Models: <strong>genni 1</strong> &amp; <strong>genni 2</strong></span>' +
   '<span class="badge-soon">genni 3 coming soon</span>' +
   '</div>' +
-  '<p>Official models: <strong>genni 1</strong> for fast live answers &amp; <strong>genni 2</strong> for Deep Reasoning &amp; code runner. Explore <strong>Liquid Neural</strong> under Other Models.</p>' +
+  '<p>Official models: <strong>genni 1</strong> for fast live answers &amp; <strong>genni 2</strong> for Deep Reasoning &amp; code runner. Explore <strong>Liquid Neural</strong> &amp; <strong>North Mini Code</strong> under More models.</p>' +
   '</div>';
 
 const STORAGE_KEY = 'foundr_ai_chats_v2';
@@ -395,6 +396,10 @@ function handleMenuAction(action) {
 
 function setModel(model) {
   currentModel = model;
+  if (pickerTriggerIcon) {
+    pickerTriggerIcon.style.fontFamily = '';
+    pickerTriggerIcon.style.fontWeight = '';
+  }
   if (model === 'genni 2') {
     if (pickerTriggerName) pickerTriggerName.textContent = 'genni 2';
     if (pickerTriggerTag) pickerTriggerTag.textContent = 'Deep Think';
@@ -406,6 +411,7 @@ function setModel(model) {
     if (checkGenni1) checkGenni1.style.display = 'none';
     if (checkAuto) checkAuto.style.display = 'none';
     if (checkLiquidNeural) checkLiquidNeural.style.display = 'none';
+    if (checkNorthMiniCode) checkNorthMiniCode.style.display = 'none';
     input.placeholder = 'Ask genni 2 with Deep Reasoning & Code Runner…';
   } else if (model === 'liquid-neural' || model === 'genni 1.1' || model === 'genni ln') {
     if (pickerTriggerName) pickerTriggerName.textContent = 'Liquid Neural';
@@ -418,7 +424,23 @@ function setModel(model) {
     if (checkGenni1) checkGenni1.style.display = 'none';
     if (checkGenni2) checkGenni2.style.display = 'none';
     if (checkAuto) checkAuto.style.display = 'none';
+    if (checkNorthMiniCode) checkNorthMiniCode.style.display = 'none';
     input.placeholder = 'Send a message to Liquid Neural (lfm-2.5-2.6b)…';
+  } else if (model === 'north-mini-code' || model === 'cohere/north-mini-code:free') {
+    if (pickerTriggerName) pickerTriggerName.textContent = 'North Mini Code';
+    if (pickerTriggerTag) pickerTriggerTag.textContent = 'Code';
+    if (pickerTriggerIcon) {
+      pickerTriggerIcon.textContent = '{ }';
+      pickerTriggerIcon.style.color = '#10b981';
+      pickerTriggerIcon.style.fontFamily = "'JetBrains Mono', monospace";
+      pickerTriggerIcon.style.fontWeight = '700';
+    }
+    if (checkNorthMiniCode) checkNorthMiniCode.style.display = 'flex';
+    if (checkGenni1) checkGenni1.style.display = 'none';
+    if (checkGenni2) checkGenni2.style.display = 'none';
+    if (checkAuto) checkAuto.style.display = 'none';
+    if (checkLiquidNeural) checkLiquidNeural.style.display = 'none';
+    input.placeholder = 'Ask North Mini Code for code, debugging, or reasoning…';
   } else if (model === 'auto') {
     if (pickerTriggerName) pickerTriggerName.textContent = 'Auto';
     if (pickerTriggerTag) pickerTriggerTag.textContent = 'Smart';
@@ -430,6 +452,7 @@ function setModel(model) {
     if (checkGenni1) checkGenni1.style.display = 'none';
     if (checkGenni2) checkGenni2.style.display = 'none';
     if (checkLiquidNeural) checkLiquidNeural.style.display = 'none';
+    if (checkNorthMiniCode) checkNorthMiniCode.style.display = 'none';
     input.placeholder = 'Ask anything (Auto routes between genni 1 & 2)…';
   } else {
     if (pickerTriggerName) pickerTriggerName.textContent = 'genni 1';
@@ -442,6 +465,7 @@ function setModel(model) {
     if (checkLiquidNeural) checkLiquidNeural.style.display = 'none';
     if (checkGenni2) checkGenni2.style.display = 'none';
     if (checkAuto) checkAuto.style.display = 'none';
+    if (checkNorthMiniCode) checkNorthMiniCode.style.display = 'none';
     input.placeholder = 'Send a message to genni 1…';
   }
 
@@ -637,9 +661,16 @@ async function ask(text) {
   const body = addMessage('assistant');
   body.classList.add('caret');
   const isAuto = currentModel === 'auto';
+  const isNorth = currentModel === 'north-mini-code' || currentModel === 'cohere/north-mini-code:free';
   const autoNeedsReasoning = isAuto && (Boolean(userFile) || /(code|debug|function|algorithm|math|solve|step by step|prove|analyze|detailed|explain why)/i.test(text));
   const isGenni2 = currentModel === 'genni 2' || autoNeedsReasoning;
-  let note = addNote(isGenni2 ? 'Deep Thinking' : (currentModel === 'liquid-neural' || currentModel === 'genni 1.1' || currentModel === 'genni ln' ? 'Thinking (Liquid Neural)' : 'Thinking'));
+  const isReasoningModel = isGenni2 || isNorth;
+  let noteText = isGenni2
+    ? 'Deep Thinking'
+    : (isNorth
+        ? 'Reasoning (North Mini Code)'
+        : (currentModel === 'liquid-neural' || currentModel === 'genni 1.1' || currentModel === 'genni ln' ? 'Thinking (Liquid Neural)' : 'Thinking'));
+  let note = addNote(noteText);
   let answer = '';
   let thoughtBox = null;
   let thoughtContent = null;
@@ -652,15 +683,17 @@ async function ask(text) {
           break;
         case 'thought':
           if (note.isConnected) note.remove();
-          if (isGenni2) {
+          if (isReasoningModel) {
             if (!thoughtBox) {
               thoughtBox = document.createElement('details');
               thoughtBox.className = 'thought-box';
               thoughtBox.open = true;
+              const spark = isNorth ? '{ }' : '⚡';
+              const titleText = isNorth ? 'Code Reasoning' : 'Deep Thinking';
               thoughtBox.innerHTML = `
                 <summary class="thought-summary">
-                  <span class="thought-sparkle">⚡</span>
-                  <span class="thought-title">Deep Thinking</span>
+                  <span class="thought-sparkle">${spark}</span>
+                  <span class="thought-title">${titleText}</span>
                   <span class="thought-dot"></span>
                 </summary>
                 <div class="thought-content"></div>

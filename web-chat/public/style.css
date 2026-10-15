@@ -703,6 +703,13 @@ main {
   color: #06b6d4;
 }
 
+.model-item-icon.code-icon {
+  color: #10b981;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 11px;
+}
+
 .model-item-icon.muted-icon {
   color: var(--muted);
 }
@@ -741,6 +748,12 @@ main {
   background: color-mix(in srgb, #06b6d4 18%, transparent);
   color: #06b6d4;
   border: 1px solid color-mix(in srgb, #06b6d4 35%, transparent);
+}
+
+.model-item-pill.pill-code {
+  background: color-mix(in srgb, #10b981 18%, transparent);
+  color: #10b981;
+  border: 1px solid color-mix(in srgb, #10b981 35%, transparent);
 }
 
 .model-item-pill.pill-fast {
