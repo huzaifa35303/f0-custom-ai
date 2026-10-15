@@ -12,7 +12,14 @@ const TYPES = {
   '.css': 'text/css; charset=utf-8',
 };
 
-const server = createServer(async (req, res) => {
+/**
+ * One request. Exported as the default so a host that drives this as a
+ * function can call it directly, while `server.listen` below covers a host
+ * that expects a listening server. Vercel Services is in beta and the docs do
+ * not settle which of the two it uses for a Node entrypoint, so this answers
+ * to both rather than betting on one.
+ */
+export default async function handler(req, res) {
   try {
     if (req.method === 'POST' && req.url === '/api/chat') return await handleChat(req, res);
     if (req.method === 'GET' && req.url === '/api/health') return await handleHealth(res);
@@ -22,7 +29,9 @@ const server = createServer(async (req, res) => {
     if (!res.headersSent) res.writeHead(500, { 'content-type': 'text/plain' });
     res.end(err.message);
   }
-});
+}
+
+const server = createServer(handler);
 
 // The only thing this app depends on is being able to reach the search engine.
 async function handleHealth(res) {
