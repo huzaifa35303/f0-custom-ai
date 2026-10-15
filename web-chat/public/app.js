@@ -5,6 +5,18 @@ const send = document.getElementById('send');
 const statusPill = document.getElementById('status');
 const resetBtn = document.getElementById('reset');
 
+const modelGenni1Btn = document.getElementById('model-genni1-btn');
+const modelGenni2Btn = document.getElementById('model-genni2-btn');
+const attachBtn = document.getElementById('attach-btn');
+const fileInput = document.getElementById('file-input');
+const filePreview = document.getElementById('file-attachment-preview');
+const attachedFileName = document.getElementById('attached-file-name');
+const attachedFileSize = document.getElementById('attached-file-size');
+const removeFileBtn = document.getElementById('remove-file-btn');
+
+let currentModel = 'genni 1';
+let attachedFile = null;
+
 const sidebar = document.getElementById('sidebar');
 const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
 const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
@@ -19,10 +31,10 @@ const WELCOME =
   '<div class="welcome">' +
   '<h2>Ask f0undr Ai anything</h2>' +
   '<div class="welcome-model-pill">' +
-  '<span class="badge-active">Model: <strong>genni 1</strong></span>' +
-  '<span class="badge-soon">genni 2 &amp; genni 3 coming soon</span>' +
+  '<span class="badge-active">Active: <strong>genni 1</strong> &amp; <strong>genni 2</strong></span>' +
+  '<span class="badge-soon">genni 3 coming soon</span>' +
   '</div>' +
-  '<p>Every answer is powered by genni 1 with live search and taught memory, written out in plain language.</p>' +
+  '<p>Switch models anytime: <strong>genni 1</strong> for fast live answers, or <strong>genni 2</strong> for Deep Reasoning, file analysis &amp; live code runner.</p>' +
   '</div>';
 
 const STORAGE_KEY = 'foundr_ai_chats_v2';
@@ -369,6 +381,59 @@ function handleMenuAction(action) {
   }
 }
 
+function setModel(model) {
+  currentModel = model;
+  if (model === 'genni 2') {
+    modelGenni1Btn?.classList.remove('active');
+    modelGenni2Btn?.classList.add('active');
+    input.placeholder = 'Ask genni 2 with Deep Reasoning & Code Runner…';
+  } else {
+    modelGenni2Btn?.classList.remove('active');
+    modelGenni1Btn?.classList.add('active');
+    input.placeholder = 'Send a message to genni 1…';
+  }
+}
+
+modelGenni1Btn?.addEventListener('click', () => setModel('genni 1'));
+modelGenni2Btn?.addEventListener('click', () => setModel('genni 2'));
+
+attachBtn?.addEventListener('click', () => fileInput?.click());
+
+fileInput?.addEventListener('change', (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  // Auto-switch to genni 2 for document & code analysis
+  setModel('genni 2');
+
+  const reader = new FileReader();
+  reader.onload = (evt) => {
+    attachedFile = {
+      name: file.name,
+      size: formatFileSize(file.size),
+      content: evt.target.result,
+    };
+    if (attachedFileName) attachedFileName.textContent = file.name;
+    if (attachedFileSize) attachedFileSize.textContent = formatFileSize(file.size);
+    filePreview?.classList.remove('hidden');
+    attachBtn?.classList.add('has-file');
+  };
+  reader.readAsText(file);
+});
+
+removeFileBtn?.addEventListener('click', () => {
+  attachedFile = null;
+  if (fileInput) fileInput.value = '';
+  filePreview?.classList.add('hidden');
+  attachBtn?.classList.remove('has-file');
+});
+
+function formatFileSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
 input.addEventListener('input', () => {
   input.style.height = 'auto';
   input.style.height = Math.min(input.scrollHeight, 180) + 'px';
@@ -427,33 +492,96 @@ async function ask(text) {
     renderChatList();
   }
 
+  const userFile = attachedFile;
+  // Reset attachment staging immediately
+  attachedFile = null;
+  if (fileInput) fileInput.value = '';
+  filePreview?.classList.add('hidden');
+  attachBtn?.classList.remove('has-file');
+
   history.push({ role: 'user', content: text });
-  addMessage('user').textContent = text;
+  const userMsgBubble = addMessage('user');
+  if (userFile) {
+    const chip = document.createElement('div');
+    chip.className = 'file-preview-chip';
+    chip.style.marginBottom = '6px';
+    chip.innerHTML = `
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+      <span>${escapeHtml(userFile.name)}</span>
+      <span class="attached-file-size">${escapeHtml(userFile.size)}</span>
+    `;
+    userMsgBubble.appendChild(chip);
+  }
+  const textContainer = document.createElement('div');
+  textContainer.textContent = text;
+  userMsgBubble.appendChild(textContainer);
 
   const body = addMessage('assistant');
   body.classList.add('caret');
-  let note = addNote('Thinking');
+  let note = addNote(currentModel === 'genni 2' ? 'Deep Thinking' : 'Thinking');
   let answer = '';
+  let thoughtBox = null;
+  let thoughtContent = null;
+  const isGenni2 = currentModel === 'genni 2';
 
   try {
-    await stream({ messages: history }, (msg) => {
+    await stream({ messages: history, model: currentModel, file: userFile }, (msg) => {
       switch (msg.event) {
         case 'status':
           if (note.isConnected) note.lastChild.textContent = msg.text;
           break;
+        case 'thought':
+          if (note.isConnected) note.remove();
+          if (isGenni2) {
+            if (!thoughtBox) {
+              thoughtBox = document.createElement('details');
+              thoughtBox.className = 'thought-box';
+              thoughtBox.open = true;
+              thoughtBox.innerHTML = `
+                <summary class="thought-summary">
+                  <span class="thought-sparkle">⚡</span>
+                  <span class="thought-title">Deep Thinking</span>
+                  <span class="thought-dot"></span>
+                </summary>
+                <div class="thought-content"></div>
+              `;
+              body.appendChild(thoughtBox);
+              thoughtContent = thoughtBox.querySelector('.thought-content');
+            }
+            if (thoughtContent) {
+              thoughtContent.textContent += msg.text;
+            }
+            scroll();
+          }
+          break;
         case 'token':
-          note.remove();
+          if (note.isConnected) note.remove();
+          if (thoughtBox && !thoughtBox.dataset.finalized) {
+            thoughtBox.dataset.finalized = 'true';
+            const dot = thoughtBox.querySelector('.thought-dot');
+            if (dot) dot.remove();
+            const title = thoughtBox.querySelector('.thought-title');
+            if (title) title.textContent = 'Thought Process (Completed)';
+          }
           answer += msg.text;
-          body.innerHTML = render(answer);
+          renderMessageContent(body, answer);
           scroll();
           break;
         case 'final':
+          if (note.isConnected) note.remove();
           answer = msg.text;
-          body.innerHTML = render(answer);
+          if (thoughtBox && !thoughtBox.dataset.finalized) {
+            thoughtBox.dataset.finalized = 'true';
+            const dot = thoughtBox.querySelector('.thought-dot');
+            if (dot) dot.remove();
+            const title = thoughtBox.querySelector('.thought-title');
+            if (title) title.textContent = 'Thought Process (Completed)';
+          }
+          renderMessageContent(body, answer);
           scroll();
           break;
         case 'error':
-          note.remove();
+          if (note.isConnected) note.remove();
           note = addNote(msg.text, true);
           break;
       }
@@ -462,7 +590,7 @@ async function ask(text) {
     addNote(err.message, true);
   }
 
-  if (!note.classList.contains('error')) note.remove();
+  if (note && !note.classList.contains('error')) note.remove();
   body.classList.remove('caret');
 
   if (answer) {
@@ -482,6 +610,16 @@ async function ask(text) {
   send.disabled = false;
   input.focus();
   scroll();
+}
+
+function renderMessageContent(body, md) {
+  let answerContainer = body.querySelector('.answer-prose');
+  if (!answerContainer) {
+    answerContainer = document.createElement('div');
+    answerContainer.className = 'answer-prose';
+    body.appendChild(answerContainer);
+  }
+  answerContainer.innerHTML = render(md);
 }
 
 async function stream(payload, onEvent) {
@@ -563,8 +701,23 @@ function render(md) {
   const esc = escapeHtml;
 
   const blocks = [];
-  let out = md.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
-    blocks.push(`<pre><code data-lang="${esc(lang)}">${esc(code.trim())}</code></pre>`);
+  let out = md.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, rawCode) => {
+    const code = rawCode.trim();
+    const l = (lang || 'code').toLowerCase();
+    const isHtmlOrSvg = ['html', 'svg', 'xml'].includes(l);
+    const codeId = 'code_' + Math.random().toString(36).slice(2, 9);
+
+    const header = `
+      <div class="code-header">
+        <span>${esc(l.toUpperCase())}</span>
+        <div class="code-actions">
+          ${isHtmlOrSvg ? `<button type="button" class="code-btn preview-btn" data-target="${codeId}">▶ Live Preview</button>` : ''}
+          <button type="button" class="code-btn copy-btn" data-target="${codeId}">Copy</button>
+        </div>
+      </div>
+    `;
+    const pre = `<pre><code id="${codeId}" data-lang="${esc(l)}">${esc(code)}</code></pre>`;
+    blocks.push(`<div class="code-block-wrap">${header}${pre}</div>`);
     return `\u0000${blocks.length - 1}\u0000`;
   });
 
@@ -583,10 +736,54 @@ function render(md) {
       if (lines.every((l) => /^\s*\d+[.)]\s+/.test(l))) {
         return `<ol>${lines.map((l) => `<li>${l.replace(/^\s*\d+[.)]\s+/, '')}</li>`).join('')}</ol>`;
       }
-      if (/^<(h3|pre|ul|ol)/.test(para.trim()) || para.includes('\u0000')) return para;
+      if (/^<(h3|pre|ul|ol|div)/.test(para.trim()) || para.includes('\u0000')) return para;
       return `<p>${lines.join('<br>')}</p>`;
     })
     .join('\n');
 
   return out.replace(/\u0000(\d+)\u0000/g, (_, i) => blocks[Number(i)]);
 }
+
+// Global delegated click for code block actions (Copy & Live Preview)
+document.addEventListener('click', (e) => {
+  const copyBtn = e.target.closest('.copy-btn');
+  if (copyBtn) {
+    const targetId = copyBtn.dataset.target;
+    const codeEl = document.getElementById(targetId);
+    if (codeEl) {
+      navigator.clipboard.writeText(codeEl.textContent).then(() => {
+        const orig = copyBtn.textContent;
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => {
+          copyBtn.textContent = orig;
+        }, 1500);
+      });
+    }
+    return;
+  }
+
+  const previewBtn = e.target.closest('.preview-btn');
+  if (previewBtn) {
+    const targetId = previewBtn.dataset.target;
+    const codeEl = document.getElementById(targetId);
+    const wrap = previewBtn.closest('.code-block-wrap');
+    if (!codeEl || !wrap) return;
+
+    let previewContainer = wrap.querySelector('.live-preview-container');
+    if (previewContainer) {
+      previewContainer.remove();
+      previewBtn.textContent = '▶ Live Preview';
+    } else {
+      previewContainer = document.createElement('div');
+      previewContainer.className = 'live-preview-container';
+      const iframe = document.createElement('iframe');
+      iframe.className = 'live-preview-frame';
+      iframe.setAttribute('sandbox', 'allow-scripts');
+      iframe.srcdoc = codeEl.textContent;
+      previewContainer.appendChild(iframe);
+      wrap.appendChild(previewContainer);
+      previewBtn.textContent = '✕ Close Preview';
+      scroll();
+    }
+  }
+});

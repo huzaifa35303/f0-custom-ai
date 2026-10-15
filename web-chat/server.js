@@ -106,11 +106,13 @@ async function handleChat(req, res) {
   // borrow its subject.
   const asked = messages.filter((m) => m.role === 'user');
   const previous = asked.at(-2)?.content ?? '';
-  // The last thing it said, so "make it a list" has something to work on.
   const previousAnswer = messages.filter((m) => m.role === 'assistant').at(-1)?.content ?? '';
+  // Selected model & attached document
+  const model = payload.model === 'genni 2' ? 'genni 2' : 'genni 1';
+  const file = payload.file && typeof payload.file.content === 'string' ? payload.file : null;
 
   try {
-    const text = await answer(asked.at(-1).content, emit, { previous, previousAnswer });
+    const text = await answer(asked.at(-1).content, emit, { previous, previousAnswer, model, file });
     emit('final', { text });
   } catch (err) {
     emit('error', { text: err.message });

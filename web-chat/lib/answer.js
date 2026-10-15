@@ -307,22 +307,27 @@ function directness(sentence, shape, head, asked) {
 export async function answer(
   question,
   emit = () => {},
-  { previous = '', previousAnswer = '' } = {}
+  { previous = '', previousAnswer = '', model = 'genni 1', file = null } = {}
 ) {
   const say = (text) => {
     emit('token', { text });
     return text;
   };
 
-  const canned = chatReply(question);
+  let fileContext = '';
+  if (file && typeof file.content === 'string' && file.content.trim()) {
+    fileContext = `Attached Document [${file.name || 'document'}]:\n${file.content.slice(0, 12000)}\n\n`;
+  }
+
+  const canned = !fileContext ? chatReply(question) : null;
   if (canned) return say(canned);
 
   // Sums are worked out, not looked up.
-  const sum = calculate(question);
+  const sum = !fileContext ? calculate(question) : null;
   if (sum) return say(sum);
 
   // Teaching, forgetting, or asking what it knows.
-  const brainCommand = detectBrainCommand(question);
+  const brainCommand = !fileContext ? detectBrainCommand(question) : null;
   if (brainCommand) return say(await runBrainCommand(brainCommand));
 
   // An instruction about the answer above, not a question for the web.
@@ -336,8 +341,10 @@ export async function answer(
     if (command === 'rewrite' && previousAnswer) {
       const rewritten = await generateAI({
         question,
-        context: previousAnswer,
+        context: fileContext + previousAnswer,
+        model,
         onStatus: (s) => emit('status', s),
+        onThought: (t) => emit('thought', { text: t }),
         onToken: (c) => emit('token', { text: c }),
       });
       if (rewritten) return say(clean(rewritten));
@@ -356,8 +363,10 @@ export async function answer(
   if (known.length) {
     const aiRecall = await generateAI({
       question,
-      context: known.join('\n'),
+      context: fileContext + known.join('\n'),
+      model,
       onStatus: (s) => emit('status', s),
+      onThought: (t) => emit('thought', { text: t }),
       onToken: (c) => emit('token', { text: c }),
     });
     if (aiRecall) return clean(aiRecall);
@@ -387,11 +396,13 @@ export async function answer(
   if (summary) contextPieces.push(`Wikipedia (${summary.title}):\n${summary.text}`);
   const contextText = contextPieces.join('\n\n');
 
-  if (contextText.length > 50) {
+  if (contextText.length > 50 || fileContext) {
     const aiAnswer = await generateAI({
       question,
-      context: contextText,
+      context: fileContext + contextText,
+      model,
       onStatus: (s) => emit('status', s),
+      onThought: (t) => emit('thought', { text: t }),
       onToken: (c) => emit('token', { text: c }),
     });
     if (aiAnswer) {
@@ -403,8 +414,10 @@ export async function answer(
   if (!results.length && !summary) {
     const directAi = await generateAI({
       question,
-      context: '',
+      context: fileContext,
+      model,
       onStatus: (s) => emit('status', s),
+      onThought: (t) => emit('thought', { text: t }),
       onToken: (c) => emit('token', { text: c }),
     });
     if (directAi) return clean(directAi);
