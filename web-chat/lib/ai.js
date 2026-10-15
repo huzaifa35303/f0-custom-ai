@@ -19,6 +19,7 @@ export async function generateAI({
   model = 'genni 1',
   studioStyle = 'Default',
   aspectRatio = null,
+  personalization = null,
   onStatus = () => {},
   onThought = () => {},
   onToken = () => {},
@@ -133,6 +134,15 @@ export async function generateAI({
         '- If the user writes in Urdu, Roman Urdu / Hinglish, Hindi, or Punjabi, reply in that exact language and script.',
         '- Keep your tone intelligent, direct, articulate, and helpful.'
       ].join(' ');
+    }
+
+    if (personalization) {
+      if (personalization.bio && personalization.bio.trim()) {
+        systemPrompt += ` User Context & Info: ${personalization.bio.trim()}.`;
+      }
+      if (personalization.style && personalization.style.trim()) {
+        systemPrompt += ` Custom Response Style Instructions: ${personalization.style.trim()}.`;
+      }
     }
 
     const messages = [

@@ -135,6 +135,7 @@ async function handleChat(req, res) {
       file,
       studioStyle: payload.studioStyle,
       aspectRatio: payload.aspectRatio,
+      personalization: payload.personalization,
     });
     emit('final', { text });
   } catch (err) {

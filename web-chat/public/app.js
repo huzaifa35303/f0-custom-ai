@@ -41,14 +41,152 @@ const contextMenu = document.getElementById('context-menu');
 const ctxPinLabel = document.getElementById('ctx-pin-label');
 const ctxUnreadLabel = document.getElementById('ctx-unread-label');
 
-const WELCOME =
-  '<div class="welcome">' +
-  '<h2>Ask f0undr Ai anything</h2>' +
-  '<div class="welcome-model-pill">' +
-  '<span class="badge-active">Official Models: <strong>genni 1</strong>, <strong>genni 2</strong> &amp; <strong>genni 3</strong></span>' +
-  '</div>' +
-  '<p>Official models: <strong>genni 1</strong> for fast search, <strong>genni 2</strong> for Deep Reasoning, and <strong>genni 3</strong> for Omni Studio &amp; live image generation. Explore more models under More models.</p>' +
-  '</div>';
+// User Profile & Account elements (Image 1 style)
+const sidebarUserPill = document.getElementById('sidebar-user-pill');
+const sidebarUserAvatar = document.getElementById('sidebar-user-avatar');
+const sidebarUserName = document.getElementById('sidebar-user-name');
+const sidebarUserSub = document.getElementById('sidebar-user-sub');
+const userPopover = document.getElementById('user-popover');
+const popoverUserCard = document.getElementById('popover-user-card');
+const popoverAvatar = document.getElementById('popover-avatar');
+const popoverName = document.getElementById('popover-name');
+const popoverPlan = document.getElementById('popover-plan');
+const popoverPlusBtn = document.getElementById('popover-plus-btn');
+const popoverPersonalizationBtn = document.getElementById('popover-personalization-btn');
+const popoverProfileBtn = document.getElementById('popover-profile-btn');
+const popoverSettingsBtn = document.getElementById('popover-settings-btn');
+const popoverHelpBtn = document.getElementById('popover-help-btn');
+const popoverAuthBtn = document.getElementById('popover-auth-btn');
+const popoverAuthLabel = document.getElementById('popover-auth-label');
+const claimOfferBtn = document.getElementById('claim-offer-btn');
+
+// Top Navigation Tabs (Image 2 style)
+const tabChat = document.getElementById('tab-chat');
+const tabWork = document.getElementById('tab-work');
+
+// Composer Tools ("+" button & popover - Image 2 style)
+const toolsPickerContainer = document.getElementById('tools-picker-container');
+const toolsMenuBtn = document.getElementById('tools-menu-btn');
+const toolsPopover = document.getElementById('tools-popover');
+const toolUploadBtn = document.getElementById('tool-upload-btn');
+const toolImageBtn = document.getElementById('tool-image-btn');
+const toolSearchBtn = document.getElementById('tool-search-btn');
+const toolResearchBtn = document.getElementById('tool-research-btn');
+const toolThinkingBtn = document.getElementById('tool-thinking-btn');
+const toolAppdeployBtn = document.getElementById('tool-appdeploy-btn');
+
+// Modals
+const authModal = document.getElementById('auth-modal');
+const authModalBackdrop = document.getElementById('auth-modal-backdrop');
+const authModalClose = document.getElementById('auth-modal-close');
+const authTabLogin = document.getElementById('auth-tab-login');
+const authTabSignup = document.getElementById('auth-tab-signup');
+const authField = document.getElementById('auth-field-name');
+const authInputName = document.getElementById('auth-input-name');
+const authInputEmail = document.getElementById('auth-input-email');
+const authInputPass = document.getElementById('auth-input-pass');
+const authSubmitBtn = document.getElementById('auth-submit-btn');
+const authForm = document.getElementById('auth-form');
+const quickLoginHuzaifa = document.getElementById('quick-login-huzaifa');
+const guestContinueBtn = document.getElementById('guest-continue-btn');
+
+const personalizationModal = document.getElementById('personalization-modal');
+const personalizationBackdrop = document.getElementById('personalization-backdrop');
+const personalizationClose = document.getElementById('personalization-close');
+const personalizationForm = document.getElementById('personalization-form');
+const customUserBio = document.getElementById('custom-user-bio');
+const customResponseStyle = document.getElementById('custom-response-style');
+
+const settingsModal = document.getElementById('settings-modal');
+const settingsBackdrop = document.getElementById('settings-backdrop');
+const settingsClose = document.getElementById('settings-close');
+const settingsUserDesc = document.getElementById('settings-user-desc');
+const settingsAuthSwitchBtn = document.getElementById('settings-auth-switch-btn');
+const settingsClearChatsBtn = document.getElementById('settings-clear-chats-btn');
+
+const upgradeModal = document.getElementById('upgrade-modal');
+const upgradeBackdrop = document.getElementById('upgrade-backdrop');
+const upgradeClose = document.getElementById('upgrade-close');
+const upgradeClaimBtn = document.getElementById('upgrade-claim-btn');
+
+const USER_STORAGE_KEY = 'foundr_ai_user_v2';
+const PERSONALIZATION_STORAGE_KEY = 'foundr_ai_personalization_v2';
+
+let currentUser = loadUser();
+let userPersonalization = loadPersonalization();
+
+function loadUser() {
+  try {
+    const raw = localStorage.getItem(USER_STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return {
+    name: 'Huzaifa',
+    initials: 'HU',
+    plan: 'Free',
+    email: 'huzaifa@foundr.ai',
+    isGuest: false
+  };
+}
+
+function saveUser() {
+  try {
+    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(currentUser));
+  } catch {}
+  updateUserUI();
+}
+
+function loadPersonalization() {
+  try {
+    const raw = localStorage.getItem(PERSONALIZATION_STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return { bio: '', style: '' };
+}
+
+function savePersonalization(bio, style) {
+  userPersonalization = { bio, style };
+  try {
+    localStorage.setItem(PERSONALIZATION_STORAGE_KEY, JSON.stringify(userPersonalization));
+  } catch {}
+}
+
+function updateUserUI() {
+  const isGuest = currentUser.isGuest;
+  const displayName = isGuest ? 'Guest Account' : currentUser.name;
+  const initials = isGuest ? 'G' : (currentUser.initials || (currentUser.name ? currentUser.name.slice(0, 2).toUpperCase() : 'HU'));
+  const displayPlan = isGuest ? 'Guest' : (currentUser.plan || 'Free');
+
+  if (sidebarUserAvatar) sidebarUserAvatar.textContent = initials;
+  if (sidebarUserName) sidebarUserName.textContent = displayName;
+  if (sidebarUserSub) sidebarUserSub.textContent = displayPlan;
+
+  if (popoverAvatar) popoverAvatar.textContent = initials;
+  if (popoverName) popoverName.textContent = displayName;
+  if (popoverPlan) popoverPlan.textContent = displayPlan;
+
+  if (popoverAuthLabel) popoverAuthLabel.textContent = isGuest ? 'Log in / Sign up' : 'Log out';
+  if (settingsUserDesc) settingsUserDesc.textContent = isGuest ? 'Browsing on Guest Account' : `Logged in as ${currentUser.name} (${currentUser.email || 'Free Account'})`;
+
+  const welcomeTitle = document.getElementById('welcome-title');
+  if (welcomeTitle) {
+    welcomeTitle.textContent = isGuest ? 'Hey, Guest. Ready to dive in?' : `Hey, ${currentUser.name}. Ready to dive in?`;
+  }
+}
+
+function getWelcomeHTML() {
+  const isGuest = currentUser.isGuest;
+  const name = isGuest ? 'Guest' : (currentUser.name || 'Huzaifa');
+  return (
+    '<div class="welcome" id="welcome-container">' +
+    '<h2 id="welcome-title">Hey, ' + escapeHtml(name) + '. Ready to dive in?</h2>' +
+    '<div class="welcome-model-pill">' +
+    '<span class="badge-active">Official Models: <strong>genni 1</strong>, <strong>genni 2</strong> &amp; <strong>genni 3</strong></span>' +
+    '</div>' +
+    '<p id="welcome-subtext">Official models: <strong>genni 1</strong> for fast search, <strong>genni 2</strong> for Deep Reasoning, and <strong>genni 3</strong> for Omni Studio &amp; live image generation. Explore more models under More models.</p>' +
+    '</div>'
+  );
+}
 
 const STORAGE_KEY = 'foundr_ai_chats_v2';
 
@@ -61,6 +199,7 @@ let busy = false;
 
 // Initialize app
 initSidebar();
+initUserSystem();
 checkHealth();
 
 // Service Worker for offline PWA
@@ -157,7 +296,7 @@ function startNewChat() {
   if (fileInput) fileInput.value = '';
   filePreview?.classList.add('hidden');
   attachBtn?.classList.remove('has-file');
-  thread.innerHTML = WELCOME;
+  thread.innerHTML = getWelcomeHTML();
   renderChatList();
   input.focus();
   if (window.innerWidth <= 768) closeSidebar();
@@ -178,7 +317,7 @@ function selectChat(id) {
   thread.innerHTML = '';
 
   if (!history.length) {
-    thread.innerHTML = WELCOME;
+    thread.innerHTML = getWelcomeHTML();
   } else {
     for (const msg of history) {
       const body = addMessage(msg.role);
@@ -518,16 +657,6 @@ function setModel(model) {
     }
   }
 
-  // Toggle Studio Presets Toolbar for genni 3
-  const studioBar = document.getElementById('studio-bar');
-  if (studioBar) {
-    if (model === 'genni 3') {
-      studioBar.classList.remove('hidden');
-    } else {
-      studioBar.classList.add('hidden');
-    }
-  }
-
   closeModelDropdown();
 }
 
@@ -733,7 +862,12 @@ async function ask(text) {
   let thoughtContent = null;
 
   try {
-    await stream({ messages: history, model: currentModel, file: userFile, studioStyle: selectedStudioStyle, aspectRatio: selectedAspectRatio }, (msg) => {
+    await stream({
+      messages: history,
+      model: currentModel,
+      file: userFile,
+      personalization: userPersonalization
+    }, (msg) => {
       switch (msg.event) {
         case 'status':
           if (note.isConnected) note.lastChild.textContent = msg.text;
@@ -1354,24 +1488,274 @@ if (window.mermaid) {
   } catch {}
 }
 
-// Studio Presets (Style and Aspect Ratio) for genni 3
-let selectedStudioStyle = 'Default';
-let selectedAspectRatio = { ratio: '1:1', w: 1024, h: 1024 };
+function initUserSystem() {
+  updateUserUI();
 
-document.addEventListener('click', (e) => {
-  const chip = e.target.closest('.studio-chip');
-  if (!chip) return;
-  const style = chip.dataset.style;
-  const ratio = chip.dataset.ratio;
-  if (style !== undefined) {
-    selectedStudioStyle = style;
-    chip.parentElement.querySelectorAll('.studio-chip').forEach((c) => c.classList.remove('active'));
-    chip.classList.add('active');
-  } else if (ratio !== undefined) {
-    selectedAspectRatio = { ratio, w: Number(chip.dataset.w) || 1024, h: Number(chip.dataset.h) || 1024 };
-    chip.parentElement.querySelectorAll('.studio-chip').forEach((c) => c.classList.remove('active'));
-    chip.classList.add('active');
+  // User Pill click toggles popover (Image 1)
+  sidebarUserPill?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    userPopover?.classList.toggle('hidden');
+  });
+
+  // Close user popover on outside click
+  document.addEventListener('click', (e) => {
+    if (userPopover && !userPopover.contains(e.target) && !sidebarUserPill?.contains(e.target)) {
+      userPopover.classList.add('hidden');
+    }
+  });
+
+  // User Popover buttons
+  popoverUserCard?.addEventListener('click', () => {
+    userPopover?.classList.add('hidden');
+    openSettingsModal();
+  });
+
+  popoverPlusBtn?.addEventListener('click', () => {
+    userPopover?.classList.add('hidden');
+    openUpgradeModal();
+  });
+
+  claimOfferBtn?.addEventListener('click', () => {
+    openUpgradeModal();
+  });
+
+  popoverPersonalizationBtn?.addEventListener('click', () => {
+    userPopover?.classList.add('hidden');
+    openPersonalizationModal();
+  });
+
+  popoverProfileBtn?.addEventListener('click', () => {
+    userPopover?.classList.add('hidden');
+    openSettingsModal();
+  });
+
+  popoverSettingsBtn?.addEventListener('click', () => {
+    userPopover?.classList.add('hidden');
+    openSettingsModal();
+  });
+
+  popoverHelpBtn?.addEventListener('click', () => {
+    userPopover?.classList.add('hidden');
+    alert('f0undr Ai Help Center:\n\n• genni 1: Ultra-fast conversational search with live web intelligence.\n• genni 2: Deep reasoning, file analysis, and live code preview.\n• genni 3: Omni Studio flagship with live image creation & Mermaid diagrams.\n\nAll official models are 100% free with no API key needed.');
+  });
+
+  popoverAuthBtn?.addEventListener('click', () => {
+    userPopover?.classList.add('hidden');
+    if (currentUser.isGuest) {
+      openAuthModal();
+    } else {
+      // Log out -> Switch to guest
+      currentUser = {
+        name: 'Guest',
+        initials: 'G',
+        plan: 'Guest',
+        email: '',
+        isGuest: true
+      };
+      saveUser();
+      openAuthModal();
+    }
+  });
+
+  // Top Nav Tabs (Image 2)
+  tabChat?.addEventListener('click', () => {
+    tabChat.classList.add('active');
+    tabWork?.classList.remove('active');
+  });
+
+  tabWork?.addEventListener('click', () => {
+    tabWork.classList.add('active');
+    tabChat?.classList.remove('active');
+    setModel('genni 2');
+    input.placeholder = 'Describe a work project, document analysis, or code task…';
+    input.focus();
+  });
+
+  // Composer "+" Tools Popover (Image 2)
+  toolsMenuBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toolsPopover?.classList.toggle('hidden');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (toolsPopover && !toolsPopover.contains(e.target) && !toolsMenuBtn?.contains(e.target)) {
+      toolsPopover.classList.add('hidden');
+    }
+  });
+
+  toolUploadBtn?.addEventListener('click', () => {
+    toolsPopover?.classList.add('hidden');
+    fileInput?.click();
+  });
+
+  toolImageBtn?.addEventListener('click', () => {
+    toolsPopover?.classList.add('hidden');
+    setModel('genni 3');
+    input.value = 'Generate an image of ';
+    input.focus();
+  });
+
+  toolSearchBtn?.addEventListener('click', () => {
+    toolsPopover?.classList.add('hidden');
+    setModel('genni 1');
+    input.placeholder = 'Search live web facts with genni 1…';
+    input.focus();
+  });
+
+  toolResearchBtn?.addEventListener('click', () => {
+    toolsPopover?.classList.add('hidden');
+    setModel('genni 2');
+    input.placeholder = 'Enter a complex topic for genni 2 deep research…';
+    input.focus();
+  });
+
+  toolThinkingBtn?.addEventListener('click', () => {
+    toolsPopover?.classList.add('hidden');
+    setModel('genni 2');
+    input.placeholder = 'Ask a question with step-by-step reasoning…';
+    input.focus();
+  });
+
+  toolAppdeployBtn?.addEventListener('click', () => {
+    toolsPopover?.classList.add('hidden');
+    setModel('genni 3');
+    input.value = 'Build a complete interactive web app for ';
+    input.focus();
+  });
+
+  // Auth Modal
+  authModalClose?.addEventListener('click', closeAuthModal);
+  authModalBackdrop?.addEventListener('click', closeAuthModal);
+
+  authTabLogin?.addEventListener('click', () => {
+    authTabLogin.classList.add('active');
+    authTabSignup?.classList.remove('active');
+    if (authField) authField.style.display = 'none';
+    if (authSubmitBtn) authSubmitBtn.textContent = 'Log In';
+  });
+
+  authTabSignup?.addEventListener('click', () => {
+    authTabSignup.classList.add('active');
+    authTabLogin?.classList.remove('active');
+    if (authField) authField.style.display = 'block';
+    if (authSubmitBtn) authSubmitBtn.textContent = 'Sign Up';
+  });
+
+  quickLoginHuzaifa?.addEventListener('click', () => {
+    currentUser = {
+      name: 'Huzaifa',
+      initials: 'HU',
+      plan: 'Free',
+      email: 'huzaifa@foundr.ai',
+      isGuest: false
+    };
+    saveUser();
+    closeAuthModal();
+  });
+
+  guestContinueBtn?.addEventListener('click', () => {
+    currentUser = {
+      name: 'Guest',
+      initials: 'G',
+      plan: 'Guest',
+      email: '',
+      isGuest: true
+    };
+    saveUser();
+    closeAuthModal();
+  });
+
+  authForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const isSignup = authTabSignup?.classList.contains('active');
+    const enteredName = isSignup && authInputName?.value.trim() ? authInputName.value.trim() : (authInputEmail?.value.split('@')[0] || 'Huzaifa');
+    const email = authInputEmail?.value.trim() || 'huzaifa@foundr.ai';
+    currentUser = {
+      name: enteredName.charAt(0).toUpperCase() + enteredName.slice(1),
+      initials: enteredName.slice(0, 2).toUpperCase(),
+      plan: 'Free',
+      email,
+      isGuest: false
+    };
+    saveUser();
+    closeAuthModal();
+  });
+
+  // Personalization Modal
+  personalizationClose?.addEventListener('click', closePersonalizationModal);
+  personalizationBackdrop?.addEventListener('click', closePersonalizationModal);
+  personalizationForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const bio = customUserBio?.value.trim() || '';
+    const style = customResponseStyle?.value.trim() || '';
+    savePersonalization(bio, style);
+    closePersonalizationModal();
+  });
+
+  // Settings Modal
+  settingsClose?.addEventListener('click', closeSettingsModal);
+  settingsBackdrop?.addEventListener('click', closeSettingsModal);
+  settingsAuthSwitchBtn?.addEventListener('click', () => {
+    closeSettingsModal();
+    openAuthModal();
+  });
+  settingsClearChatsBtn?.addEventListener('click', () => {
+    if (confirm('Are you sure you want to clear all conversations? This cannot be undone.')) {
+      chats = [];
+      saveChats();
+      renderChatList();
+      startNewChat();
+      closeSettingsModal();
+    }
+  });
+
+  // Upgrade Modal
+  upgradeClose?.addEventListener('click', closeUpgradeModal);
+  upgradeBackdrop?.addEventListener('click', closeUpgradeModal);
+  upgradeClaimBtn?.addEventListener('click', () => {
+    closeUpgradeModal();
+  });
+}
+
+function openAuthModal() {
+  authModal?.classList.remove('hidden');
+}
+
+function closeAuthModal() {
+  authModal?.classList.add('hidden');
+}
+
+function openPersonalizationModal() {
+  if (customUserBio) customUserBio.value = userPersonalization.bio || '';
+  if (customResponseStyle) customResponseStyle.value = userPersonalization.style || '';
+  personalizationModal?.classList.remove('hidden');
+}
+
+function closePersonalizationModal() {
+  personalizationModal?.classList.add('hidden');
+}
+
+function openSettingsModal() {
+  if (settingsUserDesc) {
+    settingsUserDesc.textContent = currentUser.isGuest
+      ? 'Browsing on Guest Account'
+      : `Logged in as ${currentUser.name} (${currentUser.email || 'Free Account'})`;
   }
-});
+  settingsModal?.classList.remove('hidden');
+}
+
+function closeSettingsModal() {
+  settingsModal?.classList.add('hidden');
+}
+
+function openUpgradeModal() {
+  upgradeModal?.classList.remove('hidden');
+}
+
+function closeUpgradeModal() {
+  upgradeModal?.classList.add('hidden');
+}
+
+
 
 

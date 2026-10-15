@@ -187,13 +187,60 @@
         </div>
 
         <div class="sidebar-footer">
-          <div class="user-pill">
-            <span class="user-avatar">f0</span>
-            <div class="user-details">
-              <span class="user-name">f0undr Ai</span>
-              <span class="user-sub">genni 1 active</span>
+          <!-- User Profile Popover (Exact match to Image 1) -->
+          <div id="user-popover" class="user-popover hidden" role="menu">
+            <div class="user-popover-header" id="popover-user-card" role="button" tabindex="0">
+              <div class="popover-avatar" id="popover-avatar">HU</div>
+              <div class="popover-user-info">
+                <span class="popover-user-name" id="popover-name">Huzaifa</span>
+                <span class="popover-user-plan" id="popover-plan">Free</span>
+              </div>
+              <svg class="popover-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+            <div class="popover-menu-list">
+              <button type="button" class="popover-item" id="popover-plus-btn">
+                <span class="popover-icon">✨</span>
+                <span>Try Plus free</span>
+              </button>
+              <button type="button" class="popover-item" id="popover-personalization-btn">
+                <span class="popover-icon">⏱</span>
+                <span>Personalization</span>
+              </button>
+              <button type="button" class="popover-item" id="popover-profile-btn">
+                <span class="popover-icon">👤</span>
+                <span>Profile</span>
+              </button>
+              <button type="button" class="popover-item" id="popover-settings-btn">
+                <span class="popover-icon">⚙</span>
+                <span>Settings</span>
+              </button>
+              <button type="button" class="popover-item" id="popover-help-btn">
+                <span class="popover-icon">❓</span>
+                <span>Help</span>
+                <svg class="popover-chevron-small" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+              <div class="popover-divider"></div>
+              <button type="button" class="popover-item popover-auth-btn" id="popover-auth-btn">
+                <span class="popover-icon" id="popover-auth-icon">→</span>
+                <span id="popover-auth-label">Log out</span>
+              </button>
             </div>
           </div>
+
+          <!-- Bottom User Pill matching Image 1 -->
+          <div class="user-pill" id="sidebar-user-pill" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" title="User account">
+            <span class="user-avatar" id="sidebar-user-avatar">HU</span>
+            <div class="user-details">
+              <span class="user-name" id="sidebar-user-name">Huzaifa</span>
+              <span class="user-sub" id="sidebar-user-sub">Free</span>
+            </div>
+          </div>
+
+          <!-- Claim Offer Button (Image 1 style) -->
+          <button type="button" class="claim-offer-btn" id="claim-offer-btn">
+            <span class="claim-icon">🎁</span>
+            <span>Claim offer</span>
+          </button>
         </div>
       </aside>
 
@@ -211,15 +258,21 @@
               <h1>f0undr Ai</h1>
             </a>
           </div>
+
+          <!-- Top Navigation Tabs matching Image 2 -->
+          <div class="top-nav-tabs">
+            <button type="button" class="top-nav-tab active" id="tab-chat">Chat</button>
+            <button type="button" class="top-nav-tab" id="tab-work">+ Work</button>
+          </div>
         </header>
 
         <main id="thread" aria-live="polite">
-          <div class="welcome">
-            <h2>Ask f0undr Ai anything</h2>
+          <div class="welcome" id="welcome-container">
+            <h2 id="welcome-title">Hey, Huzaifa. Ready to dive in?</h2>
             <div class="welcome-model-pill">
               <span class="badge-active">Official Models: <strong>genni 1</strong>, <strong>genni 2</strong> &amp; <strong>genni 3</strong></span>
             </div>
-            <p>Official models: <strong>genni 1</strong> for fast search, <strong>genni 2</strong> for Deep Reasoning, and <strong>genni 3</strong> for Omni Studio &amp; live image generation. Explore more models under More models.</p>
+            <p id="welcome-subtext">Official models: <strong>genni 1</strong> for fast search, <strong>genni 2</strong> for Deep Reasoning, and <strong>genni 3</strong> for Omni Studio &amp; live image generation.</p>
           </div>
         </main>
 
@@ -395,34 +448,66 @@
             </div>
           </div>
 
-          <!-- Studio Presets Toolbar (Styles & Aspect Ratios for genni 3) -->
-          <div id="studio-bar" class="studio-bar hidden">
-            <div class="studio-group">
-              <span class="studio-label">◈ Style:</span>
-              <button type="button" class="studio-chip active" data-style="Default">Auto</button>
-              <button type="button" class="studio-chip" data-style="Photorealistic">Photo</button>
-              <button type="button" class="studio-chip" data-style="Anime & Manga">Anime</button>
-              <button type="button" class="studio-chip" data-style="Cyberpunk Neon">Cyberpunk</button>
-              <button type="button" class="studio-chip" data-style="3D Pixar Render">3D</button>
-              <button type="button" class="studio-chip" data-style="Minimalist Vector Logo">Logo</button>
-            </div>
-            <div class="studio-divider"></div>
-            <div class="studio-group">
-              <span class="studio-label">Ratio:</span>
-              <button type="button" class="studio-chip active" data-ratio="1:1" data-w="1024" data-h="1024">1:1</button>
-              <button type="button" class="studio-chip" data-ratio="16:9" data-w="1280" data-h="720">16:9</button>
-              <button type="button" class="studio-chip" data-ratio="9:16" data-w="720" data-h="1280">9:16</button>
-            </div>
-          </div>
-
           <form id="composer">
             <input type="file" id="file-input" style="display:none;" accept=".txt,.md,.js,.ts,.py,.json,.csv,.html,.css,.doc,.docx" />
-            <button id="attach-btn" type="button" class="composer-icon-btn" title="Attach file or code (genni 2)" aria-label="Attach file">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
-              </svg>
-            </button>
-            <textarea id="input" rows="1" placeholder="Send a message…" autocomplete="off" autofocus></textarea>
+            
+            <!-- ChatGPT style "+" tools button matching Image 2 -->
+            <div class="tools-picker-container" id="tools-picker-container">
+              <button id="tools-menu-btn" type="button" class="composer-icon-btn tools-btn" title="Add files or tools" aria-label="Add files or tools" aria-haspopup="true" aria-expanded="false">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+
+              <!-- Tools Popover Menu matching Image 2 -->
+              <div id="tools-popover" class="tools-popover hidden" role="menu">
+                <button type="button" class="tools-item" id="tool-upload-btn">
+                  <span class="tools-icon">📎</span>
+                  <div class="tools-info">
+                    <span class="tools-title">Add photos &amp; files</span>
+                    <span class="tools-desc">Upload from computer</span>
+                  </div>
+                </button>
+                <button type="button" class="tools-item" id="tool-image-btn">
+                  <span class="tools-icon">🎨</span>
+                  <div class="tools-info">
+                    <span class="tools-title">Create image</span>
+                    <span class="tools-desc">Visualize anything (genni 3)</span>
+                  </div>
+                </button>
+                <button type="button" class="tools-item" id="tool-search-btn">
+                  <span class="tools-icon">🌐</span>
+                  <div class="tools-info">
+                    <span class="tools-title">Web search</span>
+                    <span class="tools-desc">Find real-time news &amp; info</span>
+                  </div>
+                </button>
+                <button type="button" class="tools-item" id="tool-research-btn">
+                  <span class="tools-icon">📣</span>
+                  <div class="tools-info">
+                    <span class="tools-title">Deep research</span>
+                    <span class="tools-desc">Get a detailed report (genni 2)</span>
+                  </div>
+                </button>
+                <button type="button" class="tools-item" id="tool-thinking-btn">
+                  <span class="tools-icon">🧠</span>
+                  <div class="tools-info">
+                    <span class="tools-title">Thinking</span>
+                    <span class="tools-desc">For detailed step-by-step answers</span>
+                  </div>
+                </button>
+                <button type="button" class="tools-item" id="tool-appdeploy-btn">
+                  <span class="tools-icon">💻</span>
+                  <div class="tools-info">
+                    <span class="tools-title">AppDeploy</span>
+                    <span class="tools-desc">Build and preview web apps</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <textarea id="input" rows="1" placeholder="Ask f0undr Ai…" autocomplete="off" autofocus></textarea>
             <button id="send" type="submit" aria-label="Send">↑</button>
           </form>
         </div>
@@ -504,6 +589,135 @@
             <a id="image-lightbox-open" href="" target="_blank" rel="noopener noreferrer" class="generated-image-btn">Full Res</a>
           </div>
         </div>
+      </div>
+    <!-- Auth & Login Modal -->
+    <div id="auth-modal" class="auth-modal hidden" role="dialog" aria-modal="true" aria-label="Account Login">
+      <div class="auth-modal-backdrop" id="auth-modal-backdrop"></div>
+      <div class="auth-modal-card">
+        <button type="button" class="auth-modal-close" id="auth-modal-close" aria-label="Close modal">&times;</button>
+        <div class="auth-modal-header">
+          <div class="auth-logo-badge">f0</div>
+          <h3 id="auth-modal-title">Welcome to f0undr Ai</h3>
+          <p class="auth-modal-sub" id="auth-modal-sub">Log in with your account, or continue with a guest session.</p>
+        </div>
+
+        <div class="auth-tabs">
+          <button type="button" class="auth-tab active" id="auth-tab-login">Log In</button>
+          <button type="button" class="auth-tab" id="auth-tab-signup">Sign Up</button>
+        </div>
+
+        <form id="auth-form" class="auth-form">
+          <div class="auth-field" id="auth-field-name" style="display:none;">
+            <label for="auth-input-name">Full Name</label>
+            <input type="text" id="auth-input-name" placeholder="Huzaifa" autocomplete="name" />
+          </div>
+
+          <div class="auth-field">
+            <label for="auth-input-email">Email Address</label>
+            <input type="email" id="auth-input-email" placeholder="huzaifa@foundr.ai" value="huzaifa@foundr.ai" autocomplete="email" required />
+          </div>
+
+          <div class="auth-field">
+            <label for="auth-input-pass">Password</label>
+            <input type="password" id="auth-input-pass" placeholder="••••••••" value="password123" autocomplete="current-password" required />
+          </div>
+
+          <button type="submit" class="auth-submit-btn" id="auth-submit-btn">Log In</button>
+
+          <div class="auth-divider"><span>or</span></div>
+
+          <!-- Quick login as Huzaifa matching user screenshots -->
+          <button type="button" class="quick-login-btn" id="quick-login-huzaifa">
+            <span class="quick-avatar">HU</span>
+            <div class="quick-login-text">
+              <span class="quick-title">Log in as Huzaifa</span>
+              <span class="quick-sub">Free Account • Save chats</span>
+            </div>
+          </button>
+
+          <!-- Guest account fallback -->
+          <button type="button" class="guest-continue-btn" id="guest-continue-btn">
+            <span class="guest-avatar">G</span>
+            <div class="quick-login-text">
+              <span class="quick-title">Continue on Guest Account</span>
+              <span class="quick-sub">Instant access • Local session</span>
+            </div>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Personalization Modal (Custom Instructions matching Image 1) -->
+    <div id="personalization-modal" class="auth-modal hidden" role="dialog" aria-modal="true" aria-label="Personalization">
+      <div class="auth-modal-backdrop" id="personalization-backdrop"></div>
+      <div class="auth-modal-card">
+        <button type="button" class="auth-modal-close" id="personalization-close" aria-label="Close modal">&times;</button>
+        <div class="auth-modal-header">
+          <span class="popover-icon" style="font-size:24px;">⏱</span>
+          <h3>Personalization</h3>
+          <p class="auth-modal-sub">Customize how f0undr Ai interacts with you across all chats.</p>
+        </div>
+        <form id="personalization-form" class="auth-form">
+          <div class="auth-field">
+            <label for="custom-user-bio">What would you like f0undr Ai to know about you to provide better answers?</label>
+            <textarea id="custom-user-bio" rows="3" placeholder="e.g. I am a software engineer building AI web applications..."></textarea>
+          </div>
+          <div class="auth-field">
+            <label for="custom-response-style">How would you like f0undr Ai to respond?</label>
+            <textarea id="custom-response-style" rows="3" placeholder="e.g. Keep answers concise, articulate, and provide code examples..."></textarea>
+          </div>
+          <button type="submit" class="auth-submit-btn">Save Preferences</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="auth-modal hidden" role="dialog" aria-modal="true" aria-label="Settings">
+      <div class="auth-modal-backdrop" id="settings-backdrop"></div>
+      <div class="auth-modal-card">
+        <button type="button" class="auth-modal-close" id="settings-close" aria-label="Close modal">&times;</button>
+        <div class="auth-modal-header">
+          <span class="popover-icon" style="font-size:24px;">⚙</span>
+          <h3>Settings</h3>
+          <p class="auth-modal-sub">Manage your preferences, appearance, and chat data.</p>
+        </div>
+        <div class="settings-content">
+          <div class="settings-row">
+            <div>
+              <div class="settings-label">User Account</div>
+              <div class="settings-desc" id="settings-user-desc">Logged in as Huzaifa</div>
+            </div>
+            <button type="button" class="settings-action-btn" id="settings-auth-switch-btn">Switch</button>
+          </div>
+          <div class="settings-row">
+            <div>
+              <div class="settings-label">Theme Appearance</div>
+              <div class="settings-desc">Dark Slate (Default)</div>
+            </div>
+            <span class="badge-active">Dark</span>
+          </div>
+          <div class="settings-row">
+            <div>
+              <div class="settings-label">Clear All Conversations</div>
+              <div class="settings-desc">Permanently delete stored local chats</div>
+            </div>
+            <button type="button" class="settings-danger-btn" id="settings-clear-chats-btn">Clear All</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upgrade / Claim Offer Modal -->
+    <div id="upgrade-modal" class="auth-modal hidden" role="dialog" aria-modal="true" aria-label="Claim Offer">
+      <div class="auth-modal-backdrop" id="upgrade-backdrop"></div>
+      <div class="auth-modal-card" style="text-align:center;">
+        <button type="button" class="auth-modal-close" id="upgrade-close" aria-label="Close modal">&times;</button>
+        <div class="auth-modal-header" style="text-align:center;">
+          <span style="font-size:36px;">🎁</span>
+          <h3>Special Community Offer</h3>
+          <p class="auth-modal-sub">All premium official models (genni 1, genni 2 &amp; genni 3) are 100% unlocked and free for our community with zero paywalls!</p>
+        </div>
+        <button type="button" class="auth-submit-btn" id="upgrade-claim-btn" style="margin-top:14px;">Enjoy Free Forever</button>
       </div>
     </div>
 
