@@ -210,10 +210,10 @@
           <div class="welcome">
             <h2>Ask f0undr Ai anything</h2>
             <div class="welcome-model-pill">
-              <span class="badge-active">Models: <strong>genni 1</strong>, <strong>genni 1.1</strong> &amp; <strong>genni 2</strong></span>
+              <span class="badge-active">Models: <strong>genni 1</strong> &amp; <strong>genni 2</strong></span>
               <span class="badge-soon">genni 3 coming soon</span>
             </div>
-            <p>Switch models anytime: <strong>genni 1</strong> for fast live answers, <strong>genni 1.1</strong> for Liquid Neural speed, or <strong>genni 2</strong> for Deep Reasoning &amp; live code runner.</p>
+            <p>Official models: <strong>genni 1</strong> for fast live answers &amp; <strong>genni 2</strong> for Deep Reasoning &amp; code runner. Explore <strong>Liquid Neural</strong> under Other Models.</p>
           </div>
         </main>
 
@@ -235,43 +235,7 @@
               <!-- Claude-Style Dropdown Menu -->
               <div class="model-dropdown-menu hidden" id="model-dropdown-menu" role="menu">
                 <div class="model-dropdown-list">
-                  <!-- genni 2 Option -->
-                  <button type="button" class="model-menu-item" data-model-option="genni 2" role="menuitem">
-                    <div class="model-item-main">
-                      <div class="model-item-header">
-                        <div class="model-item-left">
-                          <span class="model-item-icon reasoning-icon">⚡</span>
-                          <span class="model-item-title">genni 2</span>
-                          <span class="model-item-pill pill-reasoning">Deep Think</span>
-                        </div>
-                        <div class="model-item-check" id="check-genni-2" style="display: none;">
-                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="model-item-desc">Advanced reasoning, file analysis &amp; live code runner</div>
-                    </div>
-                  </button>
-
-                  <!-- genni 1.1 Option (Liquid Neural LFM 2.5) -->
-                  <button type="button" class="model-menu-item" data-model-option="genni 1.1" role="menuitem">
-                    <div class="model-item-main">
-                      <div class="model-item-header">
-                        <div class="model-item-left">
-                          <span class="model-item-icon liquid-icon">💧</span>
-                          <span class="model-item-title">genni 1.1</span>
-                          <span class="model-item-pill pill-liquid">Liquid Neural</span>
-                        </div>
-                        <div class="model-item-check" id="check-genni-1-1" style="display: none;">
-                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="model-item-desc">Ultra-low latency powered by Liquid Neural architecture (LFM 2.5)</div>
-                    </div>
-                  </button>
+                  <div class="model-menu-section-title">Official Models</div>
 
                   <!-- genni 1 Option -->
                   <button type="button" class="model-menu-item selected" data-model-option="genni 1" role="menuitem">
@@ -292,7 +256,24 @@
                     </div>
                   </button>
 
-                  <div class="model-menu-divider"></div>
+                  <!-- genni 2 Option -->
+                  <button type="button" class="model-menu-item" data-model-option="genni 2" role="menuitem">
+                    <div class="model-item-main">
+                      <div class="model-item-header">
+                        <div class="model-item-left">
+                          <span class="model-item-icon reasoning-icon">⚡</span>
+                          <span class="model-item-title">genni 2</span>
+                          <span class="model-item-pill pill-reasoning">Deep Think</span>
+                        </div>
+                        <div class="model-item-check" id="check-genni-2" style="display: none;">
+                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="model-item-desc">Advanced reasoning, file analysis &amp; live code runner</div>
+                    </div>
+                  </button>
 
                   <!-- genni 3 (Coming soon) -->
                   <div class="model-menu-item disabled" role="menuitem" aria-disabled="true">
@@ -307,6 +288,29 @@
                       <div class="model-item-desc">Multimodal vision, voice design &amp; autonomous tools</div>
                     </div>
                   </div>
+
+                  <div class="model-menu-divider"></div>
+
+                  <div class="model-menu-section-title">Other Models</div>
+
+                  <!-- Liquid Neural (powered by liquid/lfm-2.5-2.6b:free) -->
+                  <button type="button" class="model-menu-item" data-model-option="liquid-neural" role="menuitem">
+                    <div class="model-item-main">
+                      <div class="model-item-header">
+                        <div class="model-item-left">
+                          <span class="model-item-icon liquid-icon">💧</span>
+                          <span class="model-item-title">Liquid Neural</span>
+                          <span class="model-item-pill pill-liquid">LFM 2.5</span>
+                        </div>
+                        <div class="model-item-check" id="check-liquid-neural" style="display: none;">
+                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="model-item-desc">Powered by liquid/lfm-2.5-2.6b:free (Liquid Neural dynamic architecture)</div>
+                    </div>
+                  </button>
                 </div>
 
                 <div class="model-menu-divider"></div>

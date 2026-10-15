@@ -27,7 +27,7 @@ export async function generateAI({
 
   try {
     const isGenni2 = model === 'genni 2';
-    const isGenni11 = model === 'genni 1.1';
+    const isLiquidNeural = model === 'liquid-neural' || model === 'genni 1.1' || model === 'genni ln';
 
     let systemPrompt;
     if (isGenni2) {
@@ -49,11 +49,11 @@ export async function generateAI({
         '- If the user writes in Urdu, Roman Urdu / Hinglish, Hindi, or Punjabi, reply in that exact language and script.',
         '- Keep your tone intelligent, direct, articulate, and helpful.'
       ].join(' ');
-    } else if (isGenni11) {
+    } else if (isLiquidNeural) {
       systemPrompt = [
-        'You are f0undr Ai, powered by model genni 1.1 (Liquid Neural Architecture), created by f0undr and the f0undr Team.',
-        'CRITICAL IDENTITY: Never mention OpenAI, LiquidAI, ChatGPT, or third-party AI companies. You are built exclusively as f0undr Ai on the genni 1.1 model.',
-        'As genni 1.1, you operate on a high-speed Liquid Neural dynamic state architecture with 256k context.',
+        'You are f0undr Ai running on the Liquid Neural model (powered by liquid/lfm-2.5-2.6b:free), hosted on f0undr Ai created by f0undr and the f0undr Team.',
+        'CRITICAL IDENTITY: Never mention OpenAI, LiquidAI, ChatGPT, or third-party AI companies. You are running as Liquid Neural on f0undr Ai.',
+        'You operate on a high-speed Liquid Neural dynamic state architecture with 256k context.',
         'You have real-time live internet search capabilities via LangSearch.',
         'When live search results or context are provided, use them as real-time ground truth.',
         'Never claim that you lack real-time data or market information when relevant data is present in the context.',
@@ -70,7 +70,7 @@ export async function generateAI({
     } else {
       systemPrompt = [
         'You are f0undr Ai, powered by model genni 1, created by f0undr and the f0undr Team.',
-        'Models genni 1.1, genni 2 and genni 3 are available or coming soon.',
+        'Model genni 2 is active, genni 3 is coming soon, and other models like Liquid Neural are available under Other Models.',
         'CRITICAL IDENTITY: Never mention OpenAI, GPT-4, ChatGPT, or third-party AI companies. You are built exclusively as f0undr Ai on the genni 1 model.',
         'You have real-time live internet search capabilities via LangSearch.',
         'When live search results or context are provided, use them as real-time ground truth to answer queries about current market prices, cryptocurrency, stocks, news, events, weather, or real-world facts.',
@@ -107,14 +107,14 @@ export async function generateAI({
 
     messages.push({ role: 'user', content: userPrompt });
 
-    onStatus({ text: isGenni2 ? 'Deep thinking' : (isGenni11 ? 'Thinking (Liquid Neural)' : 'Thinking') });
+    onStatus({ text: isGenni2 ? 'Deep thinking' : (isLiquidNeural ? 'Thinking (Liquid Neural)' : 'Thinking') });
 
-    // Use OpenRouter for genni 1.1 (liquid/lfm-2.5-2.6b:free) if key is configured, otherwise fallback to Pollinations
+    // Use OpenRouter for Liquid Neural (liquid/lfm-2.5-2.6b:free) if key is configured, otherwise fallback to Pollinations
     let fetchUrl = POLLINATIONS_ENDPOINT;
     let fetchHeaders = { 'Content-Type': 'application/json' };
     let fetchBody;
 
-    if (isGenni11 && config.openrouterApiKey) {
+    if (isLiquidNeural && config.openrouterApiKey) {
       fetchUrl = OPENROUTER_ENDPOINT;
       fetchHeaders = {
         'Authorization': `Bearer ${config.openrouterApiKey}`,

@@ -12,7 +12,7 @@ const pickerTriggerName = document.getElementById('picker-trigger-name');
 const pickerTriggerTag = document.getElementById('picker-trigger-tag');
 const modelDropdownMenu = document.getElementById('model-dropdown-menu');
 const checkGenni1 = document.getElementById('check-genni-1');
-const checkGenni11 = document.getElementById('check-genni-1-1');
+const checkLiquidNeural = document.getElementById('check-liquid-neural');
 const checkGenni2 = document.getElementById('check-genni-2');
 const modelMenuItems = document.querySelectorAll('[data-model-option]');
 
@@ -40,10 +40,10 @@ const WELCOME =
   '<div class="welcome">' +
   '<h2>Ask f0undr Ai anything</h2>' +
   '<div class="welcome-model-pill">' +
-  '<span class="badge-active">Models: <strong>genni 1</strong>, <strong>genni 1.1</strong> &amp; <strong>genni 2</strong></span>' +
+  '<span class="badge-active">Models: <strong>genni 1</strong> &amp; <strong>genni 2</strong></span>' +
   '<span class="badge-soon">genni 3 coming soon</span>' +
   '</div>' +
-  '<p>Switch models anytime: <strong>genni 1</strong> for fast live answers, <strong>genni 1.1</strong> for Liquid Neural speed, or <strong>genni 2</strong> for Deep Reasoning &amp; live code runner.</p>' +
+  '<p>Official models: <strong>genni 1</strong> for fast live answers &amp; <strong>genni 2</strong> for Deep Reasoning &amp; code runner. Explore <strong>Liquid Neural</strong> under Other Models.</p>' +
   '</div>';
 
 const STORAGE_KEY = 'foundr_ai_chats_v2';
@@ -401,19 +401,19 @@ function setModel(model) {
     }
     if (checkGenni2) checkGenni2.style.display = 'flex';
     if (checkGenni1) checkGenni1.style.display = 'none';
-    if (checkGenni11) checkGenni11.style.display = 'none';
+    if (checkLiquidNeural) checkLiquidNeural.style.display = 'none';
     input.placeholder = 'Ask genni 2 with Deep Reasoning & Code Runner…';
-  } else if (model === 'genni 1.1') {
-    if (pickerTriggerName) pickerTriggerName.textContent = 'genni 1.1';
-    if (pickerTriggerTag) pickerTriggerTag.textContent = 'Liquid';
+  } else if (model === 'liquid-neural' || model === 'genni 1.1' || model === 'genni ln') {
+    if (pickerTriggerName) pickerTriggerName.textContent = 'Liquid Neural';
+    if (pickerTriggerTag) pickerTriggerTag.textContent = 'LFM 2.5';
     if (pickerTriggerIcon) {
       pickerTriggerIcon.textContent = '💧';
       pickerTriggerIcon.style.color = '#06b6d4';
     }
-    if (checkGenni11) checkGenni11.style.display = 'flex';
+    if (checkLiquidNeural) checkLiquidNeural.style.display = 'flex';
     if (checkGenni1) checkGenni1.style.display = 'none';
     if (checkGenni2) checkGenni2.style.display = 'none';
-    input.placeholder = 'Send a message to genni 1.1 (Liquid Neural)…';
+    input.placeholder = 'Send a message to Liquid Neural (lfm-2.5-2.6b)…';
   } else {
     if (pickerTriggerName) pickerTriggerName.textContent = 'genni 1';
     if (pickerTriggerTag) pickerTriggerTag.textContent = 'Fast';
@@ -422,7 +422,7 @@ function setModel(model) {
       pickerTriggerIcon.style.color = '';
     }
     if (checkGenni1) checkGenni1.style.display = 'flex';
-    if (checkGenni11) checkGenni11.style.display = 'none';
+    if (checkLiquidNeural) checkLiquidNeural.style.display = 'none';
     if (checkGenni2) checkGenni2.style.display = 'none';
     input.placeholder = 'Send a message to genni 1…';
   }
@@ -612,7 +612,7 @@ async function ask(text) {
 
   const body = addMessage('assistant');
   body.classList.add('caret');
-  let note = addNote(currentModel === 'genni 2' ? 'Deep Thinking' : (currentModel === 'genni 1.1' ? 'Processing Liquid Neural' : 'Thinking'));
+  let note = addNote(currentModel === 'genni 2' ? 'Deep Thinking' : (currentModel === 'liquid-neural' || currentModel === 'genni 1.1' || currentModel === 'genni ln' ? 'Thinking (Liquid Neural)' : 'Thinking'));
   let answer = '';
   let thoughtBox = null;
   let thoughtContent = null;
