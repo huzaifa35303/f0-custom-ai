@@ -188,6 +188,19 @@ const INTENTS = [
     },
   },
   {
+    name: 'ack',
+    // Reached through madeOf() below, never by this pattern alone.
+    test: /^(?!)/,
+    replies: {
+      en: 'Got it. Anything else you want to know?',
+      roman: 'Theek hai. Aur kuch poochna ho to bataiye.',
+      hi: 'ठीक है। और कुछ पूछना हो तो बताइए।',
+      ur: 'ٹھیک ہے۔ اور کچھ پوچھنا ہو تو بتائیے۔',
+      pa: 'ਠੀਕ ਹੈ। ਹੋਰ ਕੁਝ ਪੁੱਛਣਾ ਹੋਵੇ ਤਾਂ ਦੱਸੋ।',
+      paRoman: 'Theek hai. Hor kuch puchhna hove taan dasso.',
+    },
+  },
+  {
     name: 'help',
     test: /^(help|madad|help me|can you help)\b|\bmadad chahiye\b|मदद|مدد|ਮਦਦ/i,
     replies: {
@@ -219,6 +232,17 @@ const GREET_WORDS = new Set(
   `hello helo hi hii hey hay heya hiya yo howdy hola sup wassup hlo hlw hy
    salam salaam slam slm assalam asalam assalamualaikum asalamualaikum aoa
    walaikum walikum namaste namaskar sat sri akal satsriakal oye oi`
+    .split(/\s+/)
+    .map(squash)
+);
+
+// Acknowledgements. Someone typing "ok" is not asking the web anything, and
+// treating it as a query was the main reason this thing searched constantly.
+const ACK_WORDS = new Set(
+  `ok okay oky k kk fine good nice cool great awesome lovely perfect right sure
+   alright allright yes yep yeah yup ya no nope nah hmm hm hmmm oh ah ic lol lmao
+   haha hehe done got it gotit noted sahi sahih theek thik thk acha accha achha
+   bilkul haan han ji jee nahi nahin changa vadhiya shabash wah waah`
     .split(/\s+/)
     .map(squash)
 );
@@ -263,6 +287,7 @@ export function chatReply(message) {
   // Typo-tolerant before the exact patterns, so "helo" never reaches the web.
   if (madeOf(text, GREET_WORDS)) return pick('greeting');
   if (madeOf(text, THANK_WORDS)) return pick('thanks');
+  if (madeOf(text, ACK_WORDS)) return pick('ack');
 
   for (const intent of INTENTS) {
     if (!intent.test.test(text)) continue;

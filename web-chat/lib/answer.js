@@ -2,6 +2,7 @@ import { config } from './config.js';
 import { searchWeb, wikipediaSummary } from './search.js';
 import { clean } from './clean.js';
 import { chatReply } from './chat.js';
+import { calculate } from './calc.js';
 import { detectCommand, applyCommand } from './commands.js';
 import { detectBrainCommand, runBrainCommand, recall } from './brain.js';
 
@@ -294,6 +295,10 @@ export async function answer(
 
   const canned = chatReply(question);
   if (canned) return say(canned);
+
+  // Sums are worked out, not looked up.
+  const sum = calculate(question);
+  if (sum) return say(sum);
 
   // Teaching, forgetting, or asking what it knows.
   const brainCommand = detectBrainCommand(question);
