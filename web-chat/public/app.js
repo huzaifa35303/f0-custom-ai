@@ -13,6 +13,7 @@ const pickerTriggerTag = document.getElementById('picker-trigger-tag');
 const modelDropdownMenu = document.getElementById('model-dropdown-menu');
 const checkGenni1 = document.getElementById('check-genni-1');
 const checkGenni2 = document.getElementById('check-genni-2');
+const checkGenni3 = document.getElementById('check-genni-3');
 const checkAuto = document.getElementById('check-auto');
 const checkLiquidNeural = document.getElementById('check-liquid-neural');
 const checkNorthMiniCode = document.getElementById('check-north-mini-code');
@@ -44,10 +45,9 @@ const WELCOME =
   '<div class="welcome">' +
   '<h2>Ask f0undr Ai anything</h2>' +
   '<div class="welcome-model-pill">' +
-  '<span class="badge-active">Models: <strong>genni 1</strong> &amp; <strong>genni 2</strong></span>' +
-  '<span class="badge-soon">genni 3 coming soon</span>' +
+  '<span class="badge-active">Official Models: <strong>genni 1</strong>, <strong>genni 2</strong> &amp; <strong>genni 3</strong></span>' +
   '</div>' +
-  '<p>Official models: <strong>genni 1</strong> for fast live answers &amp; <strong>genni 2</strong> for Deep Reasoning &amp; code runner. Explore <strong>Liquid Neural</strong> &amp; <strong>North Mini Code</strong> under More models.</p>' +
+  '<p>Official models: <strong>genni 1</strong> for fast search, <strong>genni 2</strong> for Deep Reasoning, and <strong>genni 3</strong> for Omni Studio &amp; live image generation. Explore more models under More models.</p>' +
   '</div>';
 
 const STORAGE_KEY = 'foundr_ai_chats_v2';
@@ -413,7 +413,21 @@ function setModel(model) {
     pickerTriggerIcon.style.fontFamily = '';
     pickerTriggerIcon.style.fontWeight = '';
   }
-  if (model === 'genni 2') {
+  if (model === 'genni 3') {
+    if (pickerTriggerName) pickerTriggerName.textContent = 'genni 3';
+    if (pickerTriggerTag) pickerTriggerTag.textContent = 'Omni';
+    if (pickerTriggerIcon) {
+      pickerTriggerIcon.textContent = '◈';
+      pickerTriggerIcon.style.color = '#ec4899';
+    }
+    if (checkGenni3) checkGenni3.style.display = 'flex';
+    if (checkGenni2) checkGenni2.style.display = 'none';
+    if (checkGenni1) checkGenni1.style.display = 'none';
+    if (checkAuto) checkAuto.style.display = 'none';
+    if (checkLiquidNeural) checkLiquidNeural.style.display = 'none';
+    if (checkNorthMiniCode) checkNorthMiniCode.style.display = 'none';
+    input.placeholder = 'Ask genni 3 for deep research, apps, or images (e.g. "draw a cyberpunk city")…';
+  } else if (model === 'genni 2') {
     if (pickerTriggerName) pickerTriggerName.textContent = 'genni 2';
     if (pickerTriggerTag) pickerTriggerTag.textContent = 'Deep Think';
     if (pickerTriggerIcon) {
@@ -421,6 +435,7 @@ function setModel(model) {
       pickerTriggerIcon.style.color = '#a78bfa';
     }
     if (checkGenni2) checkGenni2.style.display = 'flex';
+    if (checkGenni3) checkGenni3.style.display = 'none';
     if (checkGenni1) checkGenni1.style.display = 'none';
     if (checkAuto) checkAuto.style.display = 'none';
     if (checkLiquidNeural) checkLiquidNeural.style.display = 'none';
@@ -436,6 +451,7 @@ function setModel(model) {
     if (checkLiquidNeural) checkLiquidNeural.style.display = 'flex';
     if (checkGenni1) checkGenni1.style.display = 'none';
     if (checkGenni2) checkGenni2.style.display = 'none';
+    if (checkGenni3) checkGenni3.style.display = 'none';
     if (checkAuto) checkAuto.style.display = 'none';
     if (checkNorthMiniCode) checkNorthMiniCode.style.display = 'none';
     input.placeholder = 'Send a message to Liquid Neural (lfm-2.5-2.6b)…';
@@ -451,6 +467,7 @@ function setModel(model) {
     if (checkNorthMiniCode) checkNorthMiniCode.style.display = 'flex';
     if (checkGenni1) checkGenni1.style.display = 'none';
     if (checkGenni2) checkGenni2.style.display = 'none';
+    if (checkGenni3) checkGenni3.style.display = 'none';
     if (checkAuto) checkAuto.style.display = 'none';
     if (checkLiquidNeural) checkLiquidNeural.style.display = 'none';
     input.placeholder = 'Ask North Mini Code for code, debugging, or reasoning…';
@@ -464,9 +481,10 @@ function setModel(model) {
     if (checkAuto) checkAuto.style.display = 'flex';
     if (checkGenni1) checkGenni1.style.display = 'none';
     if (checkGenni2) checkGenni2.style.display = 'none';
+    if (checkGenni3) checkGenni3.style.display = 'none';
     if (checkLiquidNeural) checkLiquidNeural.style.display = 'none';
     if (checkNorthMiniCode) checkNorthMiniCode.style.display = 'none';
-    input.placeholder = 'Ask anything (Auto routes between genni 1 & 2)…';
+    input.placeholder = 'Ask anything (Auto routes between genni 1, 2 & 3)…';
   } else {
     if (pickerTriggerName) pickerTriggerName.textContent = 'genni 1';
     if (pickerTriggerTag) pickerTriggerTag.textContent = 'Fast';
@@ -475,8 +493,9 @@ function setModel(model) {
       pickerTriggerIcon.style.color = '';
     }
     if (checkGenni1) checkGenni1.style.display = 'flex';
-    if (checkLiquidNeural) checkLiquidNeural.style.display = 'none';
     if (checkGenni2) checkGenni2.style.display = 'none';
+    if (checkGenni3) checkGenni3.style.display = 'none';
+    if (checkLiquidNeural) checkLiquidNeural.style.display = 'none';
     if (checkAuto) checkAuto.style.display = 'none';
     if (checkNorthMiniCode) checkNorthMiniCode.style.display = 'none';
     input.placeholder = 'Send a message to genni 1…';
@@ -683,15 +702,19 @@ async function ask(text) {
   const body = addMessage('assistant');
   body.classList.add('caret');
   const isAuto = currentModel === 'auto';
+  const isGenni3 = currentModel === 'genni 3';
   const isNorth = currentModel === 'north-mini-code' || currentModel === 'cohere/north-mini-code:free';
-  const autoNeedsReasoning = isAuto && (Boolean(userFile) || /(code|debug|function|algorithm|math|solve|step by step|prove|analyze|detailed|explain why)/i.test(text));
+  const autoWantsImage = isAuto && /(generate|draw|create|paint|sketch|design|make)\s+(an?\s+)?(image|picture|photo|wallpaper|logo|art|portrait)/i.test(text);
+  const autoNeedsReasoning = isAuto && !autoWantsImage && (Boolean(userFile) || /(code|debug|function|algorithm|math|solve|step by step|prove|analyze|detailed|explain why)/i.test(text));
   const isGenni2 = currentModel === 'genni 2' || autoNeedsReasoning;
-  const isReasoningModel = isGenni2 || isNorth;
-  let noteText = isGenni2
-    ? 'Deep Thinking'
-    : (isNorth
-        ? 'Reasoning (North Mini Code)'
-        : (currentModel === 'liquid-neural' || currentModel === 'genni 1.1' || currentModel === 'genni ln' ? 'Thinking (Liquid Neural)' : 'Thinking'));
+  const isReasoningModel = isGenni2 || isNorth || isGenni3 || autoWantsImage;
+  let noteText = (isGenni3 || autoWantsImage)
+    ? 'Omni Studio (Thinking & Creating)'
+    : (isGenni2
+        ? 'Deep Thinking'
+        : (isNorth
+            ? 'Reasoning (North Mini Code)'
+            : (currentModel === 'liquid-neural' || currentModel === 'genni 1.1' || currentModel === 'genni ln' ? 'Thinking (Liquid Neural)' : 'Thinking')));
   let note = addNote(noteText);
   let answer = '';
   let thoughtBox = null;
@@ -710,8 +733,8 @@ async function ask(text) {
               thoughtBox = document.createElement('details');
               thoughtBox.className = 'thought-box';
               thoughtBox.open = true;
-              const spark = isNorth ? '{ }' : '⚡';
-              const titleText = isNorth ? 'Code Reasoning' : 'Deep Thinking';
+              const spark = isNorth ? '{ }' : ((isGenni3 || autoWantsImage) ? '◈' : '⚡');
+              const titleText = isNorth ? 'Code Reasoning' : ((isGenni3 || autoWantsImage) ? 'Omni Reasoning' : 'Deep Thinking');
               thoughtBox.innerHTML = `
                 <summary class="thought-summary">
                   <span class="thought-sparkle">${spark}</span>
@@ -890,6 +913,7 @@ function render(md) {
         <span>${esc(l.toUpperCase())}</span>
         <div class="code-actions">
           ${isHtmlOrSvg ? `<button type="button" class="code-btn preview-btn" data-target="${codeId}">▶ Live Preview</button>` : ''}
+          <button type="button" class="code-btn download-btn" data-target="${codeId}" data-lang="${esc(l)}">Download</button>
           <button type="button" class="code-btn copy-btn" data-target="${codeId}">Copy</button>
         </div>
       </div>
@@ -902,9 +926,27 @@ function render(md) {
   // 2. Escape HTML entities
   text = esc(text);
 
-  // 3. Inline elements parser: bold, italic, code, links, del
+  // 3. Inline elements parser: images, bold, italic, code, links, del
   const parseInline = (s) => {
     return s
+      .replace(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g, (_, alt, url) => {
+        const cleanUrl = url.replace(/&quot;/g, '').replace(/"/g, '');
+        const cleanAlt = alt || 'f0undr Ai Generated Image';
+        return (
+          '<div class="generated-image-card">' +
+            '<div class="generated-image-container">' +
+              `<img src="${cleanUrl}" alt="${cleanAlt}" loading="lazy" />` +
+            '</div>' +
+            '<div class="generated-image-bar">' +
+              `<span class="generated-image-caption">◈ ${cleanAlt}</span>` +
+              '<div class="generated-image-actions">' +
+                `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" class="generated-image-btn">Full Res</a>` +
+                `<a href="${cleanUrl}" download="foundr-ai-art.jpg" target="_blank" class="generated-image-btn">Download</a>` +
+              '</div>' +
+            '</div>' +
+          '</div>'
+        );
+      })
       .replace(/`([^`\n]+)`/g, '<code>$1</code>')
       .replace(/\*\*\*([^*]+)\*\*\*/g, '<strong><em>$1</em></strong>')
       .replace(/___([^_]+)___/g, '<strong><em>$1</em></strong>')
@@ -1121,5 +1163,31 @@ document.addEventListener('click', (e) => {
       previewBtn.textContent = '✕ Close Preview';
       scroll();
     }
+    return;
+  }
+
+  const downloadBtn = e.target.closest('.download-btn');
+  if (downloadBtn) {
+    const targetId = downloadBtn.dataset.target;
+    const lang = (downloadBtn.dataset.lang || 'code').toLowerCase();
+    const codeEl = document.getElementById(targetId);
+    if (codeEl) {
+      const extMap = {
+        html: 'html', js: 'js', javascript: 'js', css: 'css',
+        python: 'py', py: 'py', json: 'json', ts: 'ts',
+        typescript: 'ts', svg: 'svg', xml: 'xml', markdown: 'md', md: 'md'
+      };
+      const ext = extMap[lang] || 'txt';
+      const blob = new Blob([codeEl.textContent], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `foundr-${lang}-${Date.now()}.${ext}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+    return;
   }
 });

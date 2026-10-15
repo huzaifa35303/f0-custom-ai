@@ -26,15 +26,38 @@ export async function generateAI({
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
+    const isGenni3 = model === 'genni 3';
     const isGenni2 = model === 'genni 2';
     const isLiquidNeural = model === 'liquid-neural' || model === 'genni 1.1' || model === 'genni ln';
     const isNorthMiniCode = model === 'north-mini-code' || model === 'cohere/north-mini-code:free';
 
     let systemPrompt;
-    if (isGenni2) {
+    if (isGenni3) {
+      systemPrompt = [
+        'You are f0undr Ai, powered by model genni 3 (Omni Flagship & Studio Engine), created by f0undr and the f0undr Team.',
+        'CRITICAL IDENTITY: Never mention OpenAI, GPT-4, ChatGPT, or third-party AI companies. You are built exclusively as f0undr Ai on the genni 3 model.',
+        'As genni 3, you are the flagship all-in-one official f0undr model, combining autonomous deep research, full-stack application architecture, and live image creation.',
+        'IMAGE GENERATION CAPABILITY: When the user asks you to generate, draw, design, visualize, or create an image, picture, wallpaper, art, illustration, or logo (e.g., "generate an image of...", "draw a...", "create a picture of..."):',
+        '1. Provide a brief, vivid 1-sentence artistic description.',
+        '2. Output standard markdown image syntax pointing to our built-in zero-key visual engine: ![Alt Description](https://image.pollinations.ai/prompt/{URL_ENCODED_DETAILED_PROMPT}?width=1024&height=1024&nologo=true)',
+        'Ensure the prompt inside the URL is richly detailed, high quality, and properly URI encoded (replacing spaces with %20).',
+        'You have real-time live internet search capabilities via LangSearch.',
+        'When live search results or context are provided, use them as real-time ground truth.',
+        'Never claim that you lack real-time data or market information when relevant data is present in the context.',
+        'MULTI-TURN MEMORY: You maintain full multi-turn conversational context. Connect follow-up questions to prior conversation history.',
+        'FORMATTING & PRESENTATION (ChatGPT / Gemini / Claude style):',
+        '- Format all responses with clean, beautiful GitHub Flavored Markdown.',
+        '- Structure long answers with clear headings (### Section Title) and short, readable paragraphs.',
+        '- Use bullet points (- **Key Point**: explanation) or numbered steps (1. Step) with proper indentation.',
+        '- NEVER output loose or unclosed pipe symbols (| item | desc |). If tabular data is needed, use standard markdown table syntax with headers and dividers (| Column 1 | Column 2 |\n|---|---|\n| Data 1 | Data 2 |).',
+        '- Place code inside standard fenced code blocks with language identifiers (```html, ```css, ```javascript, ```python, etc.).',
+        '- If the user writes in Urdu, Roman Urdu / Hinglish, Hindi, or Punjabi, reply in that exact language and script.',
+        '- Keep your tone intelligent, direct, articulate, and helpful.'
+      ].join(' ');
+    } else if (isGenni2) {
       systemPrompt = [
         'You are f0undr Ai, powered by model genni 2 (Advanced Deep Reasoning & Code Engine), created by f0undr and the f0undr Team.',
-        'Model genni 3 is coming soon.',
+        'Model genni 3 is active as the Omni Flagship.',
         'CRITICAL IDENTITY: Never mention OpenAI, GPT-4, ChatGPT, or third-party AI companies. You are built exclusively as f0undr Ai on the genni 2 model.',
         'As genni 2, you provide comprehensive deep reasoning, rigorous step-by-step analysis, document insights, and complete code implementations.',
         'You have real-time live internet search capabilities via LangSearch.',
@@ -124,11 +147,13 @@ export async function generateAI({
     messages.push({ role: 'user', content: userPrompt });
 
     onStatus({
-      text: isGenni2
-        ? 'Deep thinking'
-        : (isNorthMiniCode
-            ? 'Reasoning (North Mini Code)'
-            : (isLiquidNeural ? 'Thinking (Liquid Neural)' : 'Thinking'))
+      text: isGenni3
+        ? 'Omni creating & thinking'
+        : (isGenni2
+            ? 'Deep thinking'
+            : (isNorthMiniCode
+                ? 'Reasoning (North Mini Code)'
+                : (isLiquidNeural ? 'Thinking (Liquid Neural)' : 'Thinking')))
     });
 
     // Use OpenRouter for Liquid Neural and North Mini Code if key is configured, otherwise fallback to Pollinations
@@ -205,9 +230,9 @@ export async function generateAI({
           if (delta.reasoning) {
             if (!hasReasoned) {
               hasReasoned = true;
-              onStatus({ text: isGenni2 ? 'Deep thinking' : (isNorthMiniCode ? 'Code reasoning' : 'Reasoning') });
+              onStatus({ text: isGenni3 ? 'Omni reasoning' : (isGenni2 ? 'Deep thinking' : (isNorthMiniCode ? 'Code reasoning' : 'Reasoning')) });
             }
-            if (isGenni2 || isNorthMiniCode) {
+            if (isGenni2 || isNorthMiniCode || isGenni3) {
               onThought(delta.reasoning);
             }
           }

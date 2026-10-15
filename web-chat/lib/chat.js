@@ -60,6 +60,7 @@ const SELF =
  * Order matters: the first match wins, so the specific intents come first.
  */
 function getModelLabel(m) {
+  if (m === 'genni 3') return 'genni 3 (Omni Studio)';
   if (m === 'genni 2') return 'genni 2 (Deep Reasoning & Code Engine)';
   if (m === 'north-mini-code' || m === 'cohere/north-mini-code:free') return 'North Mini Code';
   if (m === 'liquid-neural' || m === 'genni 1.1' || m === 'genni ln') return 'Liquid Neural';
@@ -68,12 +69,12 @@ function getModelLabel(m) {
 
 function getIntents(model = 'genni 1') {
   const modelLabel = getModelLabel(model);
-  const noteEn = model === 'genni 2' ? '(genni 3 coming soon!)' : '(genni 2 is active, genni 3 coming soon!)';
-  const noteRoman = model === 'genni 2' ? '(genni 3 jald aa raha hai!)' : '(genni 2 active hai, genni 3 jald aa raha hai!)';
-  const noteHi = model === 'genni 2' ? '(genni 3 जल्द आ रहा है!)' : '(genni 2 सक्रिय है, genni 3 जल्द आ रहा है!)';
-  const noteUr = model === 'genni 2' ? '(genni 3 جلد آ رہا ہے!)' : '(genni 2 فعال ہے، genni 3 جلد آ رہا ہے!)';
-  const notePa = model === 'genni 2' ? '(genni 3 ਜਲਦੀ ਆ ਰਿਹਾ ਹੈ!)' : '(genni 2 ਸਰਗਰਮ ਹੈ, genni 3 ਜਲਦੀ ਆ ਰਿਹਾ ਹੈ!)';
-  const notePaRoman = model === 'genni 2' ? '(genni 3 jaldi aa reha hai!)' : '(genni 2 active hai, genni 3 jaldi aa reha hai!)';
+  const noteEn = '(genni 1, genni 2 & genni 3 active!)';
+  const noteRoman = '(genni 1, genni 2 aur genni 3 active hain!)';
+  const noteHi = '(genni 1, genni 2 और genni 3 सक्रिय हैं!)';
+  const noteUr = '(genni 1, genni 2 اور genni 3 فعال ہیں!)';
+  const notePa = '(genni 1, genni 2 ਅਤੇ genni 3 ਸਰਗਰਮ ਹਨ!)';
+  const notePaRoman = '(genni 1, genni 2 te genni 3 active ne!)';
 
   return [
     {

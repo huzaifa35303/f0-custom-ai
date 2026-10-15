@@ -113,11 +113,15 @@ async function handleChat(req, res) {
   let requestedModel = payload.model;
   if (requestedModel === 'auto') {
     const lastMsg = asked.at(-1)?.content?.toLowerCase() || '';
+    const wantsImage = /(generate|draw|create|paint|sketch|design|make)\s+(an?\s+)?(image|picture|photo|wallpaper|logo|art|portrait)/i.test(lastMsg);
     const needsReasoning = Boolean(file) || /(code|debug|function|algorithm|math|solve|step by step|prove|analyze|detailed|explain why)/i.test(lastMsg);
-    requestedModel = needsReasoning ? 'genni 2' : 'genni 1';
+    if (wantsImage) requestedModel = 'genni 3';
+    else if (needsReasoning) requestedModel = 'genni 2';
+    else requestedModel = 'genni 1';
   }
   let model = 'genni 1';
-  if (requestedModel === 'genni 2') model = 'genni 2';
+  if (requestedModel === 'genni 3') model = 'genni 3';
+  else if (requestedModel === 'genni 2') model = 'genni 2';
   else if (requestedModel === 'liquid-neural' || requestedModel === 'genni 1.1' || requestedModel === 'genni ln') model = 'liquid-neural';
   else if (requestedModel === 'north-mini-code' || requestedModel === 'cohere/north-mini-code:free') model = 'north-mini-code';
   else model = 'genni 1';

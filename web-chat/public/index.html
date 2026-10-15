@@ -210,10 +210,9 @@
           <div class="welcome">
             <h2>Ask f0undr Ai anything</h2>
             <div class="welcome-model-pill">
-              <span class="badge-active">Models: <strong>genni 1</strong> &amp; <strong>genni 2</strong></span>
-              <span class="badge-soon">genni 3 coming soon</span>
+              <span class="badge-active">Official Models: <strong>genni 1</strong>, <strong>genni 2</strong> &amp; <strong>genni 3</strong></span>
             </div>
-            <p>Official models: <strong>genni 1</strong> for fast live answers &amp; <strong>genni 2</strong> for Deep Reasoning &amp; code runner. Explore <strong>Liquid Neural</strong> &amp; <strong>North Mini Code</strong> under More models.</p>
+            <p>Official models: <strong>genni 1</strong> for fast search, <strong>genni 2</strong> for Deep Reasoning, and <strong>genni 3</strong> for Omni Studio &amp; live image generation. Explore more models under More models.</p>
           </div>
         </main>
 
@@ -235,6 +234,25 @@
               <!-- Claude-Style Dropdown Menu -->
               <div class="model-dropdown-menu hidden" id="model-dropdown-menu" role="menu">
                 <div class="model-dropdown-list">
+                  <!-- genni 3 Option -->
+                  <button type="button" class="model-menu-item" data-model-option="genni 3" role="menuitem">
+                    <div class="model-item-main">
+                      <div class="model-item-header">
+                        <div class="model-item-left">
+                          <span class="model-item-icon omni-icon">◈</span>
+                          <span class="model-item-title">genni 3</span>
+                          <span class="model-item-pill pill-omni">Omni Studio</span>
+                        </div>
+                        <div class="model-item-check" id="check-genni-3" style="display: none;">
+                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="model-item-desc">Omni flagship for deep research, full apps &amp; live image creation</div>
+                    </div>
+                  </button>
+
                   <!-- genni 2 Option -->
                   <button type="button" class="model-menu-item" data-model-option="genni 2" role="menuitem">
                     <div class="model-item-main">
@@ -272,20 +290,6 @@
                       <div class="model-item-desc">Fastest for quick answers &amp; real-time web search</div>
                     </div>
                   </button>
-
-                  <!-- genni 3 (Coming soon) -->
-                  <div class="model-menu-item disabled" role="menuitem" aria-disabled="true">
-                    <div class="model-item-main">
-                      <div class="model-item-header">
-                        <div class="model-item-left">
-                          <span class="model-item-icon muted-icon">✧</span>
-                          <span class="model-item-title">genni 3</span>
-                          <span class="model-item-pill pill-soon">Coming soon</span>
-                        </div>
-                      </div>
-                      <div class="model-item-desc">Multimodal vision, voice design &amp; autonomous tools</div>
-                    </div>
-                  </div>
 
                   <div class="model-menu-divider"></div>
 
