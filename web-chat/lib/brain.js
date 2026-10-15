@@ -27,14 +27,24 @@ const STOPWORDS = new Set(
     .filter(Boolean)
 );
 
+/**
+ * The words a fact or a question is indexed by.
+ *
+ * A hyphenated name is kept whole *and* in pieces, because people type it both
+ * ways: "Nishan-e-Haider" in the document and "nishan e haider" in the
+ * question. Indexing only the whole token meant they never met.
+ */
 function keywords(text) {
-  return [
-    ...new Set(
-      (text.toLowerCase().match(/[a-z0-9][a-z0-9'-]*/g) || []).filter(
-        (w) => w.length > 2 && !STOPWORDS.has(w)
-      )
-    ),
-  ];
+  const found = new Set();
+  const keep = (word) => {
+    if (word.length > 2 && !STOPWORDS.has(word)) found.add(word);
+  };
+
+  for (const word of text.toLowerCase().match(/[a-z0-9][a-z0-9'-]*/g) || []) {
+    keep(word);
+    if (word.includes('-')) word.split('-').forEach(keep);
+  }
+  return [...found];
 }
 
 async function load() {

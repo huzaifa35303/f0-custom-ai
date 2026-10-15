@@ -1,0 +1,16 @@
+# Pakistan missile systems, mountain passes and nuclear installations
+# One fact per line, phrased with the words someone would ask with.
+
+Ghaznavi, also called Hatf-III, is a Pakistani short-range solid-fuel ballistic missile with a range of 290 km and a 700 kg payload.
+Shaheen-II, also called Hatf-VI, is a Pakistani two-stage solid-propellant road-mobile medium-range ballistic missile with a range of 2,000 km and a 1,050 kg payload.
+Ababeel is a Pakistani medium-range ballistic missile with a range of 2,200 km, carrying MIRV multiple independently targetable re-entry vehicles.
+Babur-3 is Pakistan's submarine-launched cruise missile with a range of 450 km and a 450 kg payload, fired from Agosta-90B submarines to complete the sea-based second strike.
+
+Khunjerab Pass is 4,693 metres high in the Karakoram range, links Gilgit-Baltistan to Xinjiang in China, and is the world's highest paved international border crossing and the main gate of CPEC.
+Khyber Pass is 1,070 metres high in the Spin Ghar mountains and links Peshawar to Kabul in Afghanistan, historically the gateway for invasions of the subcontinent.
+Bolan Pass is 1,793 metres high in the Toba Kakar range and links Quetta to Jacobabad and Sibi, connecting the Balochistan plateau to the Indus valley.
+Lowari Pass is 3,118 metres high in the Hindu Kush and links Dir to Chitral; it was snow-blocked six months a year until the 10.4 km Lowari Tunnel opened.
+
+Kahuta Research Laboratories, KRL, in Kahuta, Punjab, is Pakistan's gas centrifuge uranium enrichment facility.
+The Khushab nuclear complex in Punjab is a heavy-water plutonium production site with several operational reactors.
+Chagai-I and Chagai-II in the Ras Koh Hills and Kharan in Balochistan are Pakistan's underground nuclear test sites, where five simultaneous tests took place on 28 May 1998 and a further test on 30 May 1998.

@@ -1,0 +1,22 @@
+# Pakistan naval fleet, nuclear power, space programme and digital economy
+# One fact per line, phrased with the words someone would ask with.
+
+Hangor-class submarines are 8 diesel-electric attack submarines with Air-Independent Propulsion, built with China, the first 4 in China and the remaining 4 at Karachi Shipyard, and they carry the Babur-3 cruise missile.
+Tughril-class frigates, Type 054A/P, are 4 Chinese-built guided-missile stealth frigates carrying LY-80N anti-air and CM-302 supersonic anti-ship missiles, and form the backbone of the Pakistan Navy surface fleet.
+Babur-class corvettes, from the Turkish Milgem class, are 4 multi-mission stealth corvettes with local Harbah-NG combat systems and anti-submarine warfare capability.
+Jinnah-class frigates are an indigenous Pakistani frigate programme developed jointly with Turkey following technology transfer from the Milgem initiative.
+
+The Karachi Nuclear Power Plant, KANUPP, runs reactors K-2 and K-3 with a total net capacity of 2,200 MW using HPR1000 Hualong One pressurised water reactors.
+The Chashma Nuclear Power Plant, CHASNUPP, runs four CNP-300 pressurised water reactors with a total of 1,330 MW, with Chashma-5 planned to add a 1,200 MW Hualong One unit.
+Pakistan's civil nuclear power is regulated by the Pakistan Nuclear Regulatory Authority, PNRA, and operated by the Pakistan Atomic Energy Commission, PAEC.
+
+SUPARCO is the Space and Upper Atmosphere Research Commission, Pakistan's space agency, established in 1961 by Nobel laureate Dr Abdus Salam.
+Pakistan was the first South Asian country to launch a sounding rocket, Rehbar-I, in 1962.
+PakSat-1R is a Pakistani communications satellite launched in 2011 into geostationary orbit at 38 degrees east, carrying broadband, TV broadcasting and emergency telecommunications.
+PRSS-1, the Pakistan Remote Sensing Satellite, was launched in 2018 into sun-synchronous orbit for high-resolution earth observation, mapping and border surveillance.
+PakTES-1A is a technology evaluation satellite launched in 2018 into low earth orbit to verify locally built sensors and satellite bus designs.
+iCube-Qamar is Pakistan's first lunar cubesat, launched in May 2024 on China's Chang'e 6 mission to image the lunar surface and gather deep-space telemetry.
+
+Pakistan's IT exports and freelance sector are supported by the Pakistan Software Export Board, PSEB, and its special technology zones, and rank among the top global providers of software development.
+Raast is the State Bank of Pakistan's instant, zero-cost digital payment system for real-time person-to-person and person-to-business transfers.
+NayaPay and Sadapay are Pakistani Electronic Money Institutions, EMIs, part of a move to branchless digital banking under newly issued digital banking licences.
