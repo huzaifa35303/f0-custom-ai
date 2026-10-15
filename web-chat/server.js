@@ -113,7 +113,7 @@ async function handleChat(req, res) {
   let requestedModel = payload.model;
   if (requestedModel === 'auto') {
     const lastMsg = asked.at(-1)?.content?.toLowerCase() || '';
-    const wantsImage = /(generate|draw|create|paint|sketch|design|make)\s+(an?\s+)?(image|picture|photo|wallpaper|logo|art|portrait)/i.test(lastMsg);
+    const wantsImage = /(?:(?:generate|draw|create|paint|sketch|design|make|render|show me|give me|produce|visualize)\s+(?:an?\s+)?(?:image|picture|photo|wallpaper|logo|art|portrait|illustration|drawing|graphic|poster|visual)|^(?:image|picture|photo|wallpaper|logo|portrait|art)\s+of\b)/i.test(lastMsg);
     const needsReasoning = Boolean(file) || /(code|debug|function|algorithm|math|solve|step by step|prove|analyze|detailed|explain why)/i.test(lastMsg);
     if (wantsImage) requestedModel = 'genni 3';
     else if (needsReasoning) requestedModel = 'genni 2';

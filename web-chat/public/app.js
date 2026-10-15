@@ -585,8 +585,10 @@ fileInput?.addEventListener('change', (e) => {
   const file = e.target.files?.[0];
   if (!file) return;
 
-  // Auto-switch to genni 2 for document & code analysis
-  setModel('genni 2');
+  // Auto-switch to genni 2 for document & code analysis only if on genni 1
+  if (currentModel === 'genni 1') {
+    setModel('genni 2');
+  }
 
   const reader = new FileReader();
   reader.onload = (evt) => {
@@ -704,7 +706,7 @@ async function ask(text) {
   const isAuto = currentModel === 'auto';
   const isGenni3 = currentModel === 'genni 3';
   const isNorth = currentModel === 'north-mini-code' || currentModel === 'cohere/north-mini-code:free';
-  const autoWantsImage = isAuto && /(generate|draw|create|paint|sketch|design|make)\s+(an?\s+)?(image|picture|photo|wallpaper|logo|art|portrait)/i.test(text);
+  const autoWantsImage = isAuto && /(?:(?:generate|draw|create|paint|sketch|design|make|render|show me|give me|produce|visualize)\s+(?:an?\s+)?(?:image|picture|photo|wallpaper|logo|art|portrait|illustration|drawing|graphic|poster|visual)|^(?:image|picture|photo|wallpaper|logo|portrait|art)\s+of\b)/i.test(text);
   const autoNeedsReasoning = isAuto && !autoWantsImage && (Boolean(userFile) || /(code|debug|function|algorithm|math|solve|step by step|prove|analyze|detailed|explain why)/i.test(text));
   const isGenni2 = currentModel === 'genni 2' || autoNeedsReasoning;
   const isReasoningModel = isGenni2 || isNorth || isGenni3 || autoWantsImage;
@@ -929,17 +931,46 @@ function render(md) {
   // 3. Inline elements parser: images, bold, italic, code, links, del
   const parseInline = (s) => {
     return s
-      .replace(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g, (_, alt, url) => {
-        const cleanUrl = url.replace(/&quot;/g, '').replace(/"/g, '');
+      .replace(/!\[([^\]]*)\]\((https?:\/\/[^)]+)\)/g, (_, alt, url) => {
+        const cleanUrl = url
+          .replace(/&amp;/g, '&')
+          .replace(/&quot;/g, '')
+          .replace(/"/g, '')
+          .trim()
+          .replace(/\s+/g, '%20');
         const cleanAlt = alt || 'f0undr Ai Generated Image';
         return (
           '<div class="generated-image-card">' +
-            '<div class="generated-image-container">' +
+            '<div class="generated-image-container zoomable-image-wrap" data-url="' + cleanUrl + '" data-caption="' + cleanAlt + '">' +
               `<img src="${cleanUrl}" alt="${cleanAlt}" loading="lazy" />` +
             '</div>' +
             '<div class="generated-image-bar">' +
               `<span class="generated-image-caption">◈ ${cleanAlt}</span>` +
               '<div class="generated-image-actions">' +
+                `<button type="button" class="generated-image-btn zoom-btn" data-url="${cleanUrl}" data-caption="${cleanAlt}">Zoom</button>` +
+                `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" class="generated-image-btn">Full Res</a>` +
+                `<a href="${cleanUrl}" download="foundr-ai-art.jpg" target="_blank" class="generated-image-btn">Download</a>` +
+              '</div>' +
+            '</div>' +
+          '</div>'
+        );
+      })
+      .replace(/(?<!src=")(https?:\/\/image\.pollinations\.ai\/prompt\/[^\s<>"']+)/gi, (match, url) => {
+        const cleanUrl = url
+          .replace(/&amp;/g, '&')
+          .replace(/&quot;/g, '')
+          .replace(/"/g, '')
+          .trim()
+          .replace(/\s+/g, '%20');
+        return (
+          '<div class="generated-image-card">' +
+            '<div class="generated-image-container zoomable-image-wrap" data-url="' + cleanUrl + '" data-caption="f0undr Ai Visual Creation">' +
+              `<img src="${cleanUrl}" alt="f0undr Ai Visual Creation" loading="lazy" />` +
+            '</div>' +
+            '<div class="generated-image-bar">' +
+              '<span class="generated-image-caption">◈ Visual Creation</span>' +
+              '<div class="generated-image-actions">' +
+                `<button type="button" class="generated-image-btn zoom-btn" data-url="${cleanUrl}" data-caption="f0undr Ai Visual Creation">Zoom</button>` +
                 `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" class="generated-image-btn">Full Res</a>` +
                 `<a href="${cleanUrl}" download="foundr-ai-art.jpg" target="_blank" class="generated-image-btn">Download</a>` +
               '</div>' +
@@ -1190,4 +1221,50 @@ document.addEventListener('click', (e) => {
     }
     return;
   }
+
+  // Lightbox Zoom Handler
+  const zoomBtn = e.target.closest('.zoom-btn');
+  const zoomWrap = e.target.closest('.zoomable-image-wrap');
+  if (zoomBtn || zoomWrap) {
+    const el = zoomBtn || zoomWrap;
+    const url = el.dataset.url;
+    const caption = el.dataset.caption || 'f0undr Ai Generated Visual';
+    if (url) {
+      openImageLightbox(url, caption);
+    }
+    return;
+  }
 });
+
+// Image Lightbox Elements
+const lightboxModal = document.getElementById('image-lightbox');
+const lightboxImg = document.getElementById('image-lightbox-img');
+const lightboxCaption = document.getElementById('image-lightbox-caption');
+const lightboxDl = document.getElementById('image-lightbox-dl');
+const lightboxOpen = document.getElementById('image-lightbox-open');
+const lightboxClose = document.getElementById('image-lightbox-close');
+const lightboxBackdrop = document.getElementById('image-lightbox-backdrop');
+
+function openImageLightbox(url, caption) {
+  if (!lightboxModal) return;
+  if (lightboxImg) lightboxImg.src = url;
+  if (lightboxCaption) lightboxCaption.textContent = caption;
+  if (lightboxDl) lightboxDl.href = url;
+  if (lightboxOpen) lightboxOpen.href = url;
+  lightboxModal.classList.remove('hidden');
+}
+
+function closeImageLightbox() {
+  if (!lightboxModal) return;
+  lightboxModal.classList.add('hidden');
+  if (lightboxImg) lightboxImg.src = '';
+}
+
+lightboxClose?.addEventListener('click', closeImageLightbox);
+lightboxBackdrop?.addEventListener('click', closeImageLightbox);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && lightboxModal && !lightboxModal.classList.contains('hidden')) {
+    closeImageLightbox();
+  }
+});
+

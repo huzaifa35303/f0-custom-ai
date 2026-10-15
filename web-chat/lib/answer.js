@@ -392,6 +392,22 @@ export async function answer(
     return say(known.join(' '));
   }
 
+  // Direct visual image generation check (for genni 3 and image creation requests)
+  const isImageRequest = /(?:(?:generate|draw|create|paint|sketch|design|make|render|show me|give me|produce|visualize)\s+(?:an?\s+)?(?:image|picture|photo|wallpaper|logo|art|portrait|illustration|drawing|graphic|poster|visual)|^(?:image|picture|photo|wallpaper|logo|portrait|art)\s+of\b)/i.test(question);
+  if (isImageRequest && (model === 'genni 3' || model === 'auto')) {
+    emit('status', { text: 'Designing visual prompt & creating image' });
+    const imageAi = await generateAI({
+      question,
+      context: fileContext,
+      conversation: messages,
+      model: 'genni 3',
+      onStatus: (s) => emit('status', s),
+      onThought: (t) => emit('thought', { text: t }),
+      onToken: (c) => emit('token', { text: c }),
+    });
+    if (imageAi) return clean(imageAi);
+  }
+
   emit('status', { text: 'Searching the web' });
   const resolvedFollowUp = resolveFollowUp(question, previous, previousAnswer, messages);
   const query = stripRequest(resolvedFollowUp)

@@ -14,11 +14,29 @@ const LINK_PHRASES = new RegExp(
 export function clean(text) {
   let out = text;
 
-  // [label](https://…) -> label ; ![image](…) -> dropped
-  out = out.replace(/!\[[^\]]*\]\([^)]*\)/g, '');
-  out = out.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1');
+  // Protect markdown images: ![alt](url) - including URLs with commas, spaces, or query params
+  const images = [];
+  out = out.replace(/!\[([^\]]*)\]\((https?:\/\/[^)]+)\)/g, (match, alt, url) => {
+    const safeUrl = url.trim().replace(/\s+/g, '%20');
+    images.push(`![${alt}](${safeUrl})`);
+    return `__IMG_TOKEN_${images.length - 1}__`;
+  });
 
-  // <https://…>, bare URLs, bare www. addresses
+  // Protect any bare pollinations image URLs
+  out = out.replace(/(?<!\()https?:\/\/image\.pollinations\.ai\/prompt\/[^\s)"<>]+/gi, (url) => {
+    const safeUrl = url.trim().replace(/\s+/g, '%20');
+    images.push(`![Generated Visual](${safeUrl})`);
+    return `__IMG_TOKEN_${images.length - 1}__`;
+  });
+
+  // Protect markdown links: [label](https://...)
+  const links = [];
+  out = out.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, (match) => {
+    links.push(match);
+    return `__LINK_TOKEN_${links.length - 1}__`;
+  });
+
+  // Strip bare URLs and <https://...> addresses that leak from web scraping (except protected ones)
   out = out.replace(/<https?:\/\/[^>]+>/gi, '');
   out = out.replace(/\(?\bhttps?:\/\/\S+\)?/gi, '');
   out = out.replace(/\(?\bwww\.[^\s)]+\)?/gi, '');
@@ -48,6 +66,10 @@ export function clean(text) {
 
   // Re-capitalise a sentence whose opening phrase we just deleted.
   out = out.replace(/(^|[.!?]\s+|\n)([a-z])/g, (_, lead, ch) => lead + ch.toUpperCase());
+
+  // Restore protected images and links
+  out = out.replace(/__LINK_TOKEN_(\d+)__/g, (_, idx) => links[Number(idx)] || '');
+  out = out.replace(/__IMG_TOKEN_(\d+)__/g, (_, idx) => images[Number(idx)] || '');
 
   return out;
 }

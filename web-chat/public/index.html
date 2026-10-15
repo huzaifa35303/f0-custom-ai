@@ -464,6 +464,22 @@
       </button>
     </div>
 
+    <!-- Image Lightbox Modal -->
+    <div id="image-lightbox" class="image-lightbox hidden" role="dialog" aria-modal="true" aria-label="Image Zoom">
+      <div class="image-lightbox-backdrop" id="image-lightbox-backdrop"></div>
+      <div class="image-lightbox-content">
+        <button type="button" class="image-lightbox-close" id="image-lightbox-close" aria-label="Close image">&times;</button>
+        <img id="image-lightbox-img" src="" alt="Full resolution preview" />
+        <div class="image-lightbox-footer">
+          <span id="image-lightbox-caption"></span>
+          <div class="image-lightbox-actions">
+            <a id="image-lightbox-dl" href="" download="foundr-ai-art.jpg" target="_blank" class="generated-image-btn">Download</a>
+            <a id="image-lightbox-open" href="" target="_blank" rel="noopener noreferrer" class="generated-image-btn">Full Res</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script type="module" src="/app.js"></script>
   </body>
 </html>
