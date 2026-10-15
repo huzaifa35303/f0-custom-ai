@@ -77,8 +77,28 @@ const FORGET_ALL =
 const RECITE =
   /^(what do you know|what have (i|you) (taught|learned)|show (me )?(your )?(brain|memory|facts)|list (your )?(facts|memory)|tumhe kya pata hai)\??$/i;
 
-/** A statement about the person, which is worth keeping without being told. */
-const ABOUT_ME = /^(my name is|i am called|i'm called|mera naam|main|i work at|i run|my company is)\b/i;
+/**
+ * A statement about the person talking.
+ *
+ * "i am ur father" is not a question, so searching the web for it was never
+ * going to work — it came back with pages about fathers. Anything someone says
+ * about themselves is kept instead, which is what "remember:" does, without
+ * having to say the word.
+ */
+const ABOUT_ME =
+  /^(i am|i'?m|im|my name is|i am called|i'?m called|i like|i love|i hate|i live|i work|i study|i have|i own|i run|my \w+ is|mera |meri |mere |main |mai |mujhe )/i;
+
+// "I am looking for a hotel" is a request, not a fact about the person, and
+// belongs on the web like any other question.
+const ASKING =
+  /\b(looking for|look for|want|wanna|need|searching|search for|trying to find|wondering|can you|could you|help me|tell me|show me|find me)\b/i;
+
+// Statements about the assistant rather than about the person. Nothing worth
+// storing, but nothing worth searching for either.
+// Either with a verb ("you are great") or in the contracted form that leaves
+// it out ("ur amazing"), which is how it usually arrives.
+const ABOUT_YOU =
+  /^(you|you'?re|ur|u)\s+(are|r|is|were|look|seem|sound|rock|suck|rule)\b|^(you'?re|ur)\s+\w+\s*$/i;
 
 /**
  * Is this message about the brain rather than a question for it?
@@ -96,9 +116,13 @@ export function detectBrainCommand(message) {
   const teach = text.match(TEACH);
   if (teach) return { kind: 'teach', payload: teach[2].trim() };
 
+  const statement = !text.includes('?') && text.split(/\s+/).length <= 14;
+
+  if (statement && ABOUT_YOU.test(text)) return { kind: 'aboutYou' };
+
   // "my name is Huzaifa" is worth keeping even without the word "remember".
-  if (ABOUT_ME.test(text) && text.split(/\s+/).length <= 12 && !text.includes('?')) {
-    return { kind: 'teach', payload: text };
+  if (statement && ABOUT_ME.test(text) && !ASKING.test(text)) {
+    return { kind: 'teach', payload: text, personal: true };
   }
 
   return null;
@@ -113,7 +137,9 @@ export async function runBrainCommand(command) {
   }
 }
 
-async function execute({ kind, payload }) {
+async function execute({ kind, payload, personal }) {
+  if (kind === 'aboutYou') return 'Noted. What would you like to know?';
+
   const facts = await load();
 
   if (kind === 'forgetAll') {
@@ -156,7 +182,7 @@ async function execute({ kind, payload }) {
     );
     facts2.push({ text, keywords: words, addedAt: new Date().toISOString() });
     await save(facts2);
-    return `Got it — I will remember that.`;
+    return personal ? "Noted — I'll remember that about you." : 'Got it — I will remember that.';
   }
 
   return null;

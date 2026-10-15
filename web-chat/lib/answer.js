@@ -179,6 +179,26 @@ function resolveFollowUp(question, previous) {
   return swapped === q ? `${q} ${topic}`.trim() : swapped;
 }
 
+/**
+ * Drop the polite wrapper around a question before searching for it.
+ *
+ * "i want to know the capital of france" searched for those words literally
+ * and came back with a song called "I Want More Money". The search engine
+ * wants the subject, not the request.
+ */
+function stripRequest(question) {
+  const stripped = question
+    .trim()
+    .replace(
+      /^((can|could|will|would) you\s+)?(please\s+)?(i\s+)?(just\s+)?(want(ed)? to know|need to know|would like to know|tell me( about)?|show me|find me|give me|explain|search( for)?|look up|google)\s+/i,
+      ''
+    )
+    .replace(/^(about|the)\s+/i, '')
+    .trim();
+  // Never strip away the whole message: "tell me more" is all wrapper.
+  return stripped.length >= 3 ? stripped : question.trim();
+}
+
 function looksLikeDefinition(question) {
   return /^(who|what|whats|what's|where)\b/i.test(question.trim());
 }
@@ -322,7 +342,10 @@ export async function answer(
   if (known.length) return say(known.join(' '));
 
   emit('status', { text: 'Searching the web' });
-  const query = resolveFollowUp(question, previous).replace(/\s+/g, ' ').trim().slice(0, 300);
+  const query = stripRequest(resolveFollowUp(question, previous))
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 300);
 
   const topic = subject(query);
   const [search, found] = await Promise.all([
