@@ -45,7 +45,7 @@ async function load() {
   }
 }
 
-export class ReadOnlyBrain extends Error {}
+class ReadOnlyBrain extends Error {}
 
 // Written to a temporary file and moved into place, so a crash mid-write
 // cannot leave the brain truncated.
@@ -186,8 +186,4 @@ export async function recall(question) {
     .sort((a, b) => b.coverage - a.coverage)
     .slice(0, 3)
     .map((s) => s.fact.text);
-}
-
-export async function brainSize() {
-  return (await load()).length;
 }

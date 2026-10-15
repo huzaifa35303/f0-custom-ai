@@ -3,7 +3,7 @@ import { config } from './config.js';
 const UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36';
 
-export function decodeEntities(s) {
+function decodeEntities(s) {
   return s
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
@@ -15,7 +15,7 @@ export function decodeEntities(s) {
     .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)));
 }
 
-export function stripTags(html) {
+function stripTags(html) {
   return decodeEntities(
     html
       .replace(/<script[\s\S]*?<\/script>/gi, ' ')
@@ -58,7 +58,7 @@ function domainOf(url) {
   }
 }
 
-export class RateLimited extends Error {}
+class RateLimited extends Error {}
 
 // DuckDuckGo's no-JS endpoint: no API key, no account, no quota.
 async function duckduckgo(query) {

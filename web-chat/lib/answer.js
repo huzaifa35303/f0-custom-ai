@@ -162,7 +162,7 @@ const FRAGMENT = /^(and|also|what about|how about|why|and what|ok(ay)? and)\b/i;
  * earlier subject across turns is what makes a sequence of questions feel like
  * a conversation rather than a series of unrelated lookups.
  */
-export function resolveFollowUp(question, previous) {
+function resolveFollowUp(question, previous) {
   const q = question.trim();
   if (!previous) return q;
 

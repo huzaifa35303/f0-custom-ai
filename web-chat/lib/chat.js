@@ -28,7 +28,7 @@ const ROMAN_HI =
   /\b(aap|app|tum|tumhara|tumhe|tumhein|tujhe|mera|tera|kya|kia|kaise|kaisa|kaisi|kyu|kyun|kaun|kisne|kis ne|banaya|naam|nam|shukriya|dhanyavad|theek|thik|accha|acha|achha|bhai|haan|nahi|nahin|hai|hoon|hun|ho|batao|bolo|salam|assalam|asalam|walaikum|namaste|namaskar)\b/i;
 
 /** Which language and script to answer in. */
-export function detectLanguage(text) {
+function detectLanguage(text) {
   for (const [pattern, code] of SCRIPTS) if (pattern.test(text)) return code;
   if (ROMAN_PA.test(text)) return 'paRoman';
   if (ROMAN_HI.test(text)) return 'roman';
@@ -273,7 +273,3 @@ export function chatReply(message) {
   return null;
 }
 
-/** Urdu needs the answer laid out right to left; the others do not. */
-export function isRtl(text) {
-  return /[؀-ۿݐ-ݿ]/.test(text);
-}
