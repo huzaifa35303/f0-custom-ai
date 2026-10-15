@@ -110,7 +110,7 @@ async function handleChat(req, res) {
   const previous = asked.at(-2)?.content ?? '';
   const previousAnswer = messages.filter((m) => m.role === 'assistant').at(-1)?.content ?? '';
   // Selected model & attached document
-  const model = payload.model === 'genni 2' ? 'genni 2' : 'genni 1';
+  const model = payload.model === 'genni 2' ? 'genni 2' : (payload.model === 'genni 1.1' ? 'genni 1.1' : 'genni 1');
   const file = payload.file && typeof payload.file.content === 'string' ? payload.file : null;
 
   try {

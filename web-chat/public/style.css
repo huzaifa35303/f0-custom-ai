@@ -699,6 +699,10 @@ main {
   color: #a78bfa;
 }
 
+.model-item-icon.liquid-icon {
+  color: #06b6d4;
+}
+
 .model-item-icon.muted-icon {
   color: var(--muted);
 }
@@ -731,6 +735,12 @@ main {
   background: color-mix(in srgb, #8b5cf6 20%, transparent);
   color: #a78bfa;
   border: 1px solid color-mix(in srgb, #8b5cf6 40%, transparent);
+}
+
+.model-item-pill.pill-liquid {
+  background: color-mix(in srgb, #06b6d4 18%, transparent);
+  color: #06b6d4;
+  border: 1px solid color-mix(in srgb, #06b6d4 35%, transparent);
 }
 
 .model-item-pill.pill-fast {

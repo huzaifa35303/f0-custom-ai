@@ -11,4 +11,6 @@ export const config = {
   maxSentences: Number(process.env.MAX_SENTENCES || 6),
   // Optional LangSearch API key for high-speed (100ms) web search.
   langsearchApiKey: process.env.LANGSEARCH_API_KEY || '',
+  // OpenRouter API key for high-speed Liquid LFM 2.5 and specialized models
+  openrouterApiKey: process.env.OPENROUTER_API_KEY || '',
 };
