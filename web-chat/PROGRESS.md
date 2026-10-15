@@ -94,9 +94,13 @@ Still not ChatGPT, and said so. No reasoning, no sentences of its own.
 - Occasional fragments: image captions and a page title glued to a sentence.
 - Nothing open-ended works — no writing, reasoning, maths or translation.
 
-## If picking this back up
+## Zero-Key AI Layer (lib/ai.js)
 
-The place to add a model back is `answer()` in `lib/answer.js`: keep the small
-talk check, the search and the page reads, and hand the retrieved text to the
-model instead of scoring sentences. `searchWeb()` already returns the structure
-such a call needs.
+Added a free, zero-API-key reasoning layer via public inference (`lib/ai.js`).
+
+- **Zero dependencies, zero API keys, zero setup:** Uses native Node `fetch` with streaming SSE.
+- **Thinking / Reasoning separation:** Separates internal reasoning from user-facing tokens, streaming status updates ("Thinking", "Reasoning", "Writing the answer") in real-time.
+- **Context Grounding:** The model is fed the retrieved search context or taught facts from `brain.json`, keeping answers accurate and factual.
+- **Rewrites & Translations:** Commands like "translate to Urdu" or "rephrase simply" now work naturally.
+- **Resilient Fallback:** If the endpoint times out or is unreachable, `lib/answer.js` immediately falls back to the local extractive sentence scoring algorithm so an answer is always served.
+

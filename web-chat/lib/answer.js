@@ -5,6 +5,7 @@ import { chatReply } from './chat.js';
 import { calculate } from './calc.js';
 import { detectCommand, applyCommand } from './commands.js';
 import { detectBrainCommand, runBrainCommand, recall } from './brain.js';
+import { generateAI } from './ai.js';
 
 const STOPWORDS = new Set(
   `a an the and or but if then than that this these those of in on at to for from by with about into over after before
@@ -330,6 +331,19 @@ export async function answer(
   if (command) {
     const result = applyCommand(command, previousAnswer);
     if (!result.rerun) return say(result.text);
+
+    // If it is a rewrite / translation instruction, use AI with previousAnswer as context
+    if (command === 'rewrite' && previousAnswer) {
+      const rewritten = await generateAI({
+        question,
+        context: previousAnswer,
+        onStatus: (s) => emit('status', s),
+        onToken: (c) => emit('token', { text: c }),
+      });
+      if (rewritten) return say(clean(rewritten));
+      return say("I can't reword or translate that right now — try asking as a list or cutting it shorter.");
+    }
+
     // "more" needs fresh material, so the earlier question is asked again,
     // this time with room for twice as much of it.
     if (previous) question = previous;
@@ -339,7 +353,16 @@ export async function answer(
   // Anything taught beats anything found: you know your own business, a
   // search result does not.
   const known = await recall(question);
-  if (known.length) return say(known.join(' '));
+  if (known.length) {
+    const aiRecall = await generateAI({
+      question,
+      context: known.join('\n'),
+      onStatus: (s) => emit('status', s),
+      onToken: (c) => emit('token', { text: c }),
+    });
+    if (aiRecall) return clean(aiRecall);
+    return say(known.join(' '));
+  }
 
   emit('status', { text: 'Searching the web' });
   const query = stripRequest(resolveFollowUp(question, previous))
@@ -355,7 +378,37 @@ export async function answer(
   const { results, limited } = search;
   const summary = found && relevant(found, topic) ? found : null;
 
+  // Build context from web search & Wikipedia summary
+  const contextPieces = [];
+  if (summary) contextPieces.push(`Wikipedia (${summary.title}):\n${summary.text}`);
+  for (const r of results.slice(0, 4)) {
+    const body = r.text || r.snippet;
+    if (body) contextPieces.push(`${r.title} (${r.domain}):\n${body.slice(0, 1200)}`);
+  }
+  const contextText = contextPieces.join('\n\n');
+
+  if (contextText.length > 50) {
+    const aiAnswer = await generateAI({
+      question,
+      context: contextText,
+      onStatus: (s) => emit('status', s),
+      onToken: (c) => emit('token', { text: c }),
+    });
+    if (aiAnswer) {
+      return clean(aiAnswer);
+    }
+  }
+
+  // If search was completely empty, still attempt direct AI generation for reasoning / general questions
   if (!results.length && !summary) {
+    const directAi = await generateAI({
+      question,
+      context: '',
+      onStatus: (s) => emit('status', s),
+      onToken: (c) => emit('token', { text: c }),
+    });
+    if (directAi) return clean(directAi);
+
     return limited
       ? 'The search engine is throttling this machine right now, so I could not look that up. Give it a minute and ask again.'
       : "I couldn't find anything on that. Try rephrasing it, or give me a bit more to go on.";

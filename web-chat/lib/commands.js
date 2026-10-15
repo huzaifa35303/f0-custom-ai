@@ -59,7 +59,7 @@ function sentencesOf(text) {
  * material rather than a reshuffle of what is already on screen.
  */
 export function applyCommand(name, previousAnswer) {
-  if (name === 'more') return { rerun: true };
+  if (name === 'more' || name === 'rewrite') return { rerun: true };
 
   if (!previousAnswer) {
     return { text: 'There is nothing above to work on yet — ask me something first.' };
@@ -76,11 +76,6 @@ export function applyCommand(name, previousAnswer) {
 
     case 'repeat':
       return { text: previousAnswer };
-
-    case 'rewrite':
-      return {
-        text: "I can't reword or translate that — I don't write my own sentences, I pick the ones that answer your question off the pages I read. I can give it as a list, cut it shorter, or go and find more.",
-      };
 
     default:
       return { text: previousAnswer };
