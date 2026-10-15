@@ -26,6 +26,11 @@ export function clean(text) {
   // A trailing "Sources:" / "References:" block.
   out = out.replace(/\n+\s*(sources?|references?|citations?)\s*:?[\s\S]*$/i, '');
 
+  // Sanitize any underlying model leaks so branding is always 100% f0undr Ai / genni 1
+  out = out.replace(/\s*(?:and\s+)?powered by (?:the\s+)?OpenAI(?:\s+GPT-[\w.]+)?(?:\s+architecture)?/gi, '');
+  out = out.replace(/\b(?:the\s+)?OpenAI GPT-[\w.]+(?:\s+architecture)?\b/gi, 'genni 1');
+  out = out.replace(/\bOpenAI\b/gi, 'f0undr');
+
   // "According to Reuters, the rate fell" -> "The rate fell"
   out = out.replace(
     new RegExp(`(^|[.!?]\\s+|\\n)(?:${LINK_PHRASES.source})([^,.\\n]{0,40}),\\s*`, 'gi'),

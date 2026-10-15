@@ -102,14 +102,14 @@ const INTENTS = [
   {
     name: 'identity',
     requires: SELF,
-    test: /^(who|what)\s+(are|r)\s+(you|u)\b|\bare you (a )?(human|real|robot|bot|person|ai)\b|\btum (kaun|kon) ho\b|\bkya tum (insaan|insan|robot) ho\b|तुम कौन हो|آپ کون ہیں|تم کون ہو|ਤੁਸੀਂ ਕੌਣ ਹੋ/i,
+    test: /^(who|what)\s+(are|r)\s+(you|u)\b|\bare you (a )?(human|real|robot|bot|person|ai)\b|\bintroduce (yourself|urself)\b|\btell me about (yourself|urself|you)\b|\btum (kaun|kon) ho\b|\bkya tum (insaan|insan|robot) ho\b|तुम कौन हो|آپ کون ہیں|تم کون ہو|ਤੁਸੀਂ ਕੌਣ ਹੋ/i,
     replies: {
-      en: `I'm ${NAME}, an assistant powered by model ${MODEL} and created by ${MAKER}. (Models genni 2 and genni 3 are coming soon!)`,
-      roman: `Main ${NAME} hoon, model ${MODEL} par based assistant jo f0undr aur f0undr Team ne banaya. (genni 2 aur genni 3 jald aa rahe hain!)`,
-      hi: `मैं ${NAME} हूँ, मॉडल ${MODEL} पर आधारित असिस्टेंट जिसे f0undr और f0undr Team ने बनाया है। (genni 2 और genni 3 जल्द आ रहे हैं!)`,
-      ur: `میں ${NAME} ہوں، ماڈل ${MODEL} پر مبنی اسسٹنٹ جسے f0undr اور f0undr Team نے بنایا ہے۔ (genni 2 اور genni 3 جلد آ رہے ہیں!)`,
-      pa: `ਮੈਂ ${NAME} ਹਾਂ, ਮਾਡਲ ${MODEL} 'ਤੇ ਆਧਾਰਿਤ ਅਸਿਸਟੈਂਟ ਜਿਸਨੂੰ f0undr ਅਤੇ f0undr Team ਨੇ ਬਣਾਇਆ ਹੈ। (genni 2 ਅਤੇ genni 3 ਜਲਦੀ ਆ ਰਹੇ ਹਨ!)`,
-      paRoman: `Main ${NAME} haan, model ${MODEL} te based assistant jehnu f0undr te f0undr Team ne banaya. (genni 2 te genni 3 jaldi aa rahe ne!)`,
+      en: `I am ${NAME}, a conversational AI built on ${MODEL} and created by ${MAKER}. I assist with questions, research, and ideas, pulling in real-time web data via LangSearch whenever timely facts are needed. (Upcoming models genni 2 and genni 3 are coming soon!)`,
+      roman: `Main ${NAME} hoon, ek AI assistant jo ${MODEL} par chalta hai aur jise ${MAKER} ne banaya hai. Main sawalon ke jawab deta hoon aur LangSearch ke zariye real-time web data lata hoon. (genni 2 aur genni 3 jald aa rahe hain!)`,
+      hi: `मैं ${NAME} हूँ, मॉडल ${MODEL} पर आधारित AI जिसे ${MAKER} ने बनाया है। मैं सवालों के जवाब देता हूँ और LangSearch से लाइव वेब डेटा प्राप्त करता हूँ। (genni 2 और genni 3 जल्द आ रहे हैं!)`,
+      ur: `میں ${NAME} ہوں، ماڈل ${MODEL} پر مبنی AI اسسٹنٹ جسے ${MAKER} نے بنایا ہے۔ میں معلومات، تحقیق اور LangSearch کے ذریعے بروقت ڈیٹا فراہم کرتا ہوں۔ (genni 2 اور genni 3 جلد آ رہے ہیں!)`,
+      pa: `ਮੈਂ ${NAME} ਹਾਂ, ਮਾਡਲ ${MODEL} 'ਤੇ ਬਣਿਆ AI ਅਸਿਸਟੈਂਟ ਜਿਸਨੂੰ ${MAKER} ਨੇ ਬਣਾਇਆ ਹੈ। (genni 2 ਅਤੇ genni 3 ਜਲਦੀ ਆ ਰਹੇ ਹਨ!)`,
+      paRoman: `Main ${NAME} haan, model ${MODEL} te based AI assistant jehnu ${MAKER} ne banaya hai. (genni 2 te genni 3 jaldi aa rahe ne!)`,
     },
   },
   {
