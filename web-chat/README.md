@@ -62,6 +62,44 @@ It is also extractive, so an answer occasionally carries a sentence that is
 true but beside the point. Nothing is invented — the failure mode is irrelevance,
 not fabrication.
 
+## Teaching it (the brain)
+
+Tell it something and it keeps it:
+
+```
+remember: f0undr builds outbound lead generation systems for agencies
+my name is Huzaifa
+yaad rakho: mera kaam lead generation hai
+```
+
+Ask about it later and the answer comes from what you taught, not from the web
+- you know your own business and a search result does not. Also understood:
+`what do you know`, `forget: <thing>`, `forget everything`.
+
+It lives in `brain.json` next to the code: plain JSON, yours, readable, hand
+editable, and backed up by committing it. There is no model, so nothing is
+learned statistically - "training" here means what it means to a person. You
+tell it, it keeps it, it uses it.
+
+## Commands about the last answer
+
+An instruction is not a question. "give me list just" used to be searched for,
+which returned gift-registry spam; these are now handled as text operations on
+the reply above:
+
+| You type | What happens |
+|---|---|
+| `give me a list`, `bullets` | the last answer as bullet points |
+| `shorter`, `tldr`, `summary` | just its opening line |
+| `more`, `aur batao` | the last question asked again, at twice the length |
+| `repeat` | the last answer again |
+| `translate`, `rewrite`, `simpler` | declined, and says why |
+
+The last row is the honest limit. Rewording and translating mean writing new
+sentences, and this app does not write sentences - it picks them off pages. A
+command has to be six words or fewer, so "list of best AI models 2026" is still
+a question.
+
 ## How an answer gets built
 
 `lib/answer.js`, in order:
@@ -69,6 +107,11 @@ not fabrication.
 1. **Chat check** — `lib/chat.js` matches the message against the conversational
    intents, detects the language from its script or its words, and replies in
    kind. If it matches, nothing is searched.
+2. **Brain check** — teaching, forgetting, or a question the brain already
+   covers (`lib/brain.js`). Half the question's distinctive words have to
+   appear in a stored fact, so a loose match cannot answer "what is Python"
+   with something you said about your own project.
+3. **Command check** — an instruction about the last answer (`lib/commands.js`).
 2. **Search** — DuckDuckGo's no-JS HTML endpoint, falling back to the Wikipedia
    API if DuckDuckGo blocks the request or finds nothing.
 3. **Read** — the top four results are fetched and reduced to plain text.
@@ -105,6 +148,8 @@ not fabrication.
 server.js          HTTP server: static files, /api/chat (SSE), /api/health
 ask.js             ask a question from the terminal
 lib/chat.js        conversation: identity, small talk, four languages
+lib/brain.js       what you have taught it, stored in brain.json
+lib/commands.js    instructions about the last answer
 lib/answer.js      scoring and composition — the part that decides what to say
 lib/search.js      DuckDuckGo + Wikipedia, and page fetching
 lib/clean.js       strips links and "according to" phrasing

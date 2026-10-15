@@ -67,6 +67,25 @@ help - each with trigger patterns and a reply per language.
 - DuckDuckGo throttling answers 202 with a challenge page, not an error. It is
   now detected and reported as throttling rather than as an empty web.
 
+## Brain and commands
+
+Asked for "my own custom AI" with no model and no API key, after being told
+plainly that reasoning and instruction-following need a model. What was built
+instead, within that constraint:
+
+- `lib/brain.js` - facts you teach, in brain.json. Teach, forget, recite.
+  Recall needs 50% of the question's distinctive words to appear in the fact.
+  Taught facts beat web results. Written via temp file + rename so a crash
+  cannot truncate it.
+- `lib/commands.js` - list / shorter / more / repeat applied to the previous
+  answer, which is why the server now passes previousAnswer. Rewrite and
+  translate are declined rather than faked; both need a model.
+- A six-word ceiling keeps "list of best AI models 2026" a question.
+- The chat `languages` intent had to be narrowed: "do you know" was swallowing
+  "what do you know".
+
+Still not ChatGPT, and said so. No reasoning, no sentences of its own.
+
 ## Known weak spots
 
 - "Latest news" questions read as a digest of headlines, not a briefing.
