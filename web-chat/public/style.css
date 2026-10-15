@@ -858,6 +858,17 @@ main {
   animation: modelSubmenuPop 0.16s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Invisible bridge bridging the 8px gap between trigger and panel to prevent mouseout flicker */
+.model-submenu-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -14px;
+  width: 16px;
+  height: 100%;
+  background: transparent;
+}
+
 @keyframes modelSubmenuPop {
   from {
     opacity: 0;
@@ -909,6 +920,21 @@ main {
     left: 0;
     bottom: calc(100% + 6px);
     width: 100%;
+    animation: modelSubmenuPopMobile 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .model-submenu-panel::before {
+    display: none;
+  }
+}
+
+@keyframes modelSubmenuPopMobile {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 

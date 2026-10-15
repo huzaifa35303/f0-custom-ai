@@ -103,7 +103,7 @@ function initSidebar() {
 
   // Close context menu on outside click
   document.addEventListener('click', (e) => {
-    if (!contextMenu.contains(e.target)) {
+    if (contextMenu && !contextMenu.contains(e.target)) {
       closeContextMenu();
     }
   });
@@ -119,7 +119,7 @@ function initSidebar() {
 
   // Keyboard shortcuts when context menu is active
   window.addEventListener('keydown', (e) => {
-    if (!contextMenu.classList.contains('hidden') && contextChatId) {
+    if (contextMenu && !contextMenu.classList.contains('hidden') && contextChatId) {
       const key = e.key.toUpperCase();
       if (key === 'P') {
         e.preventDefault();
@@ -153,6 +153,10 @@ function closeSidebar() {
 function startNewChat() {
   activeChatId = null;
   history = [];
+  attachedFile = null;
+  if (fileInput) fileInput.value = '';
+  filePreview?.classList.add('hidden');
+  attachBtn?.classList.remove('has-file');
   thread.innerHTML = WELCOME;
   renderChatList();
   input.focus();
@@ -165,6 +169,9 @@ function selectChat(id) {
 
   activeChatId = chat.id;
   chat.unread = false;
+  if (chat.model) {
+    setModel(chat.model);
+  }
   saveChats();
 
   history = [...chat.messages];
@@ -175,7 +182,13 @@ function selectChat(id) {
   } else {
     for (const msg of history) {
       const body = addMessage(msg.role);
-      body.innerHTML = msg.role === 'assistant' ? render(msg.content) : escapeHtml(msg.content);
+      if (msg.role === 'assistant') {
+        renderMessageContent(body, msg.content);
+      } else {
+        const textContainer = document.createElement('div');
+        textContainer.textContent = msg.content;
+        body.appendChild(textContainer);
+      }
     }
   }
 
@@ -478,6 +491,14 @@ function setModel(model) {
     }
   });
 
+  if (activeChatId) {
+    const activeChat = chats.find((c) => c.id === activeChatId);
+    if (activeChat && activeChat.model !== model) {
+      activeChat.model = model;
+      saveChats();
+    }
+  }
+
   closeModelDropdown();
 }
 
@@ -624,6 +645,7 @@ async function ask(text) {
       id: 'chat_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
       title: text.length > 28 ? text.slice(0, 28) + '…' : text,
       messages: [],
+      model: currentModel,
       pinned: false,
       unread: false,
       createdAt: Date.now(),
@@ -751,6 +773,7 @@ async function ask(text) {
     const currentChat = chats.find((c) => c.id === activeChatId);
     if (currentChat) {
       currentChat.messages = [...history];
+      currentChat.model = currentModel;
       currentChat.updatedAt = Date.now();
       saveChats();
       renderChatList();

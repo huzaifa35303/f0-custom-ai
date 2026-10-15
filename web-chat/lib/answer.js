@@ -336,7 +336,7 @@ export async function answer(
     fileContext = `Attached Document [${file.name || 'document'}]:\n${file.content.slice(0, 12000)}\n\n`;
   }
 
-  const canned = !fileContext ? chatReply(question) : null;
+  const canned = !fileContext ? chatReply(question, model) : null;
   if (canned) return say(canned);
 
   // Sums are worked out, not looked up.

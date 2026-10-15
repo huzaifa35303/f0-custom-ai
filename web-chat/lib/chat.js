@@ -59,59 +59,75 @@ const SELF =
  *
  * Order matters: the first match wins, so the specific intents come first.
  */
-const INTENTS = [
-  {
-    name: 'model',
-    requires: SELF,
-    test: /\b(what|which|kon sa|kaun sa|keda)\s+(model|version|engine)\b|\bmodel\s*(name|kya)?\b|\bmodel\s+version\b|کون سا ماڈل|कौन सा मॉडल/i,
-    replies: {
-      en: `I am ${NAME}, powered by model ${MODEL}. (Upcoming models genni 2 and genni 3 are coming soon!)`,
-      roman: `Main ${NAME} hoon, jo model ${MODEL} par chalta hai. (genni 2 aur genni 3 jald aa rahe hain!)`,
-      hi: `मैं ${NAME} हूँ, जो मॉडल ${MODEL} पर चलता है। (genni 2 और genni 3 जल्द आ रहे हैं!)`,
-      ur: `میں ${NAME} ہوں، جو ماڈل ${MODEL} پر چلتا ہے۔ (genni 2 اور genni 3 جلد آ رہے ہیں!)`,
-      pa: `ਮੈਂ ${NAME} ਹਾਂ, ਜੋ ਮਾਡਲ ${MODEL} 'ਤੇ ਚੱਲਦਾ ਹੈ। (genni 2 ਅਤੇ genni 3 ਜਲਦੀ ਆ ਰਹੇ ਹਨ!)`,
-      paRoman: `Main ${NAME} haan, jo model ${MODEL} te chalda hai. (genni 2 te genni 3 jaldi aa rahe ne!)`,
+function getModelLabel(m) {
+  if (m === 'genni 2') return 'genni 2 (Deep Reasoning & Code Engine)';
+  if (m === 'north-mini-code' || m === 'cohere/north-mini-code:free') return 'North Mini Code';
+  if (m === 'liquid-neural' || m === 'genni 1.1' || m === 'genni ln') return 'Liquid Neural';
+  return 'genni 1';
+}
+
+function getIntents(model = 'genni 1') {
+  const modelLabel = getModelLabel(model);
+  const noteEn = model === 'genni 2' ? '(genni 3 coming soon!)' : '(genni 2 is active, genni 3 coming soon!)';
+  const noteRoman = model === 'genni 2' ? '(genni 3 jald aa raha hai!)' : '(genni 2 active hai, genni 3 jald aa raha hai!)';
+  const noteHi = model === 'genni 2' ? '(genni 3 जल्द आ रहा है!)' : '(genni 2 सक्रिय है, genni 3 जल्द आ रहा है!)';
+  const noteUr = model === 'genni 2' ? '(genni 3 جلد آ رہا ہے!)' : '(genni 2 فعال ہے، genni 3 جلد آ رہا ہے!)';
+  const notePa = model === 'genni 2' ? '(genni 3 ਜਲਦੀ ਆ ਰਿਹਾ ਹੈ!)' : '(genni 2 ਸਰਗਰਮ ਹੈ, genni 3 ਜਲਦੀ ਆ ਰਿਹਾ ਹੈ!)';
+  const notePaRoman = model === 'genni 2' ? '(genni 3 jaldi aa reha hai!)' : '(genni 2 active hai, genni 3 jaldi aa reha hai!)';
+
+  return [
+    {
+      name: 'model',
+      requires: SELF,
+      test: /\b(what|which|kon sa|kaun sa|keda)\s+(model|version|engine)\b|\bmodel\s*(name|kya)?\b|\bmodel\s+version\b|کون سا ماڈل|कौन सा मॉडल/i,
+      replies: {
+        en: `I am ${NAME}, powered by model ${modelLabel}. ${noteEn}`,
+        roman: `Main ${NAME} hoon, jo model ${modelLabel} par chalta hai. ${noteRoman}`,
+        hi: `मैं ${NAME} हूँ, जो मॉडल ${modelLabel} पर चलता है। ${noteHi}`,
+        ur: `میں ${NAME} ہوں، جو ماڈل ${modelLabel} پر چلتا ہے۔ ${noteUr}`,
+        pa: `ਮੈਂ ${NAME} ਹਾਂ, ਜੋ ਮਾਡਲ ${modelLabel} 'ਤੇ ਚੱਲਦਾ ਹੈ। ${notePa}`,
+        paRoman: `Main ${NAME} haan, jo model ${modelLabel} te chalda hai. ${notePaRoman}`,
+      },
     },
-  },
-  {
-    name: 'creator',
-    requires: SELF,
-    test: /\b(who|kisne|kis ne|kaun|kon)\b.*\b(made|make|created|built|develop(?:ed)?|designed|owns?|banaya|banaye|bnaya|banayi|bnaia)\b|\b(made|created|built|developed)\s+(you|u|this)\b|\b(tumhe|tumhein|tujhe|tuhanu|mainu|aapko|isko)\b.*\bbanaya\b|\b(your|ur)\s+(maker|creator|owner|developer|company)\b|\bkisne banaya\b|किसने बनाया|کس نے بنایا|ਕਿਸਨੇ ਬਣਾਇਆ/i,
-    replies: {
-      en: `I'm ${NAME}, powered by model ${MODEL} and created by ${MAKER}. (genni 2 & genni 3 coming soon!)`,
-      roman: `Main ${NAME} hoon, powered by model ${MODEL} — mujhe f0undr aur f0undr Team ne banaya hai. (genni 2 aur genni 3 jald aa rahe hain!)`,
-      hi: `मैं ${NAME} हूँ, मॉडल ${MODEL} द्वारा संचालित — मुझे f0undr और f0undr Team ने बनाया है। (genni 2 और genni 3 जल्द आ रहे हैं!)`,
-      ur: `میں ${NAME} ہوں، ماڈل ${MODEL} سے تقویت یافتہ — مجھے f0undr اور f0undr Team نے بنایا ہے۔ (genni 2 اور genni 3 جلد آ رہے ہیں!)`,
-      pa: `ਮੈਂ ${NAME} ਹਾਂ, ਮਾਡਲ ${MODEL} ਦੁਆਰਾ ਸੰਚਾਲਿਤ — ਮੈਨੂੰ f0undr ਅਤੇ f0undr Team ਨੇ ਬਣਾਇਆ ਹੈ। (genni 2 ਅਤੇ genni 3 ਜਲਦੀ ਆ ਰਹੇ ਹਨ!)`,
-      paRoman: `Main ${NAME} haan, powered by model ${MODEL} — mainu f0undr te f0undr Team ne banaya hai. (genni 2 te genni 3 jaldi aa rahe ne!)`,
+    {
+      name: 'creator',
+      requires: SELF,
+      test: /\b(who|kisne|kis ne|kaun|kon)\b.*\b(made|make|created|built|develop(?:ed)?|designed|owns?|banaya|banaye|bnaya|banayi|bnaia)\b|\b(made|created|built|developed)\s+(you|u|this)\b|\b(tumhe|tumhein|tujhe|tuhanu|mainu|aapko|isko)\b.*\bbanaya\b|\b(your|ur)\s+(maker|creator|owner|developer|company)\b|\bkisne banaya\b|किसने बनाया|کس نے بنایا|ਕਿਸਨੇ ਬਣਾਇਆ/i,
+      replies: {
+        en: `I'm ${NAME}, powered by model ${modelLabel} and created by ${MAKER}. ${noteEn}`,
+        roman: `Main ${NAME} hoon, powered by model ${modelLabel} — mujhe f0undr aur f0undr Team ne banaya hai. ${noteRoman}`,
+        hi: `मैं ${NAME} हूँ, मॉडल ${modelLabel} द्वारा संचालित — मुझे f0undr और f0undr Team ने बनाया है। ${noteHi}`,
+        ur: `میں ${NAME} ہوں، ماڈل ${modelLabel} سے تقویت یافتہ — مجھے f0undr اور f0undr Team نے بنایا ہے۔ ${noteUr}`,
+        pa: `ਮੈਂ ${NAME} ਹਾਂ, ਮਾਡਲ ${modelLabel} ਦੁਆਰਾ ਸੰਚਾਲਿਤ — ਮੈਨੂੰ f0undr ਅਤੇ f0undr Team ਨੇ ਬਣਾਇਆ ਹੈ। ${notePa}`,
+        paRoman: `Main ${NAME} haan, powered by model ${modelLabel} — mainu f0undr te f0undr Team ne banaya hai. ${notePaRoman}`,
+      },
     },
-  },
-  {
-    name: 'name',
-    requires: SELF,
-    test: /\b(what(?:'?s| is| s)?|tell me)\s+(your|ur|the)\s+name\b|\bwhats? ur name\b|\byour name\b|\b(tumhara|tumhara|tuhada|aapka|apka|tera)\s*(naam|nam)\b|\b(naam|nam)\s*(kya|ki|kiya)\b|तुम्हारा नाम|आपका नाम|تمہارا نام|آپ کا نام|ਤੁਹਾਡਾ ਨਾਮ/i,
-    replies: {
-      en: `I'm ${NAME}.`,
-      roman: `Mera naam ${NAME} hai.`,
-      hi: `मेरा नाम ${NAME} है।`,
-      ur: `میرا نام ${NAME} ہے۔`,
-      pa: `ਮੇਰਾ ਨਾਮ ${NAME} ਹੈ।`,
-      paRoman: `Mera naam ${NAME} hai.`,
+    {
+      name: 'name',
+      requires: SELF,
+      test: /\b(what(?:'?s| is| s)?|tell me)\s+(your|ur|the)\s+name\b|\bwhats? ur name\b|\byour name\b|\b(tumhara|tumhara|tuhada|aapka|apka|tera)\s*(naam|nam)\b|\b(naam|nam)\s*(kya|ki|kiya)\b|तुम्हारा नाम|आपका नाम|تمہارا نام|آپ کا نام|ਤੁਹਾਡਾ ਨਾਮ/i,
+      replies: {
+        en: `I'm ${NAME}.`,
+        roman: `Mera naam ${NAME} hai.`,
+        hi: `मेरा नाम ${NAME} है।`,
+        ur: `میرا نام ${NAME} ہے۔`,
+        pa: `ਮੇਰਾ ਨਾਮ ${NAME} ਹੈ।`,
+        paRoman: `Mera naam ${NAME} hai.`,
+      },
     },
-  },
-  {
-    name: 'identity',
-    requires: SELF,
-    test: /^(who|what)\s+(are|r)\s+(you|u)\b|\bare you (a )?(human|real|robot|bot|person|ai)\b|\bintroduce (yourself|urself)\b|\btell me about (yourself|urself|you)\b|\btum (kaun|kon) ho\b|\bkya tum (insaan|insan|robot) ho\b|तुम कौन हो|آپ کون ہیں|تم کون ہو|ਤੁਸੀਂ ਕੌਣ ਹੋ/i,
-    replies: {
-      en: `I am ${NAME}, a conversational AI built on ${MODEL} and created by ${MAKER}. I assist with questions, research, and ideas, pulling in real-time web data via LangSearch whenever timely facts are needed. (Upcoming models genni 2 and genni 3 are coming soon!)`,
-      roman: `Main ${NAME} hoon, ek AI assistant jo ${MODEL} par chalta hai aur jise ${MAKER} ne banaya hai. Main sawalon ke jawab deta hoon aur LangSearch ke zariye real-time web data lata hoon. (genni 2 aur genni 3 jald aa rahe hain!)`,
-      hi: `मैं ${NAME} हूँ, मॉडल ${MODEL} पर आधारित AI जिसे ${MAKER} ने बनाया है। मैं सवालों के जवाब देता हूँ और LangSearch से लाइव वेब डेटा प्राप्त करता हूँ। (genni 2 और genni 3 जल्द आ रहे हैं!)`,
-      ur: `میں ${NAME} ہوں، ماڈل ${MODEL} پر مبنی AI اسسٹنٹ جسے ${MAKER} نے بنایا ہے۔ میں معلومات، تحقیق اور LangSearch کے ذریعے بروقت ڈیٹا فراہم کرتا ہوں۔ (genni 2 اور genni 3 جلد آ رہے ہیں!)`,
-      pa: `ਮੈਂ ${NAME} ਹਾਂ, ਮਾਡਲ ${MODEL} 'ਤੇ ਬਣਿਆ AI ਅਸਿਸਟੈਂਟ ਜਿਸਨੂੰ ${MAKER} ਨੇ ਬਣਾਇਆ ਹੈ। (genni 2 ਅਤੇ genni 3 ਜਲਦੀ ਆ ਰਹੇ ਹਨ!)`,
-      paRoman: `Main ${NAME} haan, model ${MODEL} te based AI assistant jehnu ${MAKER} ne banaya hai. (genni 2 te genni 3 jaldi aa rahe ne!)`,
+    {
+      name: 'identity',
+      requires: SELF,
+      test: /^(who|what)\s+(are|r)\s+(you|u)\b|\bare you (a )?(human|real|robot|bot|person|ai)\b|\bintroduce (yourself|urself)\b|\btell me about (yourself|urself|you)\b|\btum (kaun|kon) ho\b|\bkya tum (insaan|insan|robot) ho\b|तुम कौन हो|آپ کون ہیں|تم کون ہو|ਤੁਸੀਂ ਕੌਣ ਹੋ/i,
+      replies: {
+        en: `I am ${NAME}, a conversational AI built on ${modelLabel} and created by ${MAKER}. I assist with questions, research, and ideas, pulling in real-time web data via LangSearch whenever timely facts are needed. ${noteEn}`,
+        roman: `Main ${NAME} hoon, ek AI assistant jo ${modelLabel} par chalta hai aur jise ${MAKER} ne banaya hai. Main sawalon ke jawab deta hoon aur LangSearch ke zariye real-time web data lata hoon. ${noteRoman}`,
+        hi: `मैं ${NAME} हूँ, मॉडल ${modelLabel} पर आधारित AI जिसे ${MAKER} ने बनाया है। मैं सवालों के जवाब देता हूँ और LangSearch से लाइव वेब डेटा प्राप्त करता हूँ। ${noteHi}`,
+        ur: `میں ${NAME} ہوں، ماڈل ${modelLabel} پر مبنی AI اسسٹنٹ جسے ${MAKER} نے بنایا ہے۔ میں معلومات، تحقیق اور LangSearch کے ذریعے بروقت ڈیٹا فراہم کرتا ہوں۔ ${noteUr}`,
+        pa: `ਮੈਂ ${NAME} ਹਾਂ, ਮਾਡਲ ${modelLabel} 'ਤੇ ਬਣਿਆ AI ਅਸਿਸਟੈਂਟ ਜਿਸਨੂੰ ${MAKER} ਨੇ ਬਣਾਇਆ ਹੈ। ${notePa}`,
+        paRoman: `Main ${NAME} haan, model ${modelLabel} te based AI assistant jehnu ${MAKER} ne banaya hai. ${notePaRoman}`,
+      },
     },
-  },
   {
     name: 'capabilities',
     requires: SELF,
@@ -227,6 +243,7 @@ const INTENTS = [
     },
   },
 ];
+}
 
 /**
  * Greetings and thanks, spelled however they actually arrive.
@@ -288,14 +305,15 @@ function madeOf(text, vocabulary) {
  * electric car" is a question about the world, not about me, and a keyword
  * buried in a sentence should not hijack it.
  */
-export function chatReply(message) {
+export function chatReply(message, model = 'genni 1') {
   const text = message.trim();
   if (!text || text.length > 80) return null;
 
+  const intents = getIntents(model);
   const lang = () => detectLanguage(text);
   const pick = (name) => {
-    const intent = INTENTS.find((i) => i.name === name);
-    return intent.replies[lang()] || intent.replies.en;
+    const intent = intents.find((i) => i.name === name);
+    return intent ? (intent.replies[lang()] || intent.replies.en) : null;
   };
 
   // Typo-tolerant before the exact patterns, so "helo" never reaches the web.
@@ -303,11 +321,11 @@ export function chatReply(message) {
   if (madeOf(text, THANK_WORDS)) return pick('thanks');
   if (madeOf(text, ACK_WORDS)) return pick('ack');
 
-  for (const intent of INTENTS) {
+  for (const intent of intents) {
     if (!intent.test.test(text)) continue;
     if (intent.requires && !intent.requires.test(text)) continue;
-    const lang = detectLanguage(text);
-    return intent.replies[lang] || intent.replies.en;
+    const l = detectLanguage(text);
+    return intent.replies[l] || intent.replies.en;
   }
   return null;
 }
