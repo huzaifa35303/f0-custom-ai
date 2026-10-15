@@ -1,0 +1,13 @@
+# Pakistan civil aviation airspace and food security
+# One fact per line, phrased with the words someone would ask with.
+
+Pakistan's airspace is managed by the Pakistan Civil Aviation Authority, PCAA, and serves as a transit corridor connecting Europe, the Middle East and East Asia.
+The Karachi Flight Information Region, FIR, controls southern airspace over the Arabian Sea, Sindh and Balochistan, and interfaces with the Muscat and Mumbai FIRs.
+The Lahore Flight Information Region, FIR, manages northern airspace over Punjab, Khyber Pakhtunkhwa, Gilgit-Baltistan and Azad Jammu and Kashmir, handing flights to Chinese and Afghan airspace.
+Pakistan's en-route radar network uses primary surveillance radar, PSR, and monopulse secondary surveillance radar, MSSR, installed at Karachi, Pasni, Lahore and Islamabad.
+ADS-B ground stations are deployed at high altitude sites such as Gilgit and Skardu to overcome terrain masking by the Karakoram and Hindu Kush ranges.
+
+PASSCO, the Pakistan Agricultural Storage and Services Corporation, is the federal agency that maintains national strategic wheat reserves, buying from farmers at harvest and releasing grain during shortages.
+Pakistan's concrete and steel grain silo complexes at Multan, Faisalabad and Hyderabad use hermetic sealing, temperature sensors and moisture control to store grain for up to 36 months without chemicals.
+The strategic grain depots at Pipri and Landhi in coastal Karachi handle imported wheat during shortfalls and consolidate export surpluses for shipping.
+Pakistan's inter-provincial supply corridors move wheat by rail and truck from surplus areas in southern Punjab and upper Sindh to deficit areas in Khyber Pakhtunkhwa, Balochistan and the cities.

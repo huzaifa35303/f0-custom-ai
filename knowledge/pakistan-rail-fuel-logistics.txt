@@ -1,0 +1,19 @@
+# Pakistan railways, emergency communications, fuel pipelines and dry ports
+# From the encyclopedic vault. Only what the other files do not already cover.
+# One fact per line, phrased with the words someone would ask with.
+
+Pakistan Railways main lines ML-1, ML-2 and ML-3 run on 1,676 mm broad gauge, while 762 mm narrow gauge survives only as legacy mountain tourist track.
+Pakistan Railways signalling mixes modern computer based interlocking, CBI, with older mechanical rod-and-cable frames, and automatic block signalling protects busy urban sections.
+Pakistan Railways runs diesel-electric freight locomotives including the American GE Evolution series of 4,000 horsepower and Chinese CRRC units.
+
+The NDMA disaster communications network uses dedicated radio frequencies and satellite relays to keep contact when commercial cell towers fail during a disaster.
+Pakistan's emergency response trucks carry high-power HF and VHF radio sets giving first responders encrypted voice and telemetry links.
+Automatic weather monitors and river sensors send real-time data by satellite to central command, powering early warning for floods, cloudbursts and earthquakes in Pakistan.
+
+The White Oil Pipeline, WOPL, is an 864 km pipeline carrying high-speed diesel and petrol from Pakistan's coastal terminals to inland depots, replacing thousands of tanker trucks.
+The Keamari to Mahmood Kot crude pipeline, KMK, is an 870 km pipeline pumping imported crude oil from Karachi port to refineries in central Pakistan.
+The Machaike terminal in Punjab is a fuel distribution hub handling pipeline receipts, fuel quality testing and bulk truck loading for northern markets.
+
+The NLC dry port in Lahore is an inland customs and freight depot letting central Punjab businesses clear international cargo before it moves to the seaports.
+The Sost dry port on the Karakoram Highway near the China border is the world's highest dry port, handling trade through the Karakoram pass in season.
+The Sialkot Dry Port Trust is a privately built and run dry port offering automated customs clearance and container stuffing for surgical instrument and sports goods exports.

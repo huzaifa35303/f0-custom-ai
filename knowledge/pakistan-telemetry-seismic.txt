@@ -1,0 +1,14 @@
+# Pakistan motorway telemetry and seismic monitoring
+# One fact per line, phrased with the words someone would ask with.
+
+Pakistan's National Highways and Motorway Police, NHMP, run traffic monitoring, automated tolling and security on the M-1, M-2, M-3, M-4, M-5, M-9 and M-11 motorways.
+Pakistan's E-Tag electronic toll collection uses RFID transponders on the M-2 and M-9 gates, integrated with the OneNetwork and M-Tag systems so vehicles pay without stopping.
+ANPR automatic number plate recognition cameras at Pakistani motorway interchanges and toll booths check vehicle registrations against national crime databases in real time.
+Pakistan's motorways use point-to-point speed cameras and weigh-in-motion, WIM, sensors embedded in commercial lanes to catch overloaded freight trucks.
+An underground fibre-optic backbone runs the length of Pakistan's major motorways, connecting intelligent transport system sensors to regional command rooms.
+
+The Pakistan Meteorological Department, PMD, monitors earthquakes where the Indian, Eurasian and Arabian plates collide.
+The National Seismic Monitoring Centre, NSMC, is headquartered in Karachi with backup processing in Islamabad, receiving live telemetry from broadband stations by satellite and radio.
+The Chaman fault array monitors a strike-slip transform fault across Balochistan using geodetic GPS arrays to measure crustal stress.
+The Main Karakoram Thrust, MKT, monitoring network covers Gilgit-Baltistan and Khyber Pakhtunkhwa, tracking compression from the northward push of the Indian plate.
+The Makran tsunami early warning network sits over the subduction zone off Pakistan's southern coast, using tide gauges and ocean floor pressure sensors to alert Karachi, Gwadar and Pasni.

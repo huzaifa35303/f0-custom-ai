@@ -1,0 +1,16 @@
+# Pakistan special economic zones, gas infrastructure and mining
+# One fact per line, phrased with the words someone would ask with.
+
+Rashakai SEZ in Nowshera, Khyber Pakhtunkhwa, is a CPEC special economic zone for high-tech, textile processing, mechanical equipment, appliances and pharmaceuticals, with M-1 motorway access and its own 132 kV grid station.
+Allama Iqbal Industrial City, AIIC, in Faisalabad, Punjab, spans over 3,217 acres beside the M-4 motorway and targets textiles, engineering, electronics, chemicals and food processing.
+Dhabeji SEZ in Thatta, Sindh, is 50 km from Port Qasim and targets steel foundries, automotive assembly, petrochemicals and heavy engineering.
+Bostan SEZ in Pishin, Balochistan, is near Quetta and targets fruit processing, cold storage, agricultural machinery and halal food, linking trade routes to Afghanistan and Central Asia via Chaman.
+
+SNGPL, Sui Northern Gas Pipelines Limited, carries gas to Punjab, Khyber Pakhtunkhwa and Islamabad through high-pressure transmission loop lines.
+SSGC, Sui Southern Gas Company, serves Sindh and Balochistan and links onshore fields such as Sui and Bhit to the gas grid.
+The Engro Elengy Terminal, EETL, at Port Qasim in Karachi is a floating storage and regasification unit, FSRU, with a peak LNG capacity of 600 mmcfd.
+The Gasport LNG terminal at Port Qasim is Pakistan's second LNG terminal, providing regasification up to 600 mmcfd to ease winter gas shortages.
+
+The Saindak copper-gold project in Chagai district, Balochistan, is an open-pit mine and blister copper plant with its own thermal power unit.
+Thar Coal Blocks II and VI in the Thar desert in Sindh produce lignite coal for mine-mouth power plants under CPEC, replacing imported fuel oil.
+Tuwairqi Steel Mills, TSML, in the Port Qasim corridor is Pakistan's first private-sector direct reduced iron, DRI, plant for high-grade steel.

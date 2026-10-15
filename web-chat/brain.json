@@ -1,604 +1,224 @@
 [
   {
-    "text": "The official name of Pakistan is the Islamic Republic of Pakistan.",
+    "text": "Pakistan's airspace is managed by the Pakistan Civil Aviation Authority, PCAA, and serves as a transit corridor connecting Europe, the Middle East and East Asia.",
     "keywords": [
-      "official",
-      "name",
-      "pakistan",
-      "islamic",
-      "republic"
-    ],
-    "addedAt": "2026-10-15T06:30:15.783Z"
-  },
-  {
-    "text": "The capital of Pakistan is Islamabad.",
-    "keywords": [
-      "capital",
-      "pakistan",
-      "islamabad"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The founder of Pakistan is Quaid-e-Azam Muhammad Ali Jinnah.",
-    "keywords": [
-      "founder",
-      "pakistan",
-      "quaid-e-azam",
-      "quaid",
-      "azam",
-      "muhammad",
-      "ali",
-      "jinnah"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "Pakistan gained independence on 14 August 1947.",
-    "keywords": [
-      "pakistan",
-      "gained",
-      "independence",
-      "august",
-      "1947"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The currency of Pakistan is the Pakistani Rupee, PKR.",
-    "keywords": [
-      "currency",
-      "pakistan",
-      "pakistani",
-      "rupee",
-      "pkr"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The official languages of Pakistan are Urdu and English.",
-    "keywords": [
-      "official",
-      "languages",
-      "pakistan",
-      "urdu",
-      "english"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The President of Pakistan is Asif Ali Zardari.",
-    "keywords": [
-      "president",
-      "pakistan",
-      "asif",
-      "ali",
-      "zardari"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The Prime Minister of Pakistan is Muhammad Shehbaz Sharif.",
-    "keywords": [
-      "prime",
-      "minister",
-      "pakistan",
-      "muhammad",
-      "shehbaz",
-      "sharif"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The largest province of Pakistan by area is Balochistan.",
-    "keywords": [
-      "largest",
-      "province",
-      "pakistan",
-      "area",
-      "balochistan"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The highest peak in Pakistan is K2, at 8,616 metres, in the Karakoram range.",
-    "keywords": [
-      "highest",
-      "peak",
-      "pakistan",
-      "616",
-      "metres",
-      "karakoram",
-      "range"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The longest river in Pakistan is the Indus River, about 2,896 km long, and it is the lifeline of the country.",
-    "keywords": [
-      "longest",
-      "river",
-      "pakistan",
-      "indus",
-      "896",
-      "long",
-      "lifeline",
-      "country"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The largest desert in Pakistan is the Thar Desert, followed by the Cholistan and Thal deserts.",
-    "keywords": [
-      "largest",
-      "desert",
-      "pakistan",
-      "thar",
-      "followed",
-      "cholistan",
-      "thal",
-      "deserts"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The major glaciers of Pakistan are the Siachen Glacier, Baltoro and Batura.",
-    "keywords": [
-      "major",
-      "glaciers",
-      "pakistan",
-      "siachen",
-      "glacier",
-      "baltoro",
-      "batura"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The largest dam in Pakistan is the Tarbela Dam.",
-    "keywords": [
-      "largest",
-      "dam",
-      "pakistan",
-      "tarbela"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The national sport of Pakistan is field hockey.",
-    "keywords": [
-      "national",
-      "sport",
-      "pakistan",
-      "field",
-      "hockey"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The national flower of Pakistan is the jasmine.",
-    "keywords": [
-      "national",
-      "flower",
-      "pakistan",
-      "jasmine"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The national animal of Pakistan is the markhor.",
-    "keywords": [
-      "national",
-      "animal",
-      "pakistan",
-      "markhor"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The national bird of Pakistan is the chukar partridge, also called the chakor.",
-    "keywords": [
-      "national",
-      "bird",
-      "pakistan",
-      "chukar",
-      "partridge",
-      "also",
-      "called",
-      "chakor"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The national tree of Pakistan is the deodar cedar.",
-    "keywords": [
-      "national",
-      "tree",
-      "pakistan",
-      "deodar",
-      "cedar"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The national poet of Pakistan is Allama Iqbal.",
-    "keywords": [
-      "national",
-      "poet",
-      "pakistan",
-      "allama",
-      "iqbal"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The national anthem of Pakistan was written by Hafeez Jullundhri.",
-    "keywords": [
-      "national",
-      "anthem",
-      "pakistan",
-      "written",
-      "hafeez",
-      "jullundhri"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The first Nobel Prize winner of Pakistan was Dr Abdus Salam, for Physics in 1979.",
-    "keywords": [
-      "first",
-      "nobel",
-      "prize",
-      "winner",
-      "pakistan",
-      "abdus",
-      "salam",
-      "physics",
-      "1979"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The first female Prime Minister of Pakistan was Benazir Bhutto.",
-    "keywords": [
-      "first",
-      "female",
-      "prime",
-      "minister",
-      "pakistan",
-      "benazir",
-      "bhutto"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The first Governor-General of Pakistan was Muhammad Ali Jinnah.",
-    "keywords": [
-      "first",
-      "governor-general",
-      "governor",
-      "general",
-      "pakistan",
-      "muhammad",
-      "ali",
-      "jinnah"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The first Prime Minister of Pakistan was Liaquat Ali Khan.",
-    "keywords": [
-      "first",
-      "prime",
-      "minister",
-      "pakistan",
-      "liaquat",
-      "ali",
-      "khan"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The first capital of Pakistan was Karachi.",
-    "keywords": [
-      "first",
-      "capital",
-      "pakistan",
-      "karachi"
-    ],
-    "addedAt": "2026-10-15T06:30:15.784Z"
-  },
-  {
-    "text": "The Matiari-Lahore HVDC line is a 660 kV direct current transmission line of 4,000 MW capacity and about 886 km, carrying power from southern coal and nuclear plants to northern grids.",
-    "keywords": [
-      "matiari-lahore",
-      "matiari",
-      "lahore",
-      "hvdc",
-      "line",
-      "660",
-      "direct",
-      "current",
-      "transmission",
-      "000",
-      "capacity",
-      "886",
-      "carrying",
-      "power",
-      "southern",
-      "coal",
-      "nuclear",
-      "plants",
-      "northern",
-      "grids"
-    ],
-    "addedAt": "2026-10-15T06:30:15.793Z"
-  },
-  {
-    "text": "The CASA-1000 project is a 500 kV cross-border link designed to import 1,300 MW of hydropower from Kyrgyzstan and Tajikistan through Afghanistan into Pakistan at Nowshera.",
-    "keywords": [
-      "casa-1000",
-      "casa",
-      "1000",
-      "project",
-      "500",
-      "cross-border",
-      "cross",
-      "border",
-      "link",
-      "designed",
-      "import",
-      "300",
-      "hydropower",
-      "kyrgyzstan",
-      "tajikistan",
-      "through",
-      "afghanistan",
-      "into",
-      "pakistan",
-      "nowshera"
-    ],
-    "addedAt": "2026-10-15T06:30:15.793Z"
-  },
-  {
-    "text": "The Neelum-Jhelum transmission link is a 500 kV double-circuit line carrying 969 MW of run-of-the-river hydro power into the national pool.",
-    "keywords": [
-      "neelum-jhelum",
-      "neelum",
-      "jhelum",
-      "transmission",
-      "link",
-      "500",
-      "double-circuit",
-      "double",
-      "circuit",
-      "line",
-      "carrying",
-      "969",
-      "run-of-the-river",
-      "run",
-      "river",
-      "hydro",
-      "power",
-      "into",
-      "national",
-      "pool"
-    ],
-    "addedAt": "2026-10-15T06:30:15.793Z"
-  },
-  {
-    "text": "Port Muhammad Bin Qasim has a 13-metre navigable channel draught and more than 12 deep-water berths.",
-    "keywords": [
-      "port",
-      "muhammad",
-      "bin",
-      "qasim",
-      "13-metre",
-      "metre",
-      "navigable",
-      "channel",
-      "draught",
-      "more",
-      "deep-water",
-      "deep",
-      "water",
-      "berths"
-    ],
-    "addedAt": "2026-10-15T06:30:15.793Z"
-  },
-  {
-    "text": "Port Qasim handles over 35 percent of Pakistan's national cargo volume, especially bulk industrial inputs, LNG, raw minerals and heavy machinery.",
-    "keywords": [
-      "port",
-      "qasim",
-      "handles",
-      "over",
-      "percent",
       "pakistan's",
-      "national",
-      "cargo",
-      "volume",
-      "especially",
-      "bulk",
-      "industrial",
-      "inputs",
-      "lng",
-      "raw",
-      "minerals",
-      "heavy",
-      "machinery"
+      "airspace",
+      "managed",
+      "pakistan",
+      "civil",
+      "aviation",
+      "authority",
+      "pcaa",
+      "serves",
+      "transit",
+      "corridor",
+      "connecting",
+      "europe",
+      "middle",
+      "east",
+      "asia"
     ],
-    "addedAt": "2026-10-15T06:30:15.793Z"
+    "addedAt": "2026-10-15T06:34:39.507Z"
   },
   {
-    "text": "Karachi Port Trust, KPT, is a natural deep-water harbour with draught limits of 11.5 to 13 metres and is historically Pakistan's busiest port.",
+    "text": "The Karachi Flight Information Region, FIR, controls southern airspace over the Arabian Sea, Sindh and Balochistan, and interfaces with the Muscat and Mumbai FIRs.",
     "keywords": [
       "karachi",
-      "port",
-      "trust",
-      "kpt",
-      "natural",
-      "deep-water",
-      "deep",
-      "water",
-      "harbour",
-      "draught",
-      "limits",
-      "metres",
-      "historically",
-      "pakistan's",
-      "busiest"
-    ],
-    "addedAt": "2026-10-15T06:30:15.793Z"
-  },
-  {
-    "text": "Gwadar deep-sea port has a design capability up to 14.5 metres and is the main maritime node of CPEC, bypassing the Malacca Strait.",
-    "keywords": [
-      "gwadar",
-      "deep-sea",
-      "deep",
+      "flight",
+      "information",
+      "region",
+      "fir",
+      "controls",
+      "southern",
+      "airspace",
+      "over",
+      "arabian",
       "sea",
-      "port",
-      "design",
-      "capability",
-      "metres",
-      "main",
-      "maritime",
-      "node",
-      "cpec",
-      "bypassing",
-      "malacca",
-      "strait"
+      "sindh",
+      "balochistan",
+      "interfaces",
+      "muscat",
+      "mumbai",
+      "firs"
     ],
-    "addedAt": "2026-10-15T06:30:15.793Z"
+    "addedAt": "2026-10-15T06:34:39.508Z"
   },
   {
-    "text": "Gwadar is described as the world's largest deep-sea warm-water port, at the mouth of the Persian Gulf, giving landlocked Central Asia a direct energy route.",
+    "text": "The Lahore Flight Information Region, FIR, manages northern airspace over Punjab, Khyber Pakhtunkhwa, Gilgit-Baltistan and Azad Jammu and Kashmir, handing flights to Chinese and Afghan airspace.",
     "keywords": [
-      "gwadar",
-      "described",
-      "world's",
-      "largest",
-      "deep-sea",
-      "deep",
-      "sea",
-      "warm-water",
-      "warm",
-      "water",
-      "port",
-      "mouth",
-      "persian",
-      "gulf",
-      "giving",
-      "landlocked",
-      "central",
-      "asia",
-      "direct",
-      "energy",
-      "route"
-    ],
-    "addedAt": "2026-10-15T06:30:15.793Z"
-  },
-  {
-    "text": "Pakistan Security Printing Corporation, PSPC, is the sole authority for minting banknotes, passports and other high-security state documents, from a secure plant in Karachi.",
-    "keywords": [
-      "pakistan",
-      "security",
-      "printing",
-      "corporation",
-      "pspc",
-      "sole",
-      "authority",
-      "minting",
-      "banknotes",
-      "passports",
-      "other",
-      "high-security",
-      "high",
-      "state",
-      "documents",
-      "secure",
-      "plant",
-      "karachi"
-    ],
-    "addedAt": "2026-10-15T06:30:15.793Z"
-  },
-  {
-    "text": "The State Bank of Pakistan manages foreign exchange reserves across USD, EUR and RMB plus gold, to maintain stability, service sovereign debt and defend import cover.",
-    "keywords": [
-      "state",
-      "bank",
-      "pakistan",
+      "lahore",
+      "flight",
+      "information",
+      "region",
+      "fir",
       "manages",
-      "foreign",
-      "exchange",
-      "reserves",
-      "across",
-      "usd",
-      "eur",
-      "rmb",
-      "plus",
-      "gold",
-      "maintain",
-      "stability",
-      "service",
-      "sovereign",
-      "debt",
-      "defend",
-      "import",
-      "cover"
+      "northern",
+      "airspace",
+      "over",
+      "punjab",
+      "khyber",
+      "pakhtunkhwa",
+      "gilgit-baltistan",
+      "gilgit",
+      "baltistan",
+      "azad",
+      "jammu",
+      "kashmir",
+      "handing",
+      "flights",
+      "chinese",
+      "afghan"
     ],
-    "addedAt": "2026-10-15T06:30:15.793Z"
+    "addedAt": "2026-10-15T06:34:39.508Z"
   },
   {
-    "text": "The Karakoram Highway, KKH, is often called the eighth wonder of the world and cuts through the collision zone of the Eurasian and Indian tectonic plates, linking Pakistan to China at Khunjerab Pass.",
+    "text": "Pakistan's en-route radar network uses primary surveillance radar, PSR, and monopulse secondary surveillance radar, MSSR, installed at Karachi, Pasni, Lahore and Islamabad.",
     "keywords": [
+      "pakistan's",
+      "en-route",
+      "route",
+      "radar",
+      "network",
+      "uses",
+      "primary",
+      "surveillance",
+      "psr",
+      "monopulse",
+      "secondary",
+      "mssr",
+      "installed",
+      "karachi",
+      "pasni",
+      "lahore",
+      "islamabad"
+    ],
+    "addedAt": "2026-10-15T06:34:39.508Z"
+  },
+  {
+    "text": "ADS-B ground stations are deployed at high altitude sites such as Gilgit and Skardu to overcome terrain masking by the Karakoram and Hindu Kush ranges.",
+    "keywords": [
+      "ads-b",
+      "ads",
+      "ground",
+      "stations",
+      "deployed",
+      "high",
+      "altitude",
+      "sites",
+      "such",
+      "gilgit",
+      "skardu",
+      "overcome",
+      "terrain",
+      "masking",
       "karakoram",
-      "highway",
-      "kkh",
-      "often",
-      "called",
-      "eighth",
-      "wonder",
-      "world",
-      "cuts",
-      "through",
-      "collision",
-      "zone",
-      "eurasian",
-      "indian",
-      "tectonic",
-      "plates",
-      "linking",
-      "pakistan",
-      "china",
-      "khunjerab",
-      "pass"
+      "hindu",
+      "kush",
+      "ranges"
     ],
-    "addedAt": "2026-10-15T06:30:15.793Z"
+    "addedAt": "2026-10-15T06:34:39.508Z"
   },
   {
-    "text": "Khewra Salt Mine is the world's second largest salt mine, found when Alexander the Great's army horses licked the rocks in 326 BC, and it produces pink Himalayan salt.",
+    "text": "PASSCO, the Pakistan Agricultural Storage and Services Corporation, is the federal agency that maintains national strategic wheat reserves, buying from farmers at harvest and releasing grain during shortages.",
     "keywords": [
-      "khewra",
-      "salt",
-      "mine",
-      "world's",
-      "second",
-      "largest",
-      "found",
-      "alexander",
-      "great's",
-      "army",
-      "horses",
-      "licked",
-      "rocks",
-      "326",
-      "produces",
-      "pink",
-      "himalayan"
+      "passco",
+      "pakistan",
+      "agricultural",
+      "storage",
+      "services",
+      "corporation",
+      "federal",
+      "agency",
+      "maintains",
+      "national",
+      "strategic",
+      "wheat",
+      "reserves",
+      "buying",
+      "farmers",
+      "harvest",
+      "releasing",
+      "grain",
+      "during",
+      "shortages"
     ],
-    "addedAt": "2026-10-15T06:30:15.793Z"
+    "addedAt": "2026-10-15T06:34:39.508Z"
+  },
+  {
+    "text": "Pakistan's concrete and steel grain silo complexes at Multan, Faisalabad and Hyderabad use hermetic sealing, temperature sensors and moisture control to store grain for up to 36 months without chemicals.",
+    "keywords": [
+      "pakistan's",
+      "concrete",
+      "steel",
+      "grain",
+      "silo",
+      "complexes",
+      "multan",
+      "faisalabad",
+      "hyderabad",
+      "use",
+      "hermetic",
+      "sealing",
+      "temperature",
+      "sensors",
+      "moisture",
+      "control",
+      "store",
+      "months",
+      "without",
+      "chemicals"
+    ],
+    "addedAt": "2026-10-15T06:34:39.508Z"
+  },
+  {
+    "text": "The strategic grain depots at Pipri and Landhi in coastal Karachi handle imported wheat during shortfalls and consolidate export surpluses for shipping.",
+    "keywords": [
+      "strategic",
+      "grain",
+      "depots",
+      "pipri",
+      "landhi",
+      "coastal",
+      "karachi",
+      "handle",
+      "imported",
+      "wheat",
+      "during",
+      "shortfalls",
+      "consolidate",
+      "export",
+      "surpluses",
+      "shipping"
+    ],
+    "addedAt": "2026-10-15T06:34:39.508Z"
+  },
+  {
+    "text": "Pakistan's inter-provincial supply corridors move wheat by rail and truck from surplus areas in southern Punjab and upper Sindh to deficit areas in Khyber Pakhtunkhwa, Balochistan and the cities.",
+    "keywords": [
+      "pakistan's",
+      "inter-provincial",
+      "inter",
+      "provincial",
+      "supply",
+      "corridors",
+      "move",
+      "wheat",
+      "rail",
+      "truck",
+      "surplus",
+      "areas",
+      "southern",
+      "punjab",
+      "upper",
+      "sindh",
+      "deficit",
+      "khyber",
+      "pakhtunkhwa",
+      "balochistan",
+      "cities"
+    ],
+    "addedAt": "2026-10-15T06:34:39.508Z"
   },
   {
     "text": "Hangor-class submarines are 8 diesel-electric attack submarines with Air-Independent Propulsion, built with China, the first 4 in China and the remaining 4 at Karachi Shipyard, and they carry the Babur-3 cruise missile.",
@@ -627,7 +247,7 @@
       "cruise",
       "missile"
     ],
-    "addedAt": "2026-10-15T06:30:15.802Z"
+    "addedAt": "2026-10-15T06:34:39.514Z"
   },
   {
     "text": "Tughril-class frigates, Type 054A/P, are 4 Chinese-built guided-missile stealth frigates carrying LY-80N anti-air and CM-302 supersonic anti-ship missiles, and form the backbone of the Pakistan Navy surface fleet.",
@@ -664,7 +284,7 @@
       "surface",
       "fleet"
     ],
-    "addedAt": "2026-10-15T06:30:15.802Z"
+    "addedAt": "2026-10-15T06:34:39.514Z"
   },
   {
     "text": "Babur-class corvettes, from the Turkish Milgem class, are 4 multi-mission stealth corvettes with local Harbah-NG combat systems and anti-submarine warfare capability.",
@@ -690,7 +310,7 @@
       "warfare",
       "capability"
     ],
-    "addedAt": "2026-10-15T06:30:15.802Z"
+    "addedAt": "2026-10-15T06:34:39.514Z"
   },
   {
     "text": "Jinnah-class frigates are an indigenous Pakistani frigate programme developed jointly with Turkey following technology transfer from the Milgem initiative.",
@@ -712,7 +332,7 @@
       "milgem",
       "initiative"
     ],
-    "addedAt": "2026-10-15T06:30:15.802Z"
+    "addedAt": "2026-10-15T06:34:39.514Z"
   },
   {
     "text": "The Karachi Nuclear Power Plant, KANUPP, runs reactors K-2 and K-3 with a total net capacity of 2,200 MW using HPR1000 Hualong One pressurised water reactors.",
@@ -737,7 +357,7 @@
       "pressurised",
       "water"
     ],
-    "addedAt": "2026-10-15T06:30:15.802Z"
+    "addedAt": "2026-10-15T06:34:39.514Z"
   },
   {
     "text": "The Chashma Nuclear Power Plant, CHASNUPP, runs four CNP-300 pressurised water reactors with a total of 1,330 MW, with Chashma-5 planned to add a 1,200 MW Hualong One unit.",
@@ -765,7 +385,7 @@
       "one",
       "unit"
     ],
-    "addedAt": "2026-10-15T06:30:15.802Z"
+    "addedAt": "2026-10-15T06:34:39.514Z"
   },
   {
     "text": "Pakistan's civil nuclear power is regulated by the Pakistan Nuclear Regulatory Authority, PNRA, and operated by the Pakistan Atomic Energy Commission, PAEC.",
@@ -785,7 +405,7 @@
       "commission",
       "paec"
     ],
-    "addedAt": "2026-10-15T06:30:15.802Z"
+    "addedAt": "2026-10-15T06:34:39.514Z"
   },
   {
     "text": "SUPARCO is the Space and Upper Atmosphere Research Commission, Pakistan's space agency, established in 1961 by Nobel laureate Dr Abdus Salam.",
@@ -805,7 +425,7 @@
       "abdus",
       "salam"
     ],
-    "addedAt": "2026-10-15T06:30:15.802Z"
+    "addedAt": "2026-10-15T06:34:39.514Z"
   },
   {
     "text": "Pakistan was the first South Asian country to launch a sounding rocket, Rehbar-I, in 1962.",
@@ -822,7 +442,7 @@
       "rehbar",
       "1962"
     ],
-    "addedAt": "2026-10-15T06:30:15.802Z"
+    "addedAt": "2026-10-15T06:34:39.514Z"
   },
   {
     "text": "PakSat-1R is a Pakistani communications satellite launched in 2011 into geostationary orbit at 38 degrees east, carrying broadband, TV broadcasting and emergency telecommunications.",
@@ -845,7 +465,7 @@
       "emergency",
       "telecommunications"
     ],
-    "addedAt": "2026-10-15T06:30:15.802Z"
+    "addedAt": "2026-10-15T06:34:39.514Z"
   },
   {
     "text": "PRSS-1, the Pakistan Remote Sensing Satellite, was launched in 2018 into sun-synchronous orbit for high-resolution earth observation, mapping and border surveillance.",
@@ -872,7 +492,7 @@
       "border",
       "surveillance"
     ],
-    "addedAt": "2026-10-15T06:30:15.802Z"
+    "addedAt": "2026-10-15T06:34:39.514Z"
   },
   {
     "text": "PakTES-1A is a technology evaluation satellite launched in 2018 into low earth orbit to verify locally built sensors and satellite bus designs.",
@@ -895,7 +515,7 @@
       "bus",
       "designs"
     ],
-    "addedAt": "2026-10-15T06:30:15.802Z"
+    "addedAt": "2026-10-15T06:34:39.514Z"
   },
   {
     "text": "iCube-Qamar is Pakistan's first lunar cubesat, launched in May 2024 on China's Chang'e 6 mission to image the lunar surface and gather deep-space telemetry.",
@@ -920,7 +540,7 @@
       "space",
       "telemetry"
     ],
-    "addedAt": "2026-10-15T06:30:15.802Z"
+    "addedAt": "2026-10-15T06:34:39.514Z"
   },
   {
     "text": "Pakistan's IT exports and freelance sector are supported by the Pakistan Software Export Board, PSEB, and its special technology zones, and rank among the top global providers of software development.",
@@ -946,7 +566,7 @@
       "providers",
       "development"
     ],
-    "addedAt": "2026-10-15T06:30:15.802Z"
+    "addedAt": "2026-10-15T06:34:39.514Z"
   },
   {
     "text": "Raast is the State Bank of Pakistan's instant, zero-cost digital payment system for real-time person-to-person and person-to-business transfers.",
@@ -971,7 +591,7 @@
       "business",
       "transfers"
     ],
-    "addedAt": "2026-10-15T06:30:15.802Z"
+    "addedAt": "2026-10-15T06:34:39.514Z"
   },
   {
     "text": "NayaPay and Sadapay are Pakistani Electronic Money Institutions, EMIs, part of a move to branchless digital banking under newly issued digital banking licences.",
@@ -993,271 +613,7 @@
       "issued",
       "licences"
     ],
-    "addedAt": "2026-10-15T06:30:15.802Z"
-  },
-  {
-    "text": "Ghaznavi, also called Hatf-III, is a Pakistani short-range solid-fuel ballistic missile with a range of 290 km and a 700 kg payload.",
-    "keywords": [
-      "ghaznavi",
-      "also",
-      "called",
-      "hatf-iii",
-      "hatf",
-      "iii",
-      "pakistani",
-      "short-range",
-      "short",
-      "range",
-      "solid-fuel",
-      "solid",
-      "fuel",
-      "ballistic",
-      "missile",
-      "290",
-      "700",
-      "payload"
-    ],
-    "addedAt": "2026-10-15T06:30:15.808Z"
-  },
-  {
-    "text": "Shaheen-II, also called Hatf-VI, is a Pakistani two-stage solid-propellant road-mobile medium-range ballistic missile with a range of 2,000 km and a 1,050 kg payload.",
-    "keywords": [
-      "shaheen-ii",
-      "shaheen",
-      "also",
-      "called",
-      "hatf-vi",
-      "hatf",
-      "pakistani",
-      "two-stage",
-      "two",
-      "stage",
-      "solid-propellant",
-      "solid",
-      "propellant",
-      "road-mobile",
-      "road",
-      "mobile",
-      "medium-range",
-      "medium",
-      "range",
-      "ballistic",
-      "missile",
-      "000",
-      "050",
-      "payload"
-    ],
-    "addedAt": "2026-10-15T06:30:15.808Z"
-  },
-  {
-    "text": "Ababeel is a Pakistani medium-range ballistic missile with a range of 2,200 km, carrying MIRV multiple independently targetable re-entry vehicles.",
-    "keywords": [
-      "ababeel",
-      "pakistani",
-      "medium-range",
-      "medium",
-      "range",
-      "ballistic",
-      "missile",
-      "200",
-      "carrying",
-      "mirv",
-      "multiple",
-      "independently",
-      "targetable",
-      "re-entry",
-      "entry",
-      "vehicles"
-    ],
-    "addedAt": "2026-10-15T06:30:15.808Z"
-  },
-  {
-    "text": "Babur-3 is Pakistan's submarine-launched cruise missile with a range of 450 km and a 450 kg payload, fired from Agosta-90B submarines to complete the sea-based second strike.",
-    "keywords": [
-      "babur-3",
-      "babur",
-      "pakistan's",
-      "submarine-launched",
-      "submarine",
-      "launched",
-      "cruise",
-      "missile",
-      "range",
-      "450",
-      "payload",
-      "fired",
-      "agosta-90b",
-      "agosta",
-      "90b",
-      "submarines",
-      "complete",
-      "sea-based",
-      "sea",
-      "based",
-      "second",
-      "strike"
-    ],
-    "addedAt": "2026-10-15T06:30:15.808Z"
-  },
-  {
-    "text": "Khunjerab Pass is 4,693 metres high in the Karakoram range, links Gilgit-Baltistan to Xinjiang in China, and is the world's highest paved international border crossing and the main gate of CPEC.",
-    "keywords": [
-      "khunjerab",
-      "pass",
-      "693",
-      "metres",
-      "high",
-      "karakoram",
-      "range",
-      "links",
-      "gilgit-baltistan",
-      "gilgit",
-      "baltistan",
-      "xinjiang",
-      "china",
-      "world's",
-      "highest",
-      "paved",
-      "international",
-      "border",
-      "crossing",
-      "main",
-      "gate",
-      "cpec"
-    ],
-    "addedAt": "2026-10-15T06:30:15.808Z"
-  },
-  {
-    "text": "Khyber Pass is 1,070 metres high in the Spin Ghar mountains and links Peshawar to Kabul in Afghanistan, historically the gateway for invasions of the subcontinent.",
-    "keywords": [
-      "khyber",
-      "pass",
-      "070",
-      "metres",
-      "high",
-      "spin",
-      "ghar",
-      "mountains",
-      "links",
-      "peshawar",
-      "kabul",
-      "afghanistan",
-      "historically",
-      "gateway",
-      "invasions",
-      "subcontinent"
-    ],
-    "addedAt": "2026-10-15T06:30:15.808Z"
-  },
-  {
-    "text": "Bolan Pass is 1,793 metres high in the Toba Kakar range and links Quetta to Jacobabad and Sibi, connecting the Balochistan plateau to the Indus valley.",
-    "keywords": [
-      "bolan",
-      "pass",
-      "793",
-      "metres",
-      "high",
-      "toba",
-      "kakar",
-      "range",
-      "links",
-      "quetta",
-      "jacobabad",
-      "sibi",
-      "connecting",
-      "balochistan",
-      "plateau",
-      "indus",
-      "valley"
-    ],
-    "addedAt": "2026-10-15T06:30:15.808Z"
-  },
-  {
-    "text": "Lowari Pass is 3,118 metres high in the Hindu Kush and links Dir to Chitral; it was snow-blocked six months a year until the 10.4 km Lowari Tunnel opened.",
-    "keywords": [
-      "lowari",
-      "pass",
-      "118",
-      "metres",
-      "high",
-      "hindu",
-      "kush",
-      "links",
-      "dir",
-      "chitral",
-      "snow-blocked",
-      "snow",
-      "blocked",
-      "six",
-      "months",
-      "year",
-      "until",
-      "tunnel",
-      "opened"
-    ],
-    "addedAt": "2026-10-15T06:30:15.808Z"
-  },
-  {
-    "text": "Kahuta Research Laboratories, KRL, in Kahuta, Punjab, is Pakistan's gas centrifuge uranium enrichment facility.",
-    "keywords": [
-      "kahuta",
-      "research",
-      "laboratories",
-      "krl",
-      "punjab",
-      "pakistan's",
-      "gas",
-      "centrifuge",
-      "uranium",
-      "enrichment",
-      "facility"
-    ],
-    "addedAt": "2026-10-15T06:30:15.808Z"
-  },
-  {
-    "text": "The Khushab nuclear complex in Punjab is a heavy-water plutonium production site with several operational reactors.",
-    "keywords": [
-      "khushab",
-      "nuclear",
-      "complex",
-      "punjab",
-      "heavy-water",
-      "heavy",
-      "water",
-      "plutonium",
-      "production",
-      "site",
-      "several",
-      "operational",
-      "reactors"
-    ],
-    "addedAt": "2026-10-15T06:30:15.808Z"
-  },
-  {
-    "text": "Chagai-I and Chagai-II in the Ras Koh Hills and Kharan in Balochistan are Pakistan's underground nuclear test sites, where five simultaneous tests took place on 28 May 1998 and a further test on 30 May 1998.",
-    "keywords": [
-      "chagai-i",
-      "chagai",
-      "chagai-ii",
-      "ras",
-      "koh",
-      "hills",
-      "kharan",
-      "balochistan",
-      "pakistan's",
-      "underground",
-      "nuclear",
-      "test",
-      "sites",
-      "five",
-      "simultaneous",
-      "tests",
-      "took",
-      "place",
-      "1998",
-      "further"
-    ],
-    "addedAt": "2026-10-15T06:30:15.808Z"
+    "addedAt": "2026-10-15T06:34:39.514Z"
   },
   {
     "text": "Mohenjo-daro became a UNESCO World Heritage site in Pakistan in 1980 and is one of the world's earliest major cities, from the Indus Valley Civilization, known for baked brick buildings and advanced drainage.",
@@ -1287,7 +643,7 @@
       "advanced",
       "drainage"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
   },
   {
     "text": "Taxila became a UNESCO World Heritage site in Pakistan in 1980 and is an archaeological site on the ancient Silk Road blending Persian, Greek and Buddhist art.",
@@ -1310,7 +666,7 @@
       "buddhist",
       "art"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
   },
   {
     "text": "Takht-i-Bahi and Sahr-i-Bahlol became a UNESCO World Heritage site in Pakistan in 1980 and is a well-preserved Buddhist monastic complex from the 1st century CE in Khyber Pakhtunkhwa.",
@@ -1339,7 +695,7 @@
       "khyber",
       "pakhtunkhwa"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
   },
   {
     "text": "Lahore Fort and Shalamar Gardens became a UNESCO World Heritage site in Pakistan in 1981 and are masterpieces of the Mughal era, with marble palaces and Persian paradise gardens.",
@@ -1363,7 +719,7 @@
       "persian",
       "paradise"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
   },
   {
     "text": "The historical monuments at Makli in Thatta became a UNESCO World Heritage site in Pakistan in 1981 and form one of the world's largest funerary sites, with about half a million tombs.",
@@ -1389,7 +745,7 @@
       "million",
       "tombs"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
   },
   {
     "text": "Rohtas Fort became a UNESCO World Heritage site in Pakistan in 1997 and is a 16th-century military garrison built by Sher Shah Suri.",
@@ -1413,7 +769,7 @@
       "shah",
       "suri"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
   },
   {
     "text": "The Nishan-e-Haider is Pakistan's highest military gallantry award.",
@@ -1427,7 +783,7 @@
       "gallantry",
       "award"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
   },
   {
     "text": "Captain Raja Muhammad Sarwar of the Punjab Regiment was the first recipient of the Nishan-e-Haider, in the Kashmir war of 1948, for breaching enemy barbed wire under machine-gun fire.",
@@ -1456,7 +812,7 @@
       "gun",
       "fire"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
   },
   {
     "text": "Naik Saif Ali Janjua of the Azad Kashmir Regiment was awarded the Hilal-e-Kashmir, equivalent to the Nishan-e-Haider, in the Kashmir war of 1948 for defending a vital post.",
@@ -1481,7 +837,7 @@
       "vital",
       "post"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
   },
   {
     "text": "Major Tufail Muhammad of the Punjab Regiment received the Nishan-e-Haider for the Lakshmipur border action of 1958, directing operations despite mortal wounds.",
@@ -1505,7 +861,7 @@
       "mortal",
       "wounds"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
   },
   {
     "text": "Major Raja Aziz Bhatti of the Punjab Regiment received the Nishan-e-Haider in the 1965 Indo-Pak war for holding the BRB canal under continuous shelling.",
@@ -1532,7 +888,7 @@
       "continuous",
       "shelling"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
   },
   {
     "text": "Pilot Officer Rashid Minhas of the Pakistan Air Force received the Nishan-e-Haider in the 1971 war and is the only PAF recipient, having crashed his hijacked trainer jet to prevent defection.",
@@ -1562,7 +918,7 @@
       "prevent",
       "defection"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
   },
   {
     "text": "Major Muhammad Akram of the Frontier Force received the Nishan-e-Haider for the Battle of Hilli in 1971, blocking an enemy brigade's advance.",
@@ -1584,7 +940,7 @@
       "brigade's",
       "advance"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
   },
   {
     "text": "Major Shabbir Sharif of the Frontier Force received the Nishan-e-Haider in the 1971 war for capturing a bridgehead and destroying several tanks.",
@@ -1606,7 +962,7 @@
       "several",
       "tanks"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
   },
   {
     "text": "Sawar Muhammad Hussain of the Armoured Corps received the Nishan-e-Haider for the Battle of Zafarwal in 1971, guiding anti-tank crews on foot.",
@@ -1630,7 +986,7 @@
       "crews",
       "foot"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
   },
   {
     "text": "Lance Naik Muhammad Mahfuz of the Punjab Regiment received the Nishan-e-Haider in the Wagah-Attari sector in 1971, advancing unarmed on an enemy bunker.",
@@ -1655,7 +1011,7 @@
       "enemy",
       "bunker"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
   },
   {
     "text": "Captain Karnal Sher Khan of the Sindh Regiment and Northern Light Infantry received the Nishan-e-Haider in the Kargil conflict of 1999 for holding posts at 18,400 feet.",
@@ -1681,7 +1037,7 @@
       "400",
       "feet"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
   },
   {
     "text": "Havildar Lalak Jan of the Northern Light Infantry received the Nishan-e-Haider in the Kargil conflict of 1999, refusing evacuation while keeping up machine gun fire.",
@@ -1707,6 +1063,1908 @@
       "gun",
       "fire"
     ],
-    "addedAt": "2026-10-15T06:30:15.815Z"
+    "addedAt": "2026-10-15T06:34:39.521Z"
+  },
+  {
+    "text": "Rashakai SEZ in Nowshera, Khyber Pakhtunkhwa, is a CPEC special economic zone for high-tech, textile processing, mechanical equipment, appliances and pharmaceuticals, with M-1 motorway access and its own 132 kV grid station.",
+    "keywords": [
+      "rashakai",
+      "sez",
+      "nowshera",
+      "khyber",
+      "pakhtunkhwa",
+      "cpec",
+      "special",
+      "economic",
+      "zone",
+      "high-tech",
+      "high",
+      "tech",
+      "textile",
+      "processing",
+      "mechanical",
+      "equipment",
+      "appliances",
+      "pharmaceuticals",
+      "m-1",
+      "motorway",
+      "access",
+      "its",
+      "own",
+      "132",
+      "grid",
+      "station"
+    ],
+    "addedAt": "2026-10-15T06:34:39.528Z"
+  },
+  {
+    "text": "Allama Iqbal Industrial City, AIIC, in Faisalabad, Punjab, spans over 3,217 acres beside the M-4 motorway and targets textiles, engineering, electronics, chemicals and food processing.",
+    "keywords": [
+      "allama",
+      "iqbal",
+      "industrial",
+      "city",
+      "aiic",
+      "faisalabad",
+      "punjab",
+      "spans",
+      "over",
+      "217",
+      "acres",
+      "beside",
+      "m-4",
+      "motorway",
+      "targets",
+      "textiles",
+      "engineering",
+      "electronics",
+      "chemicals",
+      "food",
+      "processing"
+    ],
+    "addedAt": "2026-10-15T06:34:39.528Z"
+  },
+  {
+    "text": "Dhabeji SEZ in Thatta, Sindh, is 50 km from Port Qasim and targets steel foundries, automotive assembly, petrochemicals and heavy engineering.",
+    "keywords": [
+      "dhabeji",
+      "sez",
+      "thatta",
+      "sindh",
+      "port",
+      "qasim",
+      "targets",
+      "steel",
+      "foundries",
+      "automotive",
+      "assembly",
+      "petrochemicals",
+      "heavy",
+      "engineering"
+    ],
+    "addedAt": "2026-10-15T06:34:39.528Z"
+  },
+  {
+    "text": "Bostan SEZ in Pishin, Balochistan, is near Quetta and targets fruit processing, cold storage, agricultural machinery and halal food, linking trade routes to Afghanistan and Central Asia via Chaman.",
+    "keywords": [
+      "bostan",
+      "sez",
+      "pishin",
+      "balochistan",
+      "near",
+      "quetta",
+      "targets",
+      "fruit",
+      "processing",
+      "cold",
+      "storage",
+      "agricultural",
+      "machinery",
+      "halal",
+      "food",
+      "linking",
+      "trade",
+      "routes",
+      "afghanistan",
+      "central",
+      "asia",
+      "via",
+      "chaman"
+    ],
+    "addedAt": "2026-10-15T06:34:39.528Z"
+  },
+  {
+    "text": "SNGPL, Sui Northern Gas Pipelines Limited, carries gas to Punjab, Khyber Pakhtunkhwa and Islamabad through high-pressure transmission loop lines.",
+    "keywords": [
+      "sngpl",
+      "sui",
+      "northern",
+      "gas",
+      "pipelines",
+      "limited",
+      "carries",
+      "punjab",
+      "khyber",
+      "pakhtunkhwa",
+      "islamabad",
+      "through",
+      "high-pressure",
+      "high",
+      "pressure",
+      "transmission",
+      "loop",
+      "lines"
+    ],
+    "addedAt": "2026-10-15T06:34:39.528Z"
+  },
+  {
+    "text": "SSGC, Sui Southern Gas Company, serves Sindh and Balochistan and links onshore fields such as Sui and Bhit to the gas grid.",
+    "keywords": [
+      "ssgc",
+      "sui",
+      "southern",
+      "gas",
+      "company",
+      "serves",
+      "sindh",
+      "balochistan",
+      "links",
+      "onshore",
+      "fields",
+      "such",
+      "bhit",
+      "grid"
+    ],
+    "addedAt": "2026-10-15T06:34:39.528Z"
+  },
+  {
+    "text": "The Engro Elengy Terminal, EETL, at Port Qasim in Karachi is a floating storage and regasification unit, FSRU, with a peak LNG capacity of 600 mmcfd.",
+    "keywords": [
+      "engro",
+      "elengy",
+      "terminal",
+      "eetl",
+      "port",
+      "qasim",
+      "karachi",
+      "floating",
+      "storage",
+      "regasification",
+      "unit",
+      "fsru",
+      "peak",
+      "lng",
+      "capacity",
+      "600",
+      "mmcfd"
+    ],
+    "addedAt": "2026-10-15T06:34:39.528Z"
+  },
+  {
+    "text": "The Gasport LNG terminal at Port Qasim is Pakistan's second LNG terminal, providing regasification up to 600 mmcfd to ease winter gas shortages.",
+    "keywords": [
+      "gasport",
+      "lng",
+      "terminal",
+      "port",
+      "qasim",
+      "pakistan's",
+      "second",
+      "providing",
+      "regasification",
+      "600",
+      "mmcfd",
+      "ease",
+      "winter",
+      "gas",
+      "shortages"
+    ],
+    "addedAt": "2026-10-15T06:34:39.528Z"
+  },
+  {
+    "text": "The Saindak copper-gold project in Chagai district, Balochistan, is an open-pit mine and blister copper plant with its own thermal power unit.",
+    "keywords": [
+      "saindak",
+      "copper-gold",
+      "copper",
+      "gold",
+      "project",
+      "chagai",
+      "district",
+      "balochistan",
+      "open-pit",
+      "open",
+      "pit",
+      "mine",
+      "blister",
+      "plant",
+      "its",
+      "own",
+      "thermal",
+      "power",
+      "unit"
+    ],
+    "addedAt": "2026-10-15T06:34:39.528Z"
+  },
+  {
+    "text": "Thar Coal Blocks II and VI in the Thar desert in Sindh produce lignite coal for mine-mouth power plants under CPEC, replacing imported fuel oil.",
+    "keywords": [
+      "thar",
+      "coal",
+      "blocks",
+      "desert",
+      "sindh",
+      "produce",
+      "lignite",
+      "mine-mouth",
+      "mine",
+      "mouth",
+      "power",
+      "plants",
+      "under",
+      "cpec",
+      "replacing",
+      "imported",
+      "fuel",
+      "oil"
+    ],
+    "addedAt": "2026-10-15T06:34:39.528Z"
+  },
+  {
+    "text": "Tuwairqi Steel Mills, TSML, in the Port Qasim corridor is Pakistan's first private-sector direct reduced iron, DRI, plant for high-grade steel.",
+    "keywords": [
+      "tuwairqi",
+      "steel",
+      "mills",
+      "tsml",
+      "port",
+      "qasim",
+      "corridor",
+      "pakistan's",
+      "first",
+      "private-sector",
+      "private",
+      "sector",
+      "direct",
+      "reduced",
+      "iron",
+      "dri",
+      "plant",
+      "high-grade",
+      "high",
+      "grade"
+    ],
+    "addedAt": "2026-10-15T06:34:39.528Z"
+  },
+  {
+    "text": "The Matiari-Lahore HVDC line is a 660 kV direct current transmission line of 4,000 MW capacity and about 886 km, carrying power from southern coal and nuclear plants to northern grids.",
+    "keywords": [
+      "matiari-lahore",
+      "matiari",
+      "lahore",
+      "hvdc",
+      "line",
+      "660",
+      "direct",
+      "current",
+      "transmission",
+      "000",
+      "capacity",
+      "886",
+      "carrying",
+      "power",
+      "southern",
+      "coal",
+      "nuclear",
+      "plants",
+      "northern",
+      "grids"
+    ],
+    "addedAt": "2026-10-15T06:34:39.534Z"
+  },
+  {
+    "text": "The CASA-1000 project is a 500 kV cross-border link designed to import 1,300 MW of hydropower from Kyrgyzstan and Tajikistan through Afghanistan into Pakistan at Nowshera.",
+    "keywords": [
+      "casa-1000",
+      "casa",
+      "1000",
+      "project",
+      "500",
+      "cross-border",
+      "cross",
+      "border",
+      "link",
+      "designed",
+      "import",
+      "300",
+      "hydropower",
+      "kyrgyzstan",
+      "tajikistan",
+      "through",
+      "afghanistan",
+      "into",
+      "pakistan",
+      "nowshera"
+    ],
+    "addedAt": "2026-10-15T06:34:39.534Z"
+  },
+  {
+    "text": "The Neelum-Jhelum transmission link is a 500 kV double-circuit line carrying 969 MW of run-of-the-river hydro power into the national pool.",
+    "keywords": [
+      "neelum-jhelum",
+      "neelum",
+      "jhelum",
+      "transmission",
+      "link",
+      "500",
+      "double-circuit",
+      "double",
+      "circuit",
+      "line",
+      "carrying",
+      "969",
+      "run-of-the-river",
+      "run",
+      "river",
+      "hydro",
+      "power",
+      "into",
+      "national",
+      "pool"
+    ],
+    "addedAt": "2026-10-15T06:34:39.534Z"
+  },
+  {
+    "text": "Port Muhammad Bin Qasim has a 13-metre navigable channel draught and more than 12 deep-water berths.",
+    "keywords": [
+      "port",
+      "muhammad",
+      "bin",
+      "qasim",
+      "13-metre",
+      "metre",
+      "navigable",
+      "channel",
+      "draught",
+      "more",
+      "deep-water",
+      "deep",
+      "water",
+      "berths"
+    ],
+    "addedAt": "2026-10-15T06:34:39.534Z"
+  },
+  {
+    "text": "Port Qasim handles over 35 percent of Pakistan's national cargo volume, especially bulk industrial inputs, LNG, raw minerals and heavy machinery.",
+    "keywords": [
+      "port",
+      "qasim",
+      "handles",
+      "over",
+      "percent",
+      "pakistan's",
+      "national",
+      "cargo",
+      "volume",
+      "especially",
+      "bulk",
+      "industrial",
+      "inputs",
+      "lng",
+      "raw",
+      "minerals",
+      "heavy",
+      "machinery"
+    ],
+    "addedAt": "2026-10-15T06:34:39.534Z"
+  },
+  {
+    "text": "Karachi Port Trust, KPT, is a natural deep-water harbour with draught limits of 11.5 to 13 metres and is historically Pakistan's busiest port.",
+    "keywords": [
+      "karachi",
+      "port",
+      "trust",
+      "kpt",
+      "natural",
+      "deep-water",
+      "deep",
+      "water",
+      "harbour",
+      "draught",
+      "limits",
+      "metres",
+      "historically",
+      "pakistan's",
+      "busiest"
+    ],
+    "addedAt": "2026-10-15T06:34:39.534Z"
+  },
+  {
+    "text": "Gwadar deep-sea port has a design capability up to 14.5 metres and is the main maritime node of CPEC, bypassing the Malacca Strait.",
+    "keywords": [
+      "gwadar",
+      "deep-sea",
+      "deep",
+      "sea",
+      "port",
+      "design",
+      "capability",
+      "metres",
+      "main",
+      "maritime",
+      "node",
+      "cpec",
+      "bypassing",
+      "malacca",
+      "strait"
+    ],
+    "addedAt": "2026-10-15T06:34:39.534Z"
+  },
+  {
+    "text": "Gwadar is described as the world's largest deep-sea warm-water port, at the mouth of the Persian Gulf, giving landlocked Central Asia a direct energy route.",
+    "keywords": [
+      "gwadar",
+      "described",
+      "world's",
+      "largest",
+      "deep-sea",
+      "deep",
+      "sea",
+      "warm-water",
+      "warm",
+      "water",
+      "port",
+      "mouth",
+      "persian",
+      "gulf",
+      "giving",
+      "landlocked",
+      "central",
+      "asia",
+      "direct",
+      "energy",
+      "route"
+    ],
+    "addedAt": "2026-10-15T06:34:39.534Z"
+  },
+  {
+    "text": "Pakistan Security Printing Corporation, PSPC, is the sole authority for minting banknotes, passports and other high-security state documents, from a secure plant in Karachi.",
+    "keywords": [
+      "pakistan",
+      "security",
+      "printing",
+      "corporation",
+      "pspc",
+      "sole",
+      "authority",
+      "minting",
+      "banknotes",
+      "passports",
+      "other",
+      "high-security",
+      "high",
+      "state",
+      "documents",
+      "secure",
+      "plant",
+      "karachi"
+    ],
+    "addedAt": "2026-10-15T06:34:39.534Z"
+  },
+  {
+    "text": "The State Bank of Pakistan manages foreign exchange reserves across USD, EUR and RMB plus gold, to maintain stability, service sovereign debt and defend import cover.",
+    "keywords": [
+      "state",
+      "bank",
+      "pakistan",
+      "manages",
+      "foreign",
+      "exchange",
+      "reserves",
+      "across",
+      "usd",
+      "eur",
+      "rmb",
+      "plus",
+      "gold",
+      "maintain",
+      "stability",
+      "service",
+      "sovereign",
+      "debt",
+      "defend",
+      "import",
+      "cover"
+    ],
+    "addedAt": "2026-10-15T06:34:39.534Z"
+  },
+  {
+    "text": "The Karakoram Highway, KKH, is often called the eighth wonder of the world and cuts through the collision zone of the Eurasian and Indian tectonic plates, linking Pakistan to China at Khunjerab Pass.",
+    "keywords": [
+      "karakoram",
+      "highway",
+      "kkh",
+      "often",
+      "called",
+      "eighth",
+      "wonder",
+      "world",
+      "cuts",
+      "through",
+      "collision",
+      "zone",
+      "eurasian",
+      "indian",
+      "tectonic",
+      "plates",
+      "linking",
+      "pakistan",
+      "china",
+      "khunjerab",
+      "pass"
+    ],
+    "addedAt": "2026-10-15T06:34:39.534Z"
+  },
+  {
+    "text": "Khewra Salt Mine is the world's second largest salt mine, found when Alexander the Great's army horses licked the rocks in 326 BC, and it produces pink Himalayan salt.",
+    "keywords": [
+      "khewra",
+      "salt",
+      "mine",
+      "world's",
+      "second",
+      "largest",
+      "found",
+      "alexander",
+      "great's",
+      "army",
+      "horses",
+      "licked",
+      "rocks",
+      "326",
+      "produces",
+      "pink",
+      "himalayan"
+    ],
+    "addedAt": "2026-10-15T06:34:39.534Z"
+  },
+  {
+    "text": "The Indus Basin Irrigation System, IBIS, is the largest contiguous irrigation network in the world and the backbone of Pakistan's agriculture, diverting water from the Indus and its tributaries.",
+    "keywords": [
+      "indus",
+      "basin",
+      "irrigation",
+      "system",
+      "ibis",
+      "largest",
+      "contiguous",
+      "network",
+      "world",
+      "backbone",
+      "pakistan's",
+      "agriculture",
+      "diverting",
+      "water",
+      "its",
+      "tributaries"
+    ],
+    "addedAt": "2026-10-15T06:34:39.541Z"
+  },
+  {
+    "text": "Tarbela reservoir on the Indus and Mangla reservoir on the Jhelum are Pakistan's primary storage hubs, capturing glacial melt and monsoon runoff and stabilising flow for the canal network.",
+    "keywords": [
+      "tarbela",
+      "reservoir",
+      "indus",
+      "mangla",
+      "jhelum",
+      "pakistan's",
+      "primary",
+      "storage",
+      "hubs",
+      "capturing",
+      "glacial",
+      "melt",
+      "monsoon",
+      "runoff",
+      "stabilising",
+      "flow",
+      "canal",
+      "network"
+    ],
+    "addedAt": "2026-10-15T06:34:39.541Z"
+  },
+  {
+    "text": "Tarbela and Mangla dams are also Pakistan's main sources of hydroelectric power, supplying thousands of megawatts at peak summer demand.",
+    "keywords": [
+      "tarbela",
+      "mangla",
+      "dams",
+      "also",
+      "pakistan's",
+      "main",
+      "sources",
+      "hydroelectric",
+      "power",
+      "supplying",
+      "thousands",
+      "megawatts",
+      "peak",
+      "summer",
+      "demand"
+    ],
+    "addedAt": "2026-10-15T06:34:39.541Z"
+  },
+  {
+    "text": "The Sukkur, Kotri and Taunsa barrages divert river water into Pakistan's irrigation canals and protect downstream areas from seasonal floods.",
+    "keywords": [
+      "sukkur",
+      "kotri",
+      "taunsa",
+      "barrages",
+      "divert",
+      "river",
+      "water",
+      "into",
+      "pakistan's",
+      "irrigation",
+      "canals",
+      "protect",
+      "downstream",
+      "areas",
+      "seasonal",
+      "floods"
+    ],
+    "addedAt": "2026-10-15T06:34:39.541Z"
+  },
+  {
+    "text": "The Sukkur Barrage alone controls seven primary canals irrigating millions of acres in the Sindh plains by gravity-fed distribution.",
+    "keywords": [
+      "sukkur",
+      "barrage",
+      "alone",
+      "controls",
+      "seven",
+      "primary",
+      "canals",
+      "irrigating",
+      "millions",
+      "acres",
+      "sindh",
+      "plains",
+      "gravity-fed",
+      "gravity",
+      "fed",
+      "distribution"
+    ],
+    "addedAt": "2026-10-15T06:34:39.541Z"
+  },
+  {
+    "text": "Link canals such as the Chashma-Jhelum Link Canal transfer water from the western rivers, the Indus and Jhelum, to the eastern rivers, the Chenab, Ravi and Sutlej, to balance supply.",
+    "keywords": [
+      "link",
+      "canals",
+      "such",
+      "chashma-jhelum",
+      "chashma",
+      "jhelum",
+      "canal",
+      "transfer",
+      "water",
+      "western",
+      "rivers",
+      "indus",
+      "eastern",
+      "chenab",
+      "ravi",
+      "sutlej",
+      "balance",
+      "supply"
+    ],
+    "addedAt": "2026-10-15T06:34:39.541Z"
+  },
+  {
+    "text": "NADRA, the National Database and Registration Authority, runs Pakistan's centralised biometric citizen identification system.",
+    "keywords": [
+      "nadra",
+      "national",
+      "database",
+      "registration",
+      "authority",
+      "runs",
+      "pakistan's",
+      "centralised",
+      "biometric",
+      "citizen",
+      "identification",
+      "system"
+    ],
+    "addedAt": "2026-10-15T06:34:39.541Z"
+  },
+  {
+    "text": "NADRA's National Data Repository holds unique identities for over 120 million citizens, using automated fingerprint identification, AFIS, together with facial recognition.",
+    "keywords": [
+      "nadra's",
+      "national",
+      "data",
+      "repository",
+      "holds",
+      "unique",
+      "identities",
+      "over",
+      "120",
+      "million",
+      "citizens",
+      "using",
+      "automated",
+      "fingerprint",
+      "identification",
+      "afis",
+      "together",
+      "facial",
+      "recognition"
+    ],
+    "addedAt": "2026-10-15T06:34:39.541Z"
+  },
+  {
+    "text": "The Smart National Identity Card, SNIC, embeds a tamper-proof microchip holding encrypted citizen data, dual fingerprint templates and a unique 13-digit identity number mapped across family trees.",
+    "keywords": [
+      "smart",
+      "national",
+      "identity",
+      "card",
+      "snic",
+      "embeds",
+      "tamper-proof",
+      "tamper",
+      "proof",
+      "microchip",
+      "holding",
+      "encrypted",
+      "citizen",
+      "data",
+      "dual",
+      "fingerprint",
+      "templates",
+      "unique",
+      "13-digit",
+      "digit",
+      "number",
+      "mapped",
+      "across",
+      "family",
+      "trees"
+    ],
+    "addedAt": "2026-10-15T06:34:39.541Z"
+  },
+  {
+    "text": "Verisys is NADRA's real-time identity verification gateway, used by telecom operators for biometric SIM activation, by banks for KYC compliance, and by the Raast payment system.",
+    "keywords": [
+      "verisys",
+      "nadra's",
+      "real-time",
+      "real",
+      "time",
+      "identity",
+      "verification",
+      "gateway",
+      "used",
+      "telecom",
+      "operators",
+      "biometric",
+      "sim",
+      "activation",
+      "banks",
+      "kyc",
+      "compliance",
+      "raast",
+      "payment",
+      "system"
+    ],
+    "addedAt": "2026-10-15T06:34:39.541Z"
+  },
+  {
+    "text": "Pakistan Railways main lines ML-1, ML-2 and ML-3 run on 1,676 mm broad gauge, while 762 mm narrow gauge survives only as legacy mountain tourist track.",
+    "keywords": [
+      "pakistan",
+      "railways",
+      "main",
+      "lines",
+      "ml-1",
+      "ml-2",
+      "ml-3",
+      "run",
+      "676",
+      "broad",
+      "gauge",
+      "while",
+      "762",
+      "narrow",
+      "survives",
+      "only",
+      "legacy",
+      "mountain",
+      "tourist",
+      "track"
+    ],
+    "addedAt": "2026-10-15T06:34:39.547Z"
+  },
+  {
+    "text": "Pakistan Railways signalling mixes modern computer based interlocking, CBI, with older mechanical rod-and-cable frames, and automatic block signalling protects busy urban sections.",
+    "keywords": [
+      "pakistan",
+      "railways",
+      "signalling",
+      "mixes",
+      "modern",
+      "computer",
+      "based",
+      "interlocking",
+      "cbi",
+      "older",
+      "mechanical",
+      "rod-and-cable",
+      "rod",
+      "cable",
+      "frames",
+      "automatic",
+      "block",
+      "protects",
+      "busy",
+      "urban",
+      "sections"
+    ],
+    "addedAt": "2026-10-15T06:34:39.547Z"
+  },
+  {
+    "text": "Pakistan Railways runs diesel-electric freight locomotives including the American GE Evolution series of 4,000 horsepower and Chinese CRRC units.",
+    "keywords": [
+      "pakistan",
+      "railways",
+      "runs",
+      "diesel-electric",
+      "diesel",
+      "electric",
+      "freight",
+      "locomotives",
+      "including",
+      "american",
+      "evolution",
+      "series",
+      "000",
+      "horsepower",
+      "chinese",
+      "crrc",
+      "units"
+    ],
+    "addedAt": "2026-10-15T06:34:39.547Z"
+  },
+  {
+    "text": "The NDMA disaster communications network uses dedicated radio frequencies and satellite relays to keep contact when commercial cell towers fail during a disaster.",
+    "keywords": [
+      "ndma",
+      "disaster",
+      "communications",
+      "network",
+      "uses",
+      "dedicated",
+      "radio",
+      "frequencies",
+      "satellite",
+      "relays",
+      "keep",
+      "contact",
+      "commercial",
+      "cell",
+      "towers",
+      "fail",
+      "during"
+    ],
+    "addedAt": "2026-10-15T06:34:39.547Z"
+  },
+  {
+    "text": "Pakistan's emergency response trucks carry high-power HF and VHF radio sets giving first responders encrypted voice and telemetry links.",
+    "keywords": [
+      "pakistan's",
+      "emergency",
+      "response",
+      "trucks",
+      "carry",
+      "high-power",
+      "high",
+      "power",
+      "vhf",
+      "radio",
+      "sets",
+      "giving",
+      "first",
+      "responders",
+      "encrypted",
+      "voice",
+      "telemetry",
+      "links"
+    ],
+    "addedAt": "2026-10-15T06:34:39.547Z"
+  },
+  {
+    "text": "Automatic weather monitors and river sensors send real-time data by satellite to central command, powering early warning for floods, cloudbursts and earthquakes in Pakistan.",
+    "keywords": [
+      "automatic",
+      "weather",
+      "monitors",
+      "river",
+      "sensors",
+      "send",
+      "real-time",
+      "real",
+      "time",
+      "data",
+      "satellite",
+      "central",
+      "command",
+      "powering",
+      "early",
+      "warning",
+      "floods",
+      "cloudbursts",
+      "earthquakes",
+      "pakistan"
+    ],
+    "addedAt": "2026-10-15T06:34:39.547Z"
+  },
+  {
+    "text": "The White Oil Pipeline, WOPL, is an 864 km pipeline carrying high-speed diesel and petrol from Pakistan's coastal terminals to inland depots, replacing thousands of tanker trucks.",
+    "keywords": [
+      "white",
+      "oil",
+      "pipeline",
+      "wopl",
+      "864",
+      "carrying",
+      "high-speed",
+      "high",
+      "speed",
+      "diesel",
+      "petrol",
+      "pakistan's",
+      "coastal",
+      "terminals",
+      "inland",
+      "depots",
+      "replacing",
+      "thousands",
+      "tanker",
+      "trucks"
+    ],
+    "addedAt": "2026-10-15T06:34:39.547Z"
+  },
+  {
+    "text": "The Keamari to Mahmood Kot crude pipeline, KMK, is an 870 km pipeline pumping imported crude oil from Karachi port to refineries in central Pakistan.",
+    "keywords": [
+      "keamari",
+      "mahmood",
+      "kot",
+      "crude",
+      "pipeline",
+      "kmk",
+      "870",
+      "pumping",
+      "imported",
+      "oil",
+      "karachi",
+      "port",
+      "refineries",
+      "central",
+      "pakistan"
+    ],
+    "addedAt": "2026-10-15T06:34:39.547Z"
+  },
+  {
+    "text": "The Machaike terminal in Punjab is a fuel distribution hub handling pipeline receipts, fuel quality testing and bulk truck loading for northern markets.",
+    "keywords": [
+      "machaike",
+      "terminal",
+      "punjab",
+      "fuel",
+      "distribution",
+      "hub",
+      "handling",
+      "pipeline",
+      "receipts",
+      "quality",
+      "testing",
+      "bulk",
+      "truck",
+      "loading",
+      "northern",
+      "markets"
+    ],
+    "addedAt": "2026-10-15T06:34:39.547Z"
+  },
+  {
+    "text": "The NLC dry port in Lahore is an inland customs and freight depot letting central Punjab businesses clear international cargo before it moves to the seaports.",
+    "keywords": [
+      "nlc",
+      "dry",
+      "port",
+      "lahore",
+      "inland",
+      "customs",
+      "freight",
+      "depot",
+      "letting",
+      "central",
+      "punjab",
+      "businesses",
+      "clear",
+      "international",
+      "cargo",
+      "before",
+      "moves",
+      "seaports"
+    ],
+    "addedAt": "2026-10-15T06:34:39.547Z"
+  },
+  {
+    "text": "The Sost dry port on the Karakoram Highway near the China border is the world's highest dry port, handling trade through the Karakoram pass in season.",
+    "keywords": [
+      "sost",
+      "dry",
+      "port",
+      "karakoram",
+      "highway",
+      "near",
+      "china",
+      "border",
+      "world's",
+      "highest",
+      "handling",
+      "trade",
+      "through",
+      "pass",
+      "season"
+    ],
+    "addedAt": "2026-10-15T06:34:39.548Z"
+  },
+  {
+    "text": "The Sialkot Dry Port Trust is a privately built and run dry port offering automated customs clearance and container stuffing for surgical instrument and sports goods exports.",
+    "keywords": [
+      "sialkot",
+      "dry",
+      "port",
+      "trust",
+      "privately",
+      "built",
+      "run",
+      "offering",
+      "automated",
+      "customs",
+      "clearance",
+      "container",
+      "stuffing",
+      "surgical",
+      "instrument",
+      "sports",
+      "goods",
+      "exports"
+    ],
+    "addedAt": "2026-10-15T06:34:39.548Z"
+  },
+  {
+    "text": "Ghaznavi, also called Hatf-III, is a Pakistani short-range solid-fuel ballistic missile with a range of 290 km and a 700 kg payload.",
+    "keywords": [
+      "ghaznavi",
+      "also",
+      "called",
+      "hatf-iii",
+      "hatf",
+      "iii",
+      "pakistani",
+      "short-range",
+      "short",
+      "range",
+      "solid-fuel",
+      "solid",
+      "fuel",
+      "ballistic",
+      "missile",
+      "290",
+      "700",
+      "payload"
+    ],
+    "addedAt": "2026-10-15T06:34:39.555Z"
+  },
+  {
+    "text": "Shaheen-II, also called Hatf-VI, is a Pakistani two-stage solid-propellant road-mobile medium-range ballistic missile with a range of 2,000 km and a 1,050 kg payload.",
+    "keywords": [
+      "shaheen-ii",
+      "shaheen",
+      "also",
+      "called",
+      "hatf-vi",
+      "hatf",
+      "pakistani",
+      "two-stage",
+      "two",
+      "stage",
+      "solid-propellant",
+      "solid",
+      "propellant",
+      "road-mobile",
+      "road",
+      "mobile",
+      "medium-range",
+      "medium",
+      "range",
+      "ballistic",
+      "missile",
+      "000",
+      "050",
+      "payload"
+    ],
+    "addedAt": "2026-10-15T06:34:39.555Z"
+  },
+  {
+    "text": "Ababeel is a Pakistani medium-range ballistic missile with a range of 2,200 km, carrying MIRV multiple independently targetable re-entry vehicles.",
+    "keywords": [
+      "ababeel",
+      "pakistani",
+      "medium-range",
+      "medium",
+      "range",
+      "ballistic",
+      "missile",
+      "200",
+      "carrying",
+      "mirv",
+      "multiple",
+      "independently",
+      "targetable",
+      "re-entry",
+      "entry",
+      "vehicles"
+    ],
+    "addedAt": "2026-10-15T06:34:39.555Z"
+  },
+  {
+    "text": "Babur-3 is Pakistan's submarine-launched cruise missile with a range of 450 km and a 450 kg payload, fired from Agosta-90B submarines to complete the sea-based second strike.",
+    "keywords": [
+      "babur-3",
+      "babur",
+      "pakistan's",
+      "submarine-launched",
+      "submarine",
+      "launched",
+      "cruise",
+      "missile",
+      "range",
+      "450",
+      "payload",
+      "fired",
+      "agosta-90b",
+      "agosta",
+      "90b",
+      "submarines",
+      "complete",
+      "sea-based",
+      "sea",
+      "based",
+      "second",
+      "strike"
+    ],
+    "addedAt": "2026-10-15T06:34:39.555Z"
+  },
+  {
+    "text": "Khunjerab Pass is 4,693 metres high in the Karakoram range, links Gilgit-Baltistan to Xinjiang in China, and is the world's highest paved international border crossing and the main gate of CPEC.",
+    "keywords": [
+      "khunjerab",
+      "pass",
+      "693",
+      "metres",
+      "high",
+      "karakoram",
+      "range",
+      "links",
+      "gilgit-baltistan",
+      "gilgit",
+      "baltistan",
+      "xinjiang",
+      "china",
+      "world's",
+      "highest",
+      "paved",
+      "international",
+      "border",
+      "crossing",
+      "main",
+      "gate",
+      "cpec"
+    ],
+    "addedAt": "2026-10-15T06:34:39.555Z"
+  },
+  {
+    "text": "Khyber Pass is 1,070 metres high in the Spin Ghar mountains and links Peshawar to Kabul in Afghanistan, historically the gateway for invasions of the subcontinent.",
+    "keywords": [
+      "khyber",
+      "pass",
+      "070",
+      "metres",
+      "high",
+      "spin",
+      "ghar",
+      "mountains",
+      "links",
+      "peshawar",
+      "kabul",
+      "afghanistan",
+      "historically",
+      "gateway",
+      "invasions",
+      "subcontinent"
+    ],
+    "addedAt": "2026-10-15T06:34:39.555Z"
+  },
+  {
+    "text": "Bolan Pass is 1,793 metres high in the Toba Kakar range and links Quetta to Jacobabad and Sibi, connecting the Balochistan plateau to the Indus valley.",
+    "keywords": [
+      "bolan",
+      "pass",
+      "793",
+      "metres",
+      "high",
+      "toba",
+      "kakar",
+      "range",
+      "links",
+      "quetta",
+      "jacobabad",
+      "sibi",
+      "connecting",
+      "balochistan",
+      "plateau",
+      "indus",
+      "valley"
+    ],
+    "addedAt": "2026-10-15T06:34:39.555Z"
+  },
+  {
+    "text": "Lowari Pass is 3,118 metres high in the Hindu Kush and links Dir to Chitral; it was snow-blocked six months a year until the 10.4 km Lowari Tunnel opened.",
+    "keywords": [
+      "lowari",
+      "pass",
+      "118",
+      "metres",
+      "high",
+      "hindu",
+      "kush",
+      "links",
+      "dir",
+      "chitral",
+      "snow-blocked",
+      "snow",
+      "blocked",
+      "six",
+      "months",
+      "year",
+      "until",
+      "tunnel",
+      "opened"
+    ],
+    "addedAt": "2026-10-15T06:34:39.555Z"
+  },
+  {
+    "text": "Kahuta Research Laboratories, KRL, in Kahuta, Punjab, is Pakistan's gas centrifuge uranium enrichment facility.",
+    "keywords": [
+      "kahuta",
+      "research",
+      "laboratories",
+      "krl",
+      "punjab",
+      "pakistan's",
+      "gas",
+      "centrifuge",
+      "uranium",
+      "enrichment",
+      "facility"
+    ],
+    "addedAt": "2026-10-15T06:34:39.555Z"
+  },
+  {
+    "text": "The Khushab nuclear complex in Punjab is a heavy-water plutonium production site with several operational reactors.",
+    "keywords": [
+      "khushab",
+      "nuclear",
+      "complex",
+      "punjab",
+      "heavy-water",
+      "heavy",
+      "water",
+      "plutonium",
+      "production",
+      "site",
+      "several",
+      "operational",
+      "reactors"
+    ],
+    "addedAt": "2026-10-15T06:34:39.555Z"
+  },
+  {
+    "text": "Chagai-I and Chagai-II in the Ras Koh Hills and Kharan in Balochistan are Pakistan's underground nuclear test sites, where five simultaneous tests took place on 28 May 1998 and a further test on 30 May 1998.",
+    "keywords": [
+      "chagai-i",
+      "chagai",
+      "chagai-ii",
+      "ras",
+      "koh",
+      "hills",
+      "kharan",
+      "balochistan",
+      "pakistan's",
+      "underground",
+      "nuclear",
+      "test",
+      "sites",
+      "five",
+      "simultaneous",
+      "tests",
+      "took",
+      "place",
+      "1998",
+      "further"
+    ],
+    "addedAt": "2026-10-15T06:34:39.555Z"
+  },
+  {
+    "text": "Pakistan's National Highways and Motorway Police, NHMP, run traffic monitoring, automated tolling and security on the M-1, M-2, M-3, M-4, M-5, M-9 and M-11 motorways.",
+    "keywords": [
+      "pakistan's",
+      "national",
+      "highways",
+      "motorway",
+      "police",
+      "nhmp",
+      "run",
+      "traffic",
+      "monitoring",
+      "automated",
+      "tolling",
+      "security",
+      "m-1",
+      "m-2",
+      "m-3",
+      "m-4",
+      "m-5",
+      "m-9",
+      "m-11",
+      "motorways"
+    ],
+    "addedAt": "2026-10-15T06:34:39.562Z"
+  },
+  {
+    "text": "Pakistan's E-Tag electronic toll collection uses RFID transponders on the M-2 and M-9 gates, integrated with the OneNetwork and M-Tag systems so vehicles pay without stopping.",
+    "keywords": [
+      "pakistan's",
+      "e-tag",
+      "tag",
+      "electronic",
+      "toll",
+      "collection",
+      "uses",
+      "rfid",
+      "transponders",
+      "m-2",
+      "m-9",
+      "gates",
+      "integrated",
+      "onenetwork",
+      "m-tag",
+      "systems",
+      "vehicles",
+      "pay",
+      "without",
+      "stopping"
+    ],
+    "addedAt": "2026-10-15T06:34:39.562Z"
+  },
+  {
+    "text": "ANPR automatic number plate recognition cameras at Pakistani motorway interchanges and toll booths check vehicle registrations against national crime databases in real time.",
+    "keywords": [
+      "anpr",
+      "automatic",
+      "number",
+      "plate",
+      "recognition",
+      "cameras",
+      "pakistani",
+      "motorway",
+      "interchanges",
+      "toll",
+      "booths",
+      "check",
+      "vehicle",
+      "registrations",
+      "against",
+      "national",
+      "crime",
+      "databases",
+      "real",
+      "time"
+    ],
+    "addedAt": "2026-10-15T06:34:39.562Z"
+  },
+  {
+    "text": "Pakistan's motorways use point-to-point speed cameras and weigh-in-motion, WIM, sensors embedded in commercial lanes to catch overloaded freight trucks.",
+    "keywords": [
+      "pakistan's",
+      "motorways",
+      "use",
+      "point-to-point",
+      "point",
+      "speed",
+      "cameras",
+      "weigh-in-motion",
+      "weigh",
+      "motion",
+      "wim",
+      "sensors",
+      "embedded",
+      "commercial",
+      "lanes",
+      "catch",
+      "overloaded",
+      "freight",
+      "trucks"
+    ],
+    "addedAt": "2026-10-15T06:34:39.562Z"
+  },
+  {
+    "text": "An underground fibre-optic backbone runs the length of Pakistan's major motorways, connecting intelligent transport system sensors to regional command rooms.",
+    "keywords": [
+      "underground",
+      "fibre-optic",
+      "fibre",
+      "optic",
+      "backbone",
+      "runs",
+      "length",
+      "pakistan's",
+      "major",
+      "motorways",
+      "connecting",
+      "intelligent",
+      "transport",
+      "system",
+      "sensors",
+      "regional",
+      "command",
+      "rooms"
+    ],
+    "addedAt": "2026-10-15T06:34:39.562Z"
+  },
+  {
+    "text": "The Pakistan Meteorological Department, PMD, monitors earthquakes where the Indian, Eurasian and Arabian plates collide.",
+    "keywords": [
+      "pakistan",
+      "meteorological",
+      "department",
+      "pmd",
+      "monitors",
+      "earthquakes",
+      "indian",
+      "eurasian",
+      "arabian",
+      "plates",
+      "collide"
+    ],
+    "addedAt": "2026-10-15T06:34:39.562Z"
+  },
+  {
+    "text": "The National Seismic Monitoring Centre, NSMC, is headquartered in Karachi with backup processing in Islamabad, receiving live telemetry from broadband stations by satellite and radio.",
+    "keywords": [
+      "national",
+      "seismic",
+      "monitoring",
+      "centre",
+      "nsmc",
+      "headquartered",
+      "karachi",
+      "backup",
+      "processing",
+      "islamabad",
+      "receiving",
+      "live",
+      "telemetry",
+      "broadband",
+      "stations",
+      "satellite",
+      "radio"
+    ],
+    "addedAt": "2026-10-15T06:34:39.562Z"
+  },
+  {
+    "text": "The Chaman fault array monitors a strike-slip transform fault across Balochistan using geodetic GPS arrays to measure crustal stress.",
+    "keywords": [
+      "chaman",
+      "fault",
+      "array",
+      "monitors",
+      "strike-slip",
+      "strike",
+      "slip",
+      "transform",
+      "across",
+      "balochistan",
+      "using",
+      "geodetic",
+      "gps",
+      "arrays",
+      "measure",
+      "crustal",
+      "stress"
+    ],
+    "addedAt": "2026-10-15T06:34:39.562Z"
+  },
+  {
+    "text": "The Main Karakoram Thrust, MKT, monitoring network covers Gilgit-Baltistan and Khyber Pakhtunkhwa, tracking compression from the northward push of the Indian plate.",
+    "keywords": [
+      "main",
+      "karakoram",
+      "thrust",
+      "mkt",
+      "monitoring",
+      "network",
+      "covers",
+      "gilgit-baltistan",
+      "gilgit",
+      "baltistan",
+      "khyber",
+      "pakhtunkhwa",
+      "tracking",
+      "compression",
+      "northward",
+      "push",
+      "indian",
+      "plate"
+    ],
+    "addedAt": "2026-10-15T06:34:39.562Z"
+  },
+  {
+    "text": "The Makran tsunami early warning network sits over the subduction zone off Pakistan's southern coast, using tide gauges and ocean floor pressure sensors to alert Karachi, Gwadar and Pasni.",
+    "keywords": [
+      "makran",
+      "tsunami",
+      "early",
+      "warning",
+      "network",
+      "sits",
+      "over",
+      "subduction",
+      "zone",
+      "off",
+      "pakistan's",
+      "southern",
+      "coast",
+      "using",
+      "tide",
+      "gauges",
+      "ocean",
+      "floor",
+      "pressure",
+      "sensors",
+      "alert",
+      "karachi",
+      "gwadar",
+      "pasni"
+    ],
+    "addedAt": "2026-10-15T06:34:39.562Z"
+  },
+  {
+    "text": "The official name of Pakistan is the Islamic Republic of Pakistan.",
+    "keywords": [
+      "official",
+      "name",
+      "pakistan",
+      "islamic",
+      "republic"
+    ],
+    "addedAt": "2026-10-15T06:34:39.568Z"
+  },
+  {
+    "text": "The capital of Pakistan is Islamabad.",
+    "keywords": [
+      "capital",
+      "pakistan",
+      "islamabad"
+    ],
+    "addedAt": "2026-10-15T06:34:39.568Z"
+  },
+  {
+    "text": "The founder of Pakistan is Quaid-e-Azam Muhammad Ali Jinnah.",
+    "keywords": [
+      "founder",
+      "pakistan",
+      "quaid-e-azam",
+      "quaid",
+      "azam",
+      "muhammad",
+      "ali",
+      "jinnah"
+    ],
+    "addedAt": "2026-10-15T06:34:39.568Z"
+  },
+  {
+    "text": "Pakistan gained independence on 14 August 1947.",
+    "keywords": [
+      "pakistan",
+      "gained",
+      "independence",
+      "august",
+      "1947"
+    ],
+    "addedAt": "2026-10-15T06:34:39.568Z"
+  },
+  {
+    "text": "The currency of Pakistan is the Pakistani Rupee, PKR.",
+    "keywords": [
+      "currency",
+      "pakistan",
+      "pakistani",
+      "rupee",
+      "pkr"
+    ],
+    "addedAt": "2026-10-15T06:34:39.568Z"
+  },
+  {
+    "text": "The official languages of Pakistan are Urdu and English.",
+    "keywords": [
+      "official",
+      "languages",
+      "pakistan",
+      "urdu",
+      "english"
+    ],
+    "addedAt": "2026-10-15T06:34:39.568Z"
+  },
+  {
+    "text": "The President of Pakistan is Asif Ali Zardari.",
+    "keywords": [
+      "president",
+      "pakistan",
+      "asif",
+      "ali",
+      "zardari"
+    ],
+    "addedAt": "2026-10-15T06:34:39.568Z"
+  },
+  {
+    "text": "The Prime Minister of Pakistan is Muhammad Shehbaz Sharif.",
+    "keywords": [
+      "prime",
+      "minister",
+      "pakistan",
+      "muhammad",
+      "shehbaz",
+      "sharif"
+    ],
+    "addedAt": "2026-10-15T06:34:39.568Z"
+  },
+  {
+    "text": "The largest province of Pakistan by area is Balochistan.",
+    "keywords": [
+      "largest",
+      "province",
+      "pakistan",
+      "area",
+      "balochistan"
+    ],
+    "addedAt": "2026-10-15T06:34:39.568Z"
+  },
+  {
+    "text": "The highest peak in Pakistan is K2, at 8,616 metres, in the Karakoram range.",
+    "keywords": [
+      "highest",
+      "peak",
+      "pakistan",
+      "616",
+      "metres",
+      "karakoram",
+      "range"
+    ],
+    "addedAt": "2026-10-15T06:34:39.568Z"
+  },
+  {
+    "text": "The longest river in Pakistan is the Indus River, about 2,896 km long, and it is the lifeline of the country.",
+    "keywords": [
+      "longest",
+      "river",
+      "pakistan",
+      "indus",
+      "896",
+      "long",
+      "lifeline",
+      "country"
+    ],
+    "addedAt": "2026-10-15T06:34:39.568Z"
+  },
+  {
+    "text": "The largest desert in Pakistan is the Thar Desert, followed by the Cholistan and Thal deserts.",
+    "keywords": [
+      "largest",
+      "desert",
+      "pakistan",
+      "thar",
+      "followed",
+      "cholistan",
+      "thal",
+      "deserts"
+    ],
+    "addedAt": "2026-10-15T06:34:39.568Z"
+  },
+  {
+    "text": "The major glaciers of Pakistan are the Siachen Glacier, Baltoro and Batura.",
+    "keywords": [
+      "major",
+      "glaciers",
+      "pakistan",
+      "siachen",
+      "glacier",
+      "baltoro",
+      "batura"
+    ],
+    "addedAt": "2026-10-15T06:34:39.568Z"
+  },
+  {
+    "text": "The largest dam in Pakistan is the Tarbela Dam.",
+    "keywords": [
+      "largest",
+      "dam",
+      "pakistan",
+      "tarbela"
+    ],
+    "addedAt": "2026-10-15T06:34:39.569Z"
+  },
+  {
+    "text": "The national sport of Pakistan is field hockey.",
+    "keywords": [
+      "national",
+      "sport",
+      "pakistan",
+      "field",
+      "hockey"
+    ],
+    "addedAt": "2026-10-15T06:34:39.569Z"
+  },
+  {
+    "text": "The national flower of Pakistan is the jasmine.",
+    "keywords": [
+      "national",
+      "flower",
+      "pakistan",
+      "jasmine"
+    ],
+    "addedAt": "2026-10-15T06:34:39.569Z"
+  },
+  {
+    "text": "The national animal of Pakistan is the markhor.",
+    "keywords": [
+      "national",
+      "animal",
+      "pakistan",
+      "markhor"
+    ],
+    "addedAt": "2026-10-15T06:34:39.569Z"
+  },
+  {
+    "text": "The national bird of Pakistan is the chukar partridge, also called the chakor.",
+    "keywords": [
+      "national",
+      "bird",
+      "pakistan",
+      "chukar",
+      "partridge",
+      "also",
+      "called",
+      "chakor"
+    ],
+    "addedAt": "2026-10-15T06:34:39.569Z"
+  },
+  {
+    "text": "The national tree of Pakistan is the deodar cedar.",
+    "keywords": [
+      "national",
+      "tree",
+      "pakistan",
+      "deodar",
+      "cedar"
+    ],
+    "addedAt": "2026-10-15T06:34:39.569Z"
+  },
+  {
+    "text": "The national poet of Pakistan is Allama Iqbal.",
+    "keywords": [
+      "national",
+      "poet",
+      "pakistan",
+      "allama",
+      "iqbal"
+    ],
+    "addedAt": "2026-10-15T06:34:39.569Z"
+  },
+  {
+    "text": "The national anthem of Pakistan was written by Hafeez Jullundhri.",
+    "keywords": [
+      "national",
+      "anthem",
+      "pakistan",
+      "written",
+      "hafeez",
+      "jullundhri"
+    ],
+    "addedAt": "2026-10-15T06:34:39.569Z"
+  },
+  {
+    "text": "The first Nobel Prize winner of Pakistan was Dr Abdus Salam, for Physics in 1979.",
+    "keywords": [
+      "first",
+      "nobel",
+      "prize",
+      "winner",
+      "pakistan",
+      "abdus",
+      "salam",
+      "physics",
+      "1979"
+    ],
+    "addedAt": "2026-10-15T06:34:39.569Z"
+  },
+  {
+    "text": "The first female Prime Minister of Pakistan was Benazir Bhutto.",
+    "keywords": [
+      "first",
+      "female",
+      "prime",
+      "minister",
+      "pakistan",
+      "benazir",
+      "bhutto"
+    ],
+    "addedAt": "2026-10-15T06:34:39.569Z"
+  },
+  {
+    "text": "The first Governor-General of Pakistan was Muhammad Ali Jinnah.",
+    "keywords": [
+      "first",
+      "governor-general",
+      "governor",
+      "general",
+      "pakistan",
+      "muhammad",
+      "ali",
+      "jinnah"
+    ],
+    "addedAt": "2026-10-15T06:34:39.569Z"
+  },
+  {
+    "text": "The first Prime Minister of Pakistan was Liaquat Ali Khan.",
+    "keywords": [
+      "first",
+      "prime",
+      "minister",
+      "pakistan",
+      "liaquat",
+      "ali",
+      "khan"
+    ],
+    "addedAt": "2026-10-15T06:34:39.569Z"
+  },
+  {
+    "text": "The first capital of Pakistan was Karachi.",
+    "keywords": [
+      "first",
+      "capital",
+      "pakistan",
+      "karachi"
+    ],
+    "addedAt": "2026-10-15T06:34:39.569Z"
   }
 ]

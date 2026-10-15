@@ -1,0 +1,14 @@
+# Pakistan Indus Basin irrigation and NADRA digital identity
+# One fact per line, phrased with the words someone would ask with.
+
+The Indus Basin Irrigation System, IBIS, is the largest contiguous irrigation network in the world and the backbone of Pakistan's agriculture, diverting water from the Indus and its tributaries.
+Tarbela reservoir on the Indus and Mangla reservoir on the Jhelum are Pakistan's primary storage hubs, capturing glacial melt and monsoon runoff and stabilising flow for the canal network.
+Tarbela and Mangla dams are also Pakistan's main sources of hydroelectric power, supplying thousands of megawatts at peak summer demand.
+The Sukkur, Kotri and Taunsa barrages divert river water into Pakistan's irrigation canals and protect downstream areas from seasonal floods.
+The Sukkur Barrage alone controls seven primary canals irrigating millions of acres in the Sindh plains by gravity-fed distribution.
+Link canals such as the Chashma-Jhelum Link Canal transfer water from the western rivers, the Indus and Jhelum, to the eastern rivers, the Chenab, Ravi and Sutlej, to balance supply.
+
+NADRA, the National Database and Registration Authority, runs Pakistan's centralised biometric citizen identification system.
+NADRA's National Data Repository holds unique identities for over 120 million citizens, using automated fingerprint identification, AFIS, together with facial recognition.
+The Smart National Identity Card, SNIC, embeds a tamper-proof microchip holding encrypted citizen data, dual fingerprint templates and a unique 13-digit identity number mapped across family trees.
+Verisys is NADRA's real-time identity verification gateway, used by telecom operators for biometric SIM activation, by banks for KYC compliance, and by the Raast payment system.
