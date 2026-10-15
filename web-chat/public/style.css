@@ -430,96 +430,236 @@ main {
   flex-wrap: wrap;
 }
 
-.model-tab {
+/* Claude-Style Model Selector Popover */
+.model-picker-container {
+  position: relative;
+  display: inline-flex;
+}
+
+.model-picker-trigger {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: space-between;
+  gap: 10px;
   background: var(--surface);
-  color: var(--muted);
+  color: var(--text);
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 3px 10px 3px 8px;
-  font-size: 11.5px;
+  padding: 4px 12px 4px 10px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   user-select: none;
   font-family: inherit;
   transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
-.model-tab:hover {
+.model-picker-trigger:hover {
   background: var(--raised);
-  color: var(--text-soft);
   border-color: var(--line-soft);
+  color: var(--text);
 }
 
-.model-tab.active {
-  background: var(--accent-soft);
-  color: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+.model-picker-container.open .model-picker-trigger {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
-.model-tab .model-sparkle {
+.picker-trigger-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.picker-trigger-icon {
   font-size: 11px;
   line-height: 1;
 }
 
-.model-tab .model-tag-active {
-  background: var(--accent);
-  color: #fff;
-  border-radius: 999px;
-  padding: 1px 6px;
-  font-size: 9px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-left: 2px;
+.picker-trigger-name {
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
-.model-tab#model-genni2-btn.active {
-  background: color-mix(in srgb, #8b5cf6 15%, transparent);
-  color: #a78bfa;
-  border-color: color-mix(in srgb, #8b5cf6 40%, transparent);
+.picker-trigger-tag {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  padding-left: 2px;
 }
 
-.model-tab#model-genni2-btn .genni2-sparkle {
-  color: #a78bfa;
+.picker-trigger-arrow {
+  color: var(--muted);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
 }
 
-.model-tab .model-tag-reasoning {
-  background: #8b5cf6;
-  color: #fff;
-  border-radius: 999px;
-  padding: 1px 6px;
-  font-size: 9px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-left: 2px;
+.model-picker-container.open .picker-trigger-arrow {
+  transform: rotate(180deg);
 }
 
-.model-badge-soon {
+/* Dropdown Menu (Floating Above Trigger) */
+.model-dropdown-menu {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  width: 320px;
+  max-width: calc(100vw - 32px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px var(--line-soft);
+  padding: 6px;
+  z-index: 300;
+  backdrop-filter: blur(16px);
+  transform-origin: bottom left;
+  animation: modelMenuPop 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modelMenuPop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.model-dropdown-menu.hidden {
+  display: none !important;
+}
+
+.model-dropdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.model-menu-item {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s ease, transform 0.1s ease;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.model-menu-item:hover:not(.disabled) {
+  background: var(--raised);
+}
+
+.model-menu-item.selected {
+  background: color-mix(in srgb, var(--accent) 8%, var(--raised));
+}
+
+.model-menu-item.disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.model-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+}
+
+.model-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.model-item-left {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: var(--surface);
-  border: 1px dashed var(--line);
-  border-radius: 999px;
-  padding: 3px 10px;
-  font-size: 11.5px;
+  gap: 7px;
+}
+
+.model-item-icon {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.model-item-icon.reasoning-icon {
+  color: #a78bfa;
+}
+
+.model-item-icon.muted-icon {
   color: var(--muted);
-  user-select: none;
 }
 
-.model-badge-soon .model-soon-label {
-  font-weight: 500;
-  opacity: 0.85;
-}
-
-.model-badge-soon .model-soon-name {
+.model-item-title {
+  font-size: 13.5px;
   font-weight: 600;
-  color: var(--text-soft);
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.model-item-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.35;
+  padding-left: 20px;
+}
+
+.model-item-pill {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1.5px 7px;
+  border-radius: 999px;
+  line-height: 1.2;
+}
+
+.model-item-pill.pill-reasoning {
+  background: color-mix(in srgb, #8b5cf6 20%, transparent);
+  color: #a78bfa;
+  border: 1px solid color-mix(in srgb, #8b5cf6 40%, transparent);
+}
+
+.model-item-pill.pill-fast {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.model-item-pill.pill-soon {
+  background: var(--raised);
+  color: var(--muted);
+  border: 1px dashed var(--line);
+}
+
+.model-item-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.model-menu-divider {
+  height: 1px;
+  background: var(--line);
+  margin: 5px 4px;
+}
+
+.model-dropdown-footer {
+  padding: 6px 10px 4px;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.35;
 }
 
 /* File Attachment Preview (genni 2) */

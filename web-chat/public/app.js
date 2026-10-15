@@ -5,8 +5,16 @@ const send = document.getElementById('send');
 const statusPill = document.getElementById('status');
 const resetBtn = document.getElementById('reset');
 
-const modelGenni1Btn = document.getElementById('model-genni1-btn');
-const modelGenni2Btn = document.getElementById('model-genni2-btn');
+const modelPickerContainer = document.getElementById('model-picker-container');
+const modelPickerTrigger = document.getElementById('model-picker-trigger');
+const pickerTriggerIcon = document.getElementById('picker-trigger-icon');
+const pickerTriggerName = document.getElementById('picker-trigger-name');
+const pickerTriggerTag = document.getElementById('picker-trigger-tag');
+const modelDropdownMenu = document.getElementById('model-dropdown-menu');
+const checkGenni1 = document.getElementById('check-genni-1');
+const checkGenni2 = document.getElementById('check-genni-2');
+const modelMenuItems = document.querySelectorAll('[data-model-option]');
+
 const attachBtn = document.getElementById('attach-btn');
 const fileInput = document.getElementById('file-input');
 const filePreview = document.getElementById('file-attachment-preview');
@@ -31,7 +39,7 @@ const WELCOME =
   '<div class="welcome">' +
   '<h2>Ask f0undr Ai anything</h2>' +
   '<div class="welcome-model-pill">' +
-  '<span class="badge-active">Active: <strong>genni 1</strong> &amp; <strong>genni 2</strong></span>' +
+  '<span class="badge-active">Models: <strong>genni 1</strong> &amp; <strong>genni 2</strong></span>' +
   '<span class="badge-soon">genni 3 coming soon</span>' +
   '</div>' +
   '<p>Switch models anytime: <strong>genni 1</strong> for fast live answers, or <strong>genni 2</strong> for Deep Reasoning, file analysis &amp; live code runner.</p>' +
@@ -384,18 +392,90 @@ function handleMenuAction(action) {
 function setModel(model) {
   currentModel = model;
   if (model === 'genni 2') {
-    modelGenni1Btn?.classList.remove('active');
-    modelGenni2Btn?.classList.add('active');
+    if (pickerTriggerName) pickerTriggerName.textContent = 'genni 2';
+    if (pickerTriggerTag) pickerTriggerTag.textContent = 'Deep Think';
+    if (pickerTriggerIcon) {
+      pickerTriggerIcon.textContent = '⚡';
+      pickerTriggerIcon.style.color = '#a78bfa';
+    }
+    if (checkGenni2) checkGenni2.style.display = 'flex';
+    if (checkGenni1) checkGenni1.style.display = 'none';
     input.placeholder = 'Ask genni 2 with Deep Reasoning & Code Runner…';
   } else {
-    modelGenni2Btn?.classList.remove('active');
-    modelGenni1Btn?.classList.add('active');
+    if (pickerTriggerName) pickerTriggerName.textContent = 'genni 1';
+    if (pickerTriggerTag) pickerTriggerTag.textContent = 'Fast';
+    if (pickerTriggerIcon) {
+      pickerTriggerIcon.textContent = '✦';
+      pickerTriggerIcon.style.color = '';
+    }
+    if (checkGenni1) checkGenni1.style.display = 'flex';
+    if (checkGenni2) checkGenni2.style.display = 'none';
     input.placeholder = 'Send a message to genni 1…';
+  }
+
+  // Update selected class in dropdown
+  modelMenuItems.forEach((item) => {
+    if (item.getAttribute('data-model-option') === model) {
+      item.classList.add('selected');
+    } else {
+      item.classList.remove('selected');
+    }
+  });
+
+  closeModelDropdown();
+}
+
+function toggleModelDropdown() {
+  if (!modelDropdownMenu) return;
+  const isHidden = modelDropdownMenu.classList.contains('hidden');
+  if (isHidden) {
+    openModelDropdown();
+  } else {
+    closeModelDropdown();
   }
 }
 
-modelGenni1Btn?.addEventListener('click', () => setModel('genni 1'));
-modelGenni2Btn?.addEventListener('click', () => setModel('genni 2'));
+function openModelDropdown() {
+  if (!modelDropdownMenu) return;
+  modelDropdownMenu.classList.remove('hidden');
+  modelPickerContainer?.classList.add('open');
+  modelPickerTrigger?.setAttribute('aria-expanded', 'true');
+}
+
+function closeModelDropdown() {
+  if (!modelDropdownMenu) return;
+  modelDropdownMenu.classList.add('hidden');
+  modelPickerContainer?.classList.remove('open');
+  modelPickerTrigger?.setAttribute('aria-expanded', 'false');
+}
+
+// Model dropdown listeners
+modelPickerTrigger?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  toggleModelDropdown();
+});
+
+modelMenuItems.forEach((item) => {
+  item.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const model = item.getAttribute('data-model-option');
+    if (model) setModel(model);
+  });
+});
+
+// Close when clicking outside
+document.addEventListener('click', (e) => {
+  if (modelPickerContainer && !modelPickerContainer.contains(e.target)) {
+    closeModelDropdown();
+  }
+});
+
+// Close on Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modelDropdownMenu && !modelDropdownMenu.classList.contains('hidden')) {
+    closeModelDropdown();
+  }
+});
 
 attachBtn?.addEventListener('click', () => fileInput?.click());
 

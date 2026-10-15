@@ -85,7 +85,7 @@
           <div class="welcome">
             <h2>Ask f0undr Ai anything</h2>
             <div class="welcome-model-pill">
-              <span class="badge-active">Active: <strong>genni 1</strong> &amp; <strong>genni 2</strong></span>
+              <span class="badge-active">Models: <strong>genni 1</strong> &amp; <strong>genni 2</strong></span>
               <span class="badge-soon">genni 3 coming soon</span>
             </div>
             <p>Switch models anytime: <strong>genni 1</strong> for fast live answers, or <strong>genni 2</strong> for Deep Reasoning, file analysis &amp; live code runner.</p>
@@ -94,20 +94,83 @@
 
         <div class="composer-wrap">
           <div class="composer-model-bar">
-            <!-- Model Switcher Tabs -->
-            <button type="button" class="model-tab active" id="model-genni1-btn" data-model="genni 1" title="genni 1: Fast, lightweight answers">
-              <span class="model-sparkle">✦</span>
-              <span class="model-name">genni 1</span>
-              <span class="model-tag-active">Active</span>
-            </button>
-            <button type="button" class="model-tab" id="model-genni2-btn" data-model="genni 2" title="genni 2: Deep Reasoning, File Analysis & Code Runner">
-              <span class="model-sparkle genni2-sparkle">⚡</span>
-              <span class="model-name">genni 2</span>
-              <span class="model-tag-reasoning">Deep Think</span>
-            </button>
-            <div class="model-badge-soon" title="Upcoming model updates">
-              <span class="model-soon-label">Coming soon:</span>
-              <span class="model-soon-name">genni 3</span>
+            <!-- Claude-Style Model Selector Popover -->
+            <div class="model-picker-container" id="model-picker-container">
+              <button type="button" class="model-picker-trigger" id="model-picker-trigger" aria-haspopup="true" aria-expanded="false" title="Switch AI model">
+                <span class="picker-trigger-left">
+                  <span class="picker-trigger-icon" id="picker-trigger-icon">✦</span>
+                  <span class="picker-trigger-name" id="picker-trigger-name">genni 1</span>
+                  <span class="picker-trigger-tag" id="picker-trigger-tag">Fast</span>
+                </span>
+                <svg class="picker-trigger-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+
+              <!-- Claude-Style Dropdown Menu -->
+              <div class="model-dropdown-menu hidden" id="model-dropdown-menu" role="menu">
+                <div class="model-dropdown-list">
+                  <!-- genni 2 Option -->
+                  <button type="button" class="model-menu-item" data-model-option="genni 2" role="menuitem">
+                    <div class="model-item-main">
+                      <div class="model-item-header">
+                        <div class="model-item-left">
+                          <span class="model-item-icon reasoning-icon">⚡</span>
+                          <span class="model-item-title">genni 2</span>
+                          <span class="model-item-pill pill-reasoning">Deep Think</span>
+                        </div>
+                        <div class="model-item-check" id="check-genni-2" style="display: none;">
+                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="model-item-desc">Advanced reasoning, file analysis &amp; live code runner</div>
+                    </div>
+                  </button>
+
+                  <!-- genni 1 Option -->
+                  <button type="button" class="model-menu-item selected" data-model-option="genni 1" role="menuitem">
+                    <div class="model-item-main">
+                      <div class="model-item-header">
+                        <div class="model-item-left">
+                          <span class="model-item-icon">✦</span>
+                          <span class="model-item-title">genni 1</span>
+                          <span class="model-item-pill pill-fast">Fast</span>
+                        </div>
+                        <div class="model-item-check" id="check-genni-1">
+                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="model-item-desc">Fastest for quick answers &amp; real-time web search</div>
+                    </div>
+                  </button>
+
+                  <div class="model-menu-divider"></div>
+
+                  <!-- genni 3 (Coming soon) -->
+                  <div class="model-menu-item disabled" role="menuitem" aria-disabled="true">
+                    <div class="model-item-main">
+                      <div class="model-item-header">
+                        <div class="model-item-left">
+                          <span class="model-item-icon muted-icon">✧</span>
+                          <span class="model-item-title">genni 3</span>
+                          <span class="model-item-pill pill-soon">Coming soon</span>
+                        </div>
+                      </div>
+                      <div class="model-item-desc">Multimodal vision, voice design &amp; autonomous tools</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="model-menu-divider"></div>
+
+                <div class="model-dropdown-footer">
+                  <span>f0undr Ai models are tuned for neural speed, live search &amp; deep reasoning.</span>
+                </div>
+              </div>
             </div>
           </div>
 
