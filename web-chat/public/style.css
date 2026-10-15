@@ -1766,3 +1766,137 @@ textarea:focus {
   flex-shrink: 0;
 }
 
+/* -------------------------------------------------------------- Studio Presets Toolbar (genni 3) */
+.studio-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin-bottom: 2px;
+  flex-wrap: wrap;
+  animation: studioSlide 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.studio-bar.hidden {
+  display: none !important;
+}
+
+@keyframes studioSlide {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.studio-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.studio-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-soft);
+  margin-right: 2px;
+  user-select: none;
+}
+
+.studio-chip {
+  background: var(--raised);
+  border: 1px solid var(--line);
+  color: var(--text-soft);
+  border-radius: 999px;
+  padding: 2.5px 9px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.studio-chip:hover {
+  background: color-mix(in srgb, #ec4899 15%, var(--raised));
+  border-color: color-mix(in srgb, #ec4899 40%, var(--line));
+  color: var(--text);
+}
+
+.studio-chip.active {
+  background: color-mix(in srgb, #ec4899 22%, var(--raised));
+  border-color: #ec4899;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 0 8px rgba(236, 72, 153, 0.25);
+}
+
+.studio-divider {
+  width: 1px;
+  height: 16px;
+  background: var(--line);
+  margin: 0 2px;
+}
+
+/* -------------------------------------------------------------- Mermaid Diagram Wrap */
+.mermaid-diagram-wrap {
+  margin: 14px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.mermaid-body {
+  padding: 16px;
+  background: color-mix(in srgb, var(--surface) 50%, #000);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: auto;
+  min-height: 80px;
+}
+
+.mermaid-body svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.mermaid-error {
+  color: #f87171;
+  font-size: 12px;
+  background: rgba(239, 68, 68, 0.1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin: 0;
+  width: 100%;
+}
+
+/* -------------------------------------------------------------- KaTeX Math Formula Rendering */
+.katex-display-block {
+  margin: 12px 0;
+  padding: 10px 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: color-mix(in srgb, var(--surface) 40%, transparent);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.katex {
+  font-size: 1.08em;
+  color: var(--text);
+}
+
+.katex-display {
+  margin: 0 !important;
+}
+
+

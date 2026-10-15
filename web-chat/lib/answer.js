@@ -324,7 +324,7 @@ function directness(sentence, shape, head, asked) {
 export async function answer(
   question,
   emit = () => {},
-  { messages = [], previous = '', previousAnswer = '', model = 'genni 1', file = null } = {}
+  { messages = [], previous = '', previousAnswer = '', model = 'genni 1', file = null, studioStyle = 'Default', aspectRatio = null } = {}
 ) {
   const say = (text) => {
     emit('token', { text });
@@ -401,6 +401,8 @@ export async function answer(
       context: fileContext,
       conversation: messages,
       model: 'genni 3',
+      studioStyle,
+      aspectRatio,
       onStatus: (s) => emit('status', s),
       onThought: (t) => emit('thought', { text: t }),
       onToken: (c) => emit('token', { text: c }),
@@ -438,6 +440,8 @@ export async function answer(
       context: fileContext + contextText,
       conversation: messages,
       model,
+      studioStyle,
+      aspectRatio,
       onStatus: (s) => emit('status', s),
       onThought: (t) => emit('thought', { text: t }),
       onToken: (c) => emit('token', { text: c }),
@@ -454,6 +458,8 @@ export async function answer(
       context: fileContext,
       conversation: messages,
       model,
+      studioStyle,
+      aspectRatio,
       onStatus: (s) => emit('status', s),
       onThought: (t) => emit('thought', { text: t }),
       onToken: (c) => emit('token', { text: c }),

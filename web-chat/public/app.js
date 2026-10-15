@@ -518,6 +518,16 @@ function setModel(model) {
     }
   }
 
+  // Toggle Studio Presets Toolbar for genni 3
+  const studioBar = document.getElementById('studio-bar');
+  if (studioBar) {
+    if (model === 'genni 3') {
+      studioBar.classList.remove('hidden');
+    } else {
+      studioBar.classList.add('hidden');
+    }
+  }
+
   closeModelDropdown();
 }
 
@@ -723,7 +733,7 @@ async function ask(text) {
   let thoughtContent = null;
 
   try {
-    await stream({ messages: history, model: currentModel, file: userFile }, (msg) => {
+    await stream({ messages: history, model: currentModel, file: userFile, studioStyle: selectedStudioStyle, aspectRatio: selectedAspectRatio }, (msg) => {
       switch (msg.event) {
         case 'status':
           if (note.isConnected) note.lastChild.textContent = msg.text;
@@ -821,6 +831,24 @@ function renderMessageContent(body, md) {
     body.appendChild(answerContainer);
   }
   answerContainer.innerHTML = render(md);
+  renderMermaidDiagrams(answerContainer);
+}
+
+function renderMermaidDiagrams(container) {
+  if (!window.mermaid) return;
+  const els = container.querySelectorAll('.mermaid-body:not([data-processed])');
+  els.forEach(async (el) => {
+    const rawCode = el.getAttribute('data-code') || el.textContent;
+    if (!rawCode || !rawCode.trim()) return;
+    try {
+      const id = 'svg_' + Math.random().toString(36).slice(2, 9);
+      const { svg } = await window.mermaid.render(id, rawCode.trim());
+      el.innerHTML = svg;
+      el.setAttribute('data-processed', 'true');
+    } catch {
+      // In case incomplete syntax while streaming, let it retry on next render or final
+    }
+  });
 }
 
 async function stream(payload, onEvent) {
@@ -897,16 +925,51 @@ function escapeHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-/** Comprehensive ChatGPT / Gemini / Claude style Markdown renderer with tables, lists, quotes, headings, and code preview. */
+/** Comprehensive ChatGPT / Gemini / Claude style Markdown renderer with tables, lists, quotes, headings, code preview, KaTeX math & Mermaid diagrams. */
 function render(md) {
   if (!md) return '';
   const esc = escapeHtml;
   const blocks = [];
 
-  // 1. Extract code blocks ```lang ... ```
-  let text = md.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, rawCode) => {
+  // 0. Extract display math $$ ... $$ and \[ ... \]
+  let text = md.replace(/\$\$([\s\S]+?)\$\$|\\\[([\s\S]+?)\\\]/g, (_, tex1, tex2) => {
+    const formula = (tex1 || tex2 || '').trim();
+    let rendered;
+    try {
+      rendered = window.katex
+        ? katex.renderToString(formula, { displayMode: true, throwOnError: false })
+        : `<div class="katex-display-block">$$${esc(formula)}$$</div>`;
+    } catch {
+      rendered = `<div class="katex-display-block">$$${esc(formula)}$$</div>`;
+    }
+    blocks.push(`<div class="katex-display-block">${rendered}</div>`);
+    return `\u0000${blocks.length - 1}\u0000`;
+  });
+
+  // 1. Extract code blocks ```lang ... ``` and ```mermaid ... ```
+  text = text.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, rawCode) => {
     const code = rawCode.trim();
-    const l = (lang || 'code').toLowerCase();
+    // If model wrapped a visual image inside ```markdown or ```, unwrap it so it displays as an image card
+    if (['markdown', 'md', ''].includes(l) && (code.includes('image.pollinations.ai') || code.startsWith('!['))) {
+      return `\n\n${code}\n\n`;
+    }
+
+    // Native Mermaid Diagrams
+    if (l === 'mermaid') {
+      const diagramId = 'mermaid_' + Math.random().toString(36).slice(2, 9);
+      const header = `
+        <div class="code-header">
+          <span>MERMAID DIAGRAM</span>
+          <div class="code-actions">
+            <button type="button" class="code-btn copy-btn" data-target="${diagramId}">Copy Code</button>
+          </div>
+        </div>
+      `;
+      const body = `<div class="mermaid-body" id="${diagramId}" data-code="${esc(code)}">${esc(code)}</div>`;
+      blocks.push(`<div class="code-block-wrap mermaid-diagram-wrap">${header}${body}</div>`);
+      return `\u0000${blocks.length - 1}\u0000`;
+    }
+
     const isHtmlOrSvg = ['html', 'svg', 'xml'].includes(l);
     const codeId = 'code_' + Math.random().toString(36).slice(2, 9);
 
@@ -928,9 +991,20 @@ function render(md) {
   // 2. Escape HTML entities
   text = esc(text);
 
-  // 3. Inline elements parser: images, bold, italic, code, links, del
+  // 3. Inline elements parser: math, images, bold, italic, code, links, del
   const parseInline = (s) => {
     return s
+      // Inline LaTeX math: $formula$ or \(formula\)
+      .replace(/(?<!\\)\$([^\$\n]+?)\$(?!\$)|\\\(([\s\S]+?)\\\)/g, (_, tex1, tex2) => {
+        const formula = (tex1 || tex2 || '').trim();
+        if (!formula) return '';
+        try {
+          if (window.katex) {
+            return katex.renderToString(formula, { displayMode: false, throwOnError: false });
+          }
+        } catch {}
+        return `<code>${formula}</code>`;
+      })
       .replace(/!\[([^\]]*)\]\((https?:\/\/[^)]+)\)/g, (_, alt, url) => {
         const cleanUrl = url
           .replace(/&amp;/g, '&')
@@ -1267,4 +1341,37 @@ document.addEventListener('keydown', (e) => {
     closeImageLightbox();
   }
 });
+
+// Initialize Mermaid.js for flowcharts, diagrams and mind maps
+if (window.mermaid) {
+  try {
+    window.mermaid.initialize({
+      startOnLoad: false,
+      theme: 'dark',
+      securityLevel: 'loose',
+      fontFamily: 'Inter, system-ui, sans-serif'
+    });
+  } catch {}
+}
+
+// Studio Presets (Style and Aspect Ratio) for genni 3
+let selectedStudioStyle = 'Default';
+let selectedAspectRatio = { ratio: '1:1', w: 1024, h: 1024 };
+
+document.addEventListener('click', (e) => {
+  const chip = e.target.closest('.studio-chip');
+  if (!chip) return;
+  const style = chip.dataset.style;
+  const ratio = chip.dataset.ratio;
+  if (style !== undefined) {
+    selectedStudioStyle = style;
+    chip.parentElement.querySelectorAll('.studio-chip').forEach((c) => c.classList.remove('active'));
+    chip.classList.add('active');
+  } else if (ratio !== undefined) {
+    selectedAspectRatio = { ratio, w: Number(chip.dataset.w) || 1024, h: Number(chip.dataset.h) || 1024 };
+    chip.parentElement.querySelectorAll('.studio-chip').forEach((c) => c.classList.remove('active'));
+    chip.classList.add('active');
+  }
+});
+
 

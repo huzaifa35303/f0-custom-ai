@@ -133,6 +133,8 @@ async function handleChat(req, res) {
       previousAnswer,
       model,
       file,
+      studioStyle: payload.studioStyle,
+      aspectRatio: payload.aspectRatio,
     });
     emit('final', { text });
   } catch (err) {
