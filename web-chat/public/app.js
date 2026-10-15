@@ -947,6 +947,22 @@ async function ask(text) {
       saveChats();
       renderChatList();
     }
+
+    // Auto-open in Canvas if AppDeploy was triggered or user asked for an interactive app
+    if (window._autoOpenCanvasOnComplete || /(?:build|create|code|deploy|generate)\s+(?:an?\s+)?(?:web\s+app|interactive\s+app|game|calculator|dashboard|tool|widget|html\s+page)/i.test(text)) {
+      window._autoOpenCanvasOnComplete = false;
+      const htmlBlockMatch = answer.match(/```(?:html|htm|svg)\n?([\s\S]*?)```/i);
+      if (htmlBlockMatch && htmlBlockMatch[1]) {
+        setTimeout(() => {
+          openCanvas({
+            title: 'Interactive Web App',
+            code: htmlBlockMatch[1].trim(),
+            lang: 'html',
+            badge: 'LIVE APP'
+          });
+        }, 200);
+      }
+    }
   } else {
     body.closest('.msg')?.remove();
   }
@@ -1111,7 +1127,8 @@ function render(md) {
       <div class="code-header">
         <span>${esc(l.toUpperCase())}</span>
         <div class="code-actions">
-          ${isHtmlOrSvg ? `<button type="button" class="code-btn preview-btn" data-target="${codeId}">▶ Live Preview</button>` : ''}
+          <button type="button" class="code-btn canvas-btn" data-target="${codeId}" data-lang="${esc(l)}">⚡ Open in Canvas</button>
+          ${isHtmlOrSvg ? `<button type="button" class="code-btn preview-btn" data-target="${codeId}">▶ Inline Preview</button>` : ''}
           <button type="button" class="code-btn download-btn" data-target="${codeId}" data-lang="${esc(l)}">Download</button>
           <button type="button" class="code-btn copy-btn" data-target="${codeId}">Copy</button>
         </div>
@@ -1361,8 +1378,21 @@ function render(md) {
   return outSections.join('\n').replace(/\u0000(\d+)\u0000/g, (_, i) => blocks[Number(i)]);
 }
 
-// Global delegated click for code block actions (Copy & Live Preview)
+// Global delegated click for code block actions (Copy & Live Preview & Canvas)
 document.addEventListener('click', (e) => {
+  const canvasBtn = e.target.closest('.canvas-btn');
+  if (canvasBtn) {
+    const targetId = canvasBtn.dataset.target;
+    const lang = (canvasBtn.dataset.lang || 'html').toLowerCase();
+    const codeEl = document.getElementById(targetId);
+    if (codeEl) {
+      const code = codeEl.textContent;
+      const title = ['html', 'js', 'javascript'].includes(lang) ? 'Interactive Web App' : `${lang.toUpperCase()} Workspace`;
+      openCanvas({ title, code, lang, badge: lang.toUpperCase() });
+    }
+    return;
+  }
+
   const copyBtn = e.target.closest('.copy-btn');
   if (copyBtn) {
     const targetId = copyBtn.dataset.target;
@@ -1619,6 +1649,7 @@ function initUserSystem() {
   toolAppdeployBtn?.addEventListener('click', () => {
     toolsPopover?.classList.add('hidden');
     setModel('genni 3');
+    window._autoOpenCanvasOnComplete = true;
     input.value = 'Build a complete interactive web app for ';
     input.focus();
   });
@@ -1755,6 +1786,215 @@ function openUpgradeModal() {
 function closeUpgradeModal() {
   upgradeModal?.classList.add('hidden');
 }
+
+// ---------------------------------------------------------------- Canvas System (Claude & ChatGPT Style)
+
+const canvasPanel = document.getElementById('canvas-panel');
+const canvasTitle = document.getElementById('canvas-title');
+const canvasBadge = document.getElementById('canvas-badge');
+const canvasTabPreview = document.getElementById('canvas-tab-preview');
+const canvasTabCode = document.getElementById('canvas-tab-code');
+const canvasTabConsole = document.getElementById('canvas-tab-console');
+const canvasConsoleCount = document.getElementById('canvas-console-count');
+const canvasRefreshBtn = document.getElementById('canvas-refresh-btn');
+const canvasCopyBtn = document.getElementById('canvas-copy-btn');
+const canvasDownloadBtn = document.getElementById('canvas-download-btn');
+const canvasFullscreenBtn = document.getElementById('canvas-fullscreen-btn');
+const canvasCloseBtn = document.getElementById('canvas-close-btn');
+
+const canvasPreviewView = document.getElementById('canvas-preview-view');
+const canvasCodeView = document.getElementById('canvas-code-view');
+const canvasConsoleView = document.getElementById('canvas-console-view');
+const canvasIframe = document.getElementById('canvas-iframe');
+const canvasCodeContent = document.getElementById('canvas-code-content');
+const canvasConsoleLogs = document.getElementById('canvas-console-logs');
+const canvasConsoleClear = document.getElementById('canvas-console-clear');
+
+let currentCanvasArtifact = null;
+let canvasConsoleErrorCount = 0;
+
+function openCanvas({ title = 'Interactive Canvas', code = '', lang = 'html', badge = 'App' }) {
+  if (!canvasPanel) return;
+  currentCanvasArtifact = { title, code, lang, badge };
+
+  if (canvasTitle) canvasTitle.textContent = title;
+  if (canvasBadge) canvasBadge.textContent = badge || lang.toUpperCase();
+
+  // Populate code view
+  if (canvasCodeContent) canvasCodeContent.textContent = code;
+
+  // Clear console logs
+  clearCanvasConsole();
+
+  // Prepare & run in iframe
+  runCanvasPreview(code, lang);
+
+  // Switch to preview view if HTML/SVG/JS, else Code view
+  const isRunnable = ['html', 'htm', 'svg', 'xml', 'js', 'javascript'].includes((lang || '').toLowerCase());
+  switchCanvasTab(isRunnable ? 'preview' : 'code');
+
+  // Open Canvas panel
+  canvasPanel.classList.remove('collapsed');
+  if (window.innerWidth <= 768) closeSidebar();
+}
+
+function closeCanvas() {
+  if (!canvasPanel) return;
+  canvasPanel.classList.add('collapsed');
+  canvasPanel.classList.remove('fullscreen');
+  if (canvasIframe) canvasIframe.srcdoc = '';
+}
+
+function toggleCanvasFullscreen() {
+  if (!canvasPanel) return;
+  canvasPanel.classList.toggle('fullscreen');
+}
+
+function switchCanvasTab(tabName) {
+  canvasTabPreview?.classList.toggle('active', tabName === 'preview');
+  canvasTabCode?.classList.toggle('active', tabName === 'code');
+  canvasTabConsole?.classList.toggle('active', tabName === 'console');
+
+  canvasPreviewView?.classList.toggle('hidden', tabName !== 'preview');
+  canvasCodeView?.classList.toggle('hidden', tabName !== 'code');
+  canvasConsoleView?.classList.toggle('hidden', tabName !== 'console');
+
+  if (tabName === 'console') {
+    canvasConsoleErrorCount = 0;
+    if (canvasConsoleCount) {
+      canvasConsoleCount.classList.add('hidden');
+      canvasConsoleCount.textContent = '0';
+    }
+  }
+}
+
+function prepareCanvasHtml(code, lang) {
+  const bridgeScript = `
+<script>
+(function() {
+  const send = (level, args) => {
+    try {
+      const text = Array.from(args).map(a => {
+        if (typeof a === 'object') {
+          try { return JSON.stringify(a, null, 2); } catch(e) { return String(a); }
+        }
+        return String(a);
+      }).join(' ');
+      window.parent.postMessage({ type: 'canvas-log', level, text }, '*');
+    } catch(e) {}
+  };
+  const origLog = console.log;
+  const origWarn = console.warn;
+  const origError = console.error;
+  console.log = function(...args) { send('log', args); origLog.apply(console, args); };
+  console.warn = function(...args) { send('warn', args); origWarn.apply(console, args); };
+  console.error = function(...args) { send('error', args); origError.apply(console, args); };
+  window.onerror = function(msg, url, line) {
+    send('error', [msg + (line ? ' (line ' + line + ')' : '')]);
+  };
+})();
+<\/script>
+`;
+
+  const l = (lang || '').toLowerCase();
+  if (l === 'svg') {
+    return `<!DOCTYPE html><html><head><meta charset="utf-8"/><style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0f172a;}svg{max-width:95vw;max-height:95vh;}</style></head><body>${code}</body></html>`;
+  }
+
+  if (l === 'js' || l === 'javascript') {
+    return `<!DOCTYPE html><html><head><meta charset="utf-8"/>${bridgeScript}<style>body{font-family:system-ui,-apple-system,sans-serif;padding:20px;color:#1e293b;}</style></head><body><div id="app"></div><script>${code}<\/script></body></html>`;
+  }
+
+  if (code.includes('<head>')) {
+    return code.replace('<head>', '<head>' + bridgeScript);
+  } else if (code.includes('<html>')) {
+    return code.replace('<html>', '<html><head>' + bridgeScript + '</head>');
+  } else {
+    return `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>${bridgeScript}</head><body style="margin:0;font-family:system-ui,-apple-system,sans-serif;">${code}</body></html>`;
+  }
+}
+
+function runCanvasPreview(code, lang) {
+  if (!canvasIframe) return;
+  const html = prepareCanvasHtml(code, lang);
+  canvasIframe.srcdoc = html;
+}
+
+function clearCanvasConsole() {
+  if (!canvasConsoleLogs) return;
+  canvasConsoleLogs.innerHTML = '<div class="canvas-log-item info">Canvas console ready. Logs and runtime events from the interactive app will appear here.</div>';
+  canvasConsoleErrorCount = 0;
+  if (canvasConsoleCount) {
+    canvasConsoleCount.classList.add('hidden');
+    canvasConsoleCount.textContent = '0';
+  }
+}
+
+function addCanvasLog(level, text) {
+  if (!canvasConsoleLogs) return;
+  const item = document.createElement('div');
+  item.className = 'canvas-log-item ' + (level || 'log');
+  item.textContent = `[${(level || 'log').toUpperCase()}] ${text}`;
+  canvasConsoleLogs.appendChild(item);
+  canvasConsoleLogs.scrollTop = canvasConsoleLogs.scrollHeight;
+
+  if (level === 'error' || level === 'warn') {
+    canvasConsoleErrorCount++;
+    if (canvasConsoleCount && !canvasTabConsole?.classList.contains('active')) {
+      canvasConsoleCount.textContent = String(canvasConsoleErrorCount);
+      canvasConsoleCount.classList.remove('hidden');
+    }
+  }
+}
+
+// Listen for sandbox console messages
+window.addEventListener('message', (e) => {
+  if (e.data && e.data.type === 'canvas-log') {
+    addCanvasLog(e.data.level, e.data.text);
+  }
+});
+
+// Canvas view buttons
+canvasTabPreview?.addEventListener('click', () => switchCanvasTab('preview'));
+canvasTabCode?.addEventListener('click', () => switchCanvasTab('code'));
+canvasTabConsole?.addEventListener('click', () => switchCanvasTab('console'));
+canvasConsoleClear?.addEventListener('click', clearCanvasConsole);
+
+// Canvas action buttons
+canvasRefreshBtn?.addEventListener('click', () => {
+  if (currentCanvasArtifact) {
+    clearCanvasConsole();
+    runCanvasPreview(currentCanvasArtifact.code, currentCanvasArtifact.lang);
+  }
+});
+
+canvasFullscreenBtn?.addEventListener('click', toggleCanvasFullscreen);
+canvasCloseBtn?.addEventListener('click', closeCanvas);
+
+canvasCopyBtn?.addEventListener('click', () => {
+  if (!currentCanvasArtifact) return;
+  navigator.clipboard.writeText(currentCanvasArtifact.code).then(() => {
+    canvasCopyBtn.style.color = '#10b981';
+    setTimeout(() => { canvasCopyBtn.style.color = ''; }, 1200);
+  });
+});
+
+canvasDownloadBtn?.addEventListener('click', () => {
+  if (!currentCanvasArtifact) return;
+  const lang = (currentCanvasArtifact.lang || 'html').toLowerCase();
+  const extMap = { html: 'html', js: 'js', css: 'css', svg: 'svg', xml: 'xml', py: 'py', json: 'json', ts: 'ts' };
+  const ext = extMap[lang] || 'txt';
+  const blob = new Blob([currentCanvasArtifact.code], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `canvas-${lang}-${Date.now()}.${ext}`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
 
 
 

@@ -512,6 +512,80 @@
           </form>
         </div>
       </div>
+
+      <!-- Canvas / Artifact Split-Screen Panel (Claude & ChatGPT Style) -->
+      <aside id="canvas-panel" class="canvas-panel collapsed" aria-label="Canvas Workspace">
+        <!-- Canvas Header -->
+        <div class="canvas-header">
+          <div class="canvas-title-group">
+            <span class="canvas-icon">⚡</span>
+            <div class="canvas-meta">
+              <span class="canvas-title" id="canvas-title">Interactive Canvas</span>
+              <span class="canvas-badge" id="canvas-badge">App</span>
+            </div>
+          </div>
+
+          <!-- Canvas View Switcher (Preview vs Code vs Console) -->
+          <div class="canvas-view-tabs">
+            <button type="button" class="canvas-tab active" id="canvas-tab-preview" title="Live Preview">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <span>Preview</span>
+            </button>
+            <button type="button" class="canvas-tab" id="canvas-tab-code" title="View Source Code">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              <span>Code</span>
+            </button>
+            <button type="button" class="canvas-tab" id="canvas-tab-console" title="Console Logs">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+              <span>Console</span>
+              <span class="canvas-console-badge hidden" id="canvas-console-count">0</span>
+            </button>
+          </div>
+
+          <!-- Canvas Actions -->
+          <div class="canvas-actions">
+            <button type="button" class="canvas-action-btn" id="canvas-refresh-btn" title="Rerun / Refresh Preview">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            </button>
+            <button type="button" class="canvas-action-btn" id="canvas-copy-btn" title="Copy Code">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+            <button type="button" class="canvas-action-btn" id="canvas-download-btn" title="Download File">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </button>
+            <button type="button" class="canvas-action-btn" id="canvas-fullscreen-btn" title="Toggle Fullscreen">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+            </button>
+            <button type="button" class="canvas-action-btn canvas-close-btn" id="canvas-close-btn" title="Close Canvas">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Canvas Body Views -->
+        <div class="canvas-body">
+          <!-- View 1: Live Interactive Sandbox Preview -->
+          <div class="canvas-view" id="canvas-preview-view">
+            <iframe id="canvas-iframe" class="canvas-iframe" sandbox="allow-scripts allow-modals allow-forms allow-same-origin" title="Interactive App Canvas"></iframe>
+          </div>
+
+          <!-- View 2: Code View -->
+          <div class="canvas-view hidden" id="canvas-code-view">
+            <pre class="canvas-code-pre"><code id="canvas-code-content"></code></pre>
+          </div>
+
+          <!-- View 3: Live Console Logs -->
+          <div class="canvas-view hidden" id="canvas-console-view">
+            <div class="canvas-console-toolbar">
+              <span>Console Output</span>
+              <button type="button" class="canvas-console-clear" id="canvas-console-clear">Clear</button>
+            </div>
+            <div class="canvas-console-logs" id="canvas-console-logs">
+              <div class="canvas-log-item info">Canvas console ready. Logs and runtime events from the interactive app will appear here.</div>
+            </div>
+          </div>
+        </div>
+      </aside>
     </div>
 
     <!-- Floating Context Menu (Exact match to screenshot) -->

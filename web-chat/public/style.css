@@ -2462,5 +2462,318 @@ textarea:focus {
   color: #fff;
 }
 
+/* ---------------------------------------------------------------- Canvas / Artifact Split-Screen */
+
+.canvas-panel {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  min-width: 440px;
+  max-width: 65%;
+  height: 100dvh;
+  background: #0c1017;
+  border-left: 1px solid var(--line);
+  position: relative;
+  z-index: 20;
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  overflow: hidden;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.35);
+}
+
+.canvas-panel.collapsed {
+  width: 0 !important;
+  min-width: 0 !important;
+  max-width: 0 !important;
+  border-left: none !important;
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+}
+
+.canvas-panel.fullscreen {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  min-width: 100vw !important;
+  max-width: 100vw !important;
+  z-index: 9999 !important;
+}
+
+@media (max-width: 768px) {
+  .canvas-panel {
+    position: fixed;
+    inset: 0;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    max-width: 100vw !important;
+    z-index: 90;
+  }
+}
+
+.canvas-header {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: #111827;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.canvas-title-group {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.canvas-icon {
+  font-size: 16px;
+  background: linear-gradient(135deg, #ec4899, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.canvas-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.canvas-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #f1f5f9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.canvas-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.canvas-view-tabs {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: #1f2937;
+  padding: 3px;
+  border-radius: 8px;
+}
+
+.canvas-tab {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #94a3b8;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.canvas-tab:hover {
+  color: #f1f5f9;
+}
+
+.canvas-tab.active {
+  background: #374151;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.canvas-console-badge {
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #fff;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.canvas-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.canvas-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.canvas-action-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.canvas-close-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.canvas-body {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+  background: #090d14;
+}
+
+.canvas-view {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.canvas-view.hidden {
+  display: none !important;
+}
+
+.canvas-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #ffffff;
+}
+
+.canvas-code-pre {
+  margin: 0;
+  padding: 16px 20px;
+  overflow: auto;
+  height: 100%;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #e2e8f0;
+  background: #0c1017;
+  tab-size: 2;
+  box-sizing: border-box;
+}
+
+.canvas-console-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: #111827;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.canvas-console-clear {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.canvas-console-clear:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.canvas-console-logs {
+  flex: 1;
+  overflow: auto;
+  padding: 12px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.canvas-log-item {
+  padding: 5px 9px;
+  border-radius: 5px;
+  line-height: 1.5;
+  word-break: break-all;
+}
+
+.canvas-log-item.info {
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.canvas-log-item.log {
+  color: #e2e8f0;
+}
+
+.canvas-log-item.warn {
+  color: #fde047;
+  background: rgba(234, 179, 8, 0.1);
+  border-left: 2px solid #eab308;
+}
+
+.canvas-log-item.error {
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 2px solid #ef4444;
+}
+
+/* Code Header Open in Canvas Button */
+.code-btn.canvas-btn {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.18), rgba(139, 92, 246, 0.18));
+  border: 1px solid rgba(236, 72, 153, 0.4);
+  color: #f472b6;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.code-btn.canvas-btn:hover {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.32), rgba(139, 92, 246, 0.32));
+  color: #fff;
+  border-color: #ec4899;
+  box-shadow: 0 0 12px rgba(236, 72, 153, 0.3);
+}
+
+
 
 
