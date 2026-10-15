@@ -12,6 +12,7 @@
 
 const NAME = 'f0undr Ai';
 const MAKER = 'f0undr and the f0undr Team';
+const MODEL = 'genni 1';
 
 // ------------------------------------------------------------- language
 
@@ -60,16 +61,29 @@ const SELF =
  */
 const INTENTS = [
   {
+    name: 'model',
+    requires: SELF,
+    test: /\b(what|which|kon sa|kaun sa|keda)\s+(model|version|engine)\b|\bmodel\s*(name|kya)?\b|\bmodel\s+version\b|کون سا ماڈل|कौन सा मॉडल/i,
+    replies: {
+      en: `I am ${NAME}, powered by model ${MODEL}. (Upcoming models genni 2 and genni 3 are coming soon!)`,
+      roman: `Main ${NAME} hoon, jo model ${MODEL} par chalta hai. (genni 2 aur genni 3 jald aa rahe hain!)`,
+      hi: `मैं ${NAME} हूँ, जो मॉडल ${MODEL} पर चलता है। (genni 2 और genni 3 जल्द आ रहे हैं!)`,
+      ur: `میں ${NAME} ہوں، جو ماڈل ${MODEL} پر چلتا ہے۔ (genni 2 اور genni 3 جلد آ رہے ہیں!)`,
+      pa: `ਮੈਂ ${NAME} ਹਾਂ, ਜੋ ਮਾਡਲ ${MODEL} 'ਤੇ ਚੱਲਦਾ ਹੈ। (genni 2 ਅਤੇ genni 3 ਜਲਦੀ ਆ ਰਹੇ ਹਨ!)`,
+      paRoman: `Main ${NAME} haan, jo model ${MODEL} te chalda hai. (genni 2 te genni 3 jaldi aa rahe ne!)`,
+    },
+  },
+  {
     name: 'creator',
     requires: SELF,
     test: /\b(who|kisne|kis ne|kaun|kon)\b.*\b(made|make|created|built|develop(?:ed)?|designed|owns?|banaya|banaye|bnaya|banayi|bnaia)\b|\b(made|created|built|developed)\s+(you|u|this)\b|\b(tumhe|tumhein|tujhe|tuhanu|mainu|aapko|isko)\b.*\bbanaya\b|\b(your|ur)\s+(maker|creator|owner|developer|company)\b|\bkisne banaya\b|किसने बनाया|کس نے بنایا|ਕਿਸਨੇ ਬਣਾਇਆ/i,
     replies: {
-      en: `I'm ${NAME}, created by ${MAKER}.`,
-      roman: `Main ${NAME} hoon — mujhe f0undr aur f0undr Team ne banaya hai.`,
-      hi: `मैं ${NAME} हूँ — मुझे f0undr और f0undr Team ने बनाया है।`,
-      ur: `میں ${NAME} ہوں — مجھے f0undr اور f0undr Team نے بنایا ہے۔`,
-      pa: `ਮੈਂ ${NAME} ਹਾਂ — ਮੈਨੂੰ f0undr ਅਤੇ f0undr Team ਨੇ ਬਣਾਇਆ ਹੈ।`,
-      paRoman: `Main ${NAME} haan — mainu f0undr te f0undr Team ne banaya hai.`,
+      en: `I'm ${NAME}, powered by model ${MODEL} and created by ${MAKER}. (genni 2 & genni 3 coming soon!)`,
+      roman: `Main ${NAME} hoon, powered by model ${MODEL} — mujhe f0undr aur f0undr Team ne banaya hai. (genni 2 aur genni 3 jald aa rahe hain!)`,
+      hi: `मैं ${NAME} हूँ, मॉडल ${MODEL} द्वारा संचालित — मुझे f0undr और f0undr Team ने बनाया है। (genni 2 और genni 3 जल्द आ रहे हैं!)`,
+      ur: `میں ${NAME} ہوں، ماڈل ${MODEL} سے تقویت یافتہ — مجھے f0undr اور f0undr Team نے بنایا ہے۔ (genni 2 اور genni 3 جلد آ رہے ہیں!)`,
+      pa: `ਮੈਂ ${NAME} ਹਾਂ, ਮਾਡਲ ${MODEL} ਦੁਆਰਾ ਸੰਚਾਲਿਤ — ਮੈਨੂੰ f0undr ਅਤੇ f0undr Team ਨੇ ਬਣਾਇਆ ਹੈ। (genni 2 ਅਤੇ genni 3 ਜਲਦੀ ਆ ਰਹੇ ਹਨ!)`,
+      paRoman: `Main ${NAME} haan, powered by model ${MODEL} — mainu f0undr te f0undr Team ne banaya hai. (genni 2 te genni 3 jaldi aa rahe ne!)`,
     },
   },
   {
@@ -90,12 +104,12 @@ const INTENTS = [
     requires: SELF,
     test: /^(who|what)\s+(are|r)\s+(you|u)\b|\bare you (a )?(human|real|robot|bot|person|ai)\b|\btum (kaun|kon) ho\b|\bkya tum (insaan|insan|robot) ho\b|तुम कौन हो|آپ کون ہیں|تم کون ہو|ਤੁਸੀਂ ਕੌਣ ਹੋ/i,
     replies: {
-      en: `I'm ${NAME}, an assistant made by ${MAKER}. Not a person — I look things up on the web and explain what I find.`,
-      roman: `Main ${NAME} hoon, ek assistant jo f0undr aur f0undr Team ne banaya. Insaan nahi hoon — web se cheezein dhoond kar simple lafzon mein batata hoon.`,
-      hi: `मैं ${NAME} हूँ, f0undr और f0undr Team का बनाया असिस्टेंट। इंसान नहीं हूँ — वेब से जानकारी ढूँढकर आसान शब्दों में बताता हूँ।`,
-      ur: `میں ${NAME} ہوں، f0undr اور f0undr Team کا بنایا ہوا اسسٹنٹ۔ انسان نہیں ہوں — ویب سے معلومات ڈھونڈ کر آسان الفاظ میں بتاتا ہوں۔`,
-      pa: `ਮੈਂ ${NAME} ਹਾਂ, f0undr ਅਤੇ f0undr Team ਦਾ ਬਣਾਇਆ ਅਸਿਸਟੈਂਟ। ਇਨਸਾਨ ਨਹੀਂ ਹਾਂ — ਵੈੱਬ ਤੋਂ ਜਾਣਕਾਰੀ ਲੱਭ ਕੇ ਸੌਖੇ ਸ਼ਬਦਾਂ ਵਿੱਚ ਦੱਸਦਾ ਹਾਂ।`,
-      paRoman: `Main ${NAME} haan, ek assistant jehnu f0undr te f0undr Team ne banaya. Insaan nahi haan — web toh jaankari labh ke sokhe lafzan vich dassda haan.`,
+      en: `I'm ${NAME}, an assistant powered by model ${MODEL} and created by ${MAKER}. (Models genni 2 and genni 3 are coming soon!)`,
+      roman: `Main ${NAME} hoon, model ${MODEL} par based assistant jo f0undr aur f0undr Team ne banaya. (genni 2 aur genni 3 jald aa rahe hain!)`,
+      hi: `मैं ${NAME} हूँ, मॉडल ${MODEL} पर आधारित असिस्टेंट जिसे f0undr और f0undr Team ने बनाया है। (genni 2 और genni 3 जल्द आ रहे हैं!)`,
+      ur: `میں ${NAME} ہوں، ماڈل ${MODEL} پر مبنی اسسٹنٹ جسے f0undr اور f0undr Team نے بنایا ہے۔ (genni 2 اور genni 3 جلد آ رہے ہیں!)`,
+      pa: `ਮੈਂ ${NAME} ਹਾਂ, ਮਾਡਲ ${MODEL} 'ਤੇ ਆਧਾਰਿਤ ਅਸਿਸਟੈਂਟ ਜਿਸਨੂੰ f0undr ਅਤੇ f0undr Team ਨੇ ਬਣਾਇਆ ਹੈ। (genni 2 ਅਤੇ genni 3 ਜਲਦੀ ਆ ਰਹੇ ਹਨ!)`,
+      paRoman: `Main ${NAME} haan, model ${MODEL} te based assistant jehnu f0undr te f0undr Team ne banaya. (genni 2 te genni 3 jaldi aa rahe ne!)`,
     },
   },
   {

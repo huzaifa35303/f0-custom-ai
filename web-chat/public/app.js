@@ -6,8 +6,14 @@ const statusPill = document.getElementById('status');
 const resetBtn = document.getElementById('reset');
 
 const WELCOME =
-  '<div class="welcome"><h2>Ask f0undr Ai anything</h2><p>Every answer is looked up on the web as ' +
-  'you ask, then written out in plain language.</p></div>';
+  '<div class="welcome">' +
+  '<h2>Ask f0undr Ai anything</h2>' +
+  '<div class="welcome-model-pill">' +
+  '<span class="badge-active">Model: <strong>genni 1</strong></span>' +
+  '<span class="badge-soon">genni 2 &amp; genni 3 coming soon</span>' +
+  '</div>' +
+  '<p>Every answer is powered by genni 1 with live search and taught memory, written out in plain language.</p>' +
+  '</div>';
 
 /** @type {{role: 'user'|'assistant', content: string}[]} */
 let history = [];

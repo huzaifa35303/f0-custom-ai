@@ -28,15 +28,33 @@
   </head>
   <body>
     <header>
-      <h1>f0undr Ai</h1>
-      <span id="status" class="status">checking…</span>
-      <button id="reset" type="button">New chat</button>
+      <div class="brand-group">
+        <h1>f0undr Ai</h1>
+        <div class="model-badge" title="Active Model">
+          <span class="model-active">genni 1</span>
+          <span class="model-tag">Active</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="model-selector-pill" title="Upcoming Models">
+          <span class="coming-soon-label">Coming soon:</span>
+          <span class="model-upcoming">genni 2</span>
+          <span class="model-dot">•</span>
+          <span class="model-upcoming">genni 3</span>
+        </div>
+        <span id="status" class="status">checking…</span>
+        <button id="reset" type="button">New chat</button>
+      </div>
     </header>
 
     <main id="thread" aria-live="polite">
       <div class="welcome">
         <h2>Ask f0undr Ai anything</h2>
-        <p>Every answer is looked up on the web as you ask, then written out in plain language.</p>
+        <div class="welcome-model-pill">
+          <span class="badge-active">Model: <strong>genni 1</strong></span>
+          <span class="badge-soon">genni 2 &amp; genni 3 coming soon</span>
+        </div>
+        <p>Every answer is powered by genni 1 with live search and taught memory, written out in plain language.</p>
       </div>
     </main>
 
