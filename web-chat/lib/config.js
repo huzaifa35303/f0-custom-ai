@@ -6,4 +6,6 @@ export const config = {
   charsPerPage: Number(process.env.CHARS_PER_PAGE || 12000),
   // Sentences the composed answer may use.
   maxSentences: Number(process.env.MAX_SENTENCES || 6),
+  // Optional LangSearch API key for high-speed (100ms) web search.
+  langsearchApiKey: process.env.LANGSEARCH_API_KEY || '',
 };

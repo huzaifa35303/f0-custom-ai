@@ -221,6 +221,42 @@ async function readPage(result) {
 }
 
 /**
+ * LangSearch API integration: 100ms ultra-fast web search API for AI agents.
+ * Returns structured results with full extracted webpage summaries.
+ */
+export async function langsearch(query) {
+  if (!config.langsearchApiKey) return [];
+  try {
+    const res = await fetch('https://api.langsearch.com/v1/web-search', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${config.langsearchApiKey}`,
+      },
+      body: JSON.stringify({
+        query,
+        freshness: 'noLimit',
+        summary: true,
+        count: config.results,
+      }),
+      signal: AbortSignal.timeout(6000),
+    });
+    if (!res.ok) throw new Error(`LangSearch HTTP ${res.status}`);
+    const data = await res.json();
+    const items = data?.data?.webPages?.value || [];
+    return items.map((item) => ({
+      title: item.name || '',
+      url: item.url || '',
+      domain: item.siteName || domainOf(item.url),
+      snippet: item.snippet || '',
+      text: item.summary ? item.summary.slice(0, config.charsPerPage) : '',
+    }));
+  } catch {
+    return [];
+  }
+}
+
+/**
  * Run a search and read the top pages.
  *
  * `alt` is the question stripped to its subject. Wikipedia's search wants a
@@ -237,6 +273,15 @@ export async function searchWeb(query, alt = '') {
   const q = String(query || '').trim();
   if (!q) return { results: [], limited: false };
 
+  // 1. If LangSearch API key is configured, use it for 100ms ultra-fast search
+  if (config.langsearchApiKey) {
+    const langResults = await langsearch(q);
+    if (langResults.length) {
+      return { results: langResults, limited: false, source: 'langsearch' };
+    }
+  }
+
+  // 2. DuckDuckGo with fallback to Wikipedia (zero-key default)
   let results = [];
   let limited = false;
   try {
