@@ -152,7 +152,8 @@ const INTENTS = [
   },
   {
     name: 'thanks',
-    test: /^(thanks|thank you|thankyou|thx|ty|cheers|appreciate it)\b|\bshukriya\b|\bshukria\b|\bdhanyavad\b|\bdhanyawad\b|\bmehrbani\b|\bmeharbani\b|शुक्रिया|धन्यवाद|شکریہ|ਸ਼ੁਕਰੀਆ|ਧੰਨਵਾਦ/i,
+    // Anchored at both ends: "thanks for the memories book" is a search.
+    test: /^(thanks|thank you|thankyou|thx|ty|cheers|appreciate it|shukriya|shukria|dhanyavad|dhanyawad|mehrbani|meharbani|शुक्रिया|धन्यवाद|شکریہ|ਸ਼ੁਕਰੀਆ|ਧੰਨਵਾਦ)[\s!.,]*$/i,
     replies: {
       en: 'Any time. Ask me anything else.',
       roman: 'Koi baat nahi. Aur kuch poochna ho to bataiye.',
@@ -201,6 +202,47 @@ const INTENTS = [
 ];
 
 /**
+ * Greetings and thanks, spelled however they actually arrive.
+ *
+ * Nobody types carefully into a chat box: "helo", "hii", "heyyy", "thnx".
+ * Listing exact spellings misses them and sends the message to the web, where
+ * "helo" is an Indian social network. Squashing repeated letters folds most of
+ * the variants onto one form, and the rest are listed.
+ */
+const squash = (word) =>
+  word
+    .toLowerCase()
+    .replace(/[^a-z]/g, '')
+    .replace(/(.)\1+/g, '$1');
+
+const GREET_WORDS = new Set(
+  `hello helo hi hii hey hay heya hiya yo howdy hola sup wassup hlo hlw hy
+   salam salaam slam slm assalam asalam assalamualaikum asalamualaikum aoa
+   walaikum walikum namaste namaskar sat sri akal satsriakal oye oi`
+    .split(/\s+/)
+    .map(squash)
+);
+
+const THANK_WORDS = new Set(
+  `thanks thank thanku thankyou thx tnx thnx thnks ty cheers shukriya shukria
+   sukriya shukrya dhanyavad dhanyawad mehrbani meharbani`
+    .split(/\s+/)
+    .map(squash)
+);
+
+/** Does this short message consist only of words from `vocabulary`? */
+function madeOf(text, vocabulary) {
+  const parts = text
+    .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  if (!parts.length || parts.length > 3) return false;
+  const squashed = parts.map(squash).filter(Boolean);
+  return squashed.length > 0 && squashed.every((w) => vocabulary.has(w));
+}
+
+/**
  * A conversational reply, or null when the message is a real question that
  * should go to the web.
  *
@@ -211,6 +253,16 @@ const INTENTS = [
 export function chatReply(message) {
   const text = message.trim();
   if (!text || text.length > 80) return null;
+
+  const lang = () => detectLanguage(text);
+  const pick = (name) => {
+    const intent = INTENTS.find((i) => i.name === name);
+    return intent.replies[lang()] || intent.replies.en;
+  };
+
+  // Typo-tolerant before the exact patterns, so "helo" never reaches the web.
+  if (madeOf(text, GREET_WORDS)) return pick('greeting');
+  if (madeOf(text, THANK_WORDS)) return pick('thanks');
 
   for (const intent of INTENTS) {
     if (!intent.test.test(text)) continue;
