@@ -78,18 +78,8 @@
             <a href="https://f0undr.vercel.app/" target="_blank" rel="noreferrer" style="text-decoration:none; color:inherit;" title="Return to f0undr Atelier">
               <h1>f0undr Ai</h1>
             </a>
-            <div class="model-badge" title="Active Model">
-              <span class="model-active">genni 1</span>
-              <span class="model-tag">Active</span>
-            </div>
           </div>
           <div class="header-right">
-            <div class="model-selector-pill" title="Upcoming Models">
-              <span class="coming-soon-label">Coming soon:</span>
-              <span class="model-upcoming">genni 2</span>
-              <span class="model-dot">•</span>
-              <span class="model-upcoming">genni 3</span>
-            </div>
             <span id="status" class="status">checking…</span>
             <button id="reset" type="button">New chat</button>
           </div>
@@ -106,10 +96,25 @@
           </div>
         </main>
 
-        <form id="composer">
-          <textarea id="input" rows="1" placeholder="Send a message…" autocomplete="off" autofocus></textarea>
-          <button id="send" type="submit" aria-label="Send">↑</button>
-        </form>
+        <div class="composer-wrap">
+          <div class="composer-model-bar">
+            <div class="model-badge-active" title="Active Model: genni 1">
+              <span class="model-sparkle">✦</span>
+              <span class="model-name">genni 1</span>
+              <span class="model-status">Active</span>
+            </div>
+            <div class="model-badge-soon" title="Upcoming model updates">
+              <span class="model-soon-label">Coming soon:</span>
+              <span class="model-soon-name">genni 2</span>
+              <span class="model-soon-dot">•</span>
+              <span class="model-soon-name">genni 3</span>
+            </div>
+          </div>
+          <form id="composer">
+            <textarea id="input" rows="1" placeholder="Send a message…" autocomplete="off" autofocus></textarea>
+            <button id="send" type="submit" aria-label="Send">↑</button>
+          </form>
+        </div>
       </div>
     </div>
 
