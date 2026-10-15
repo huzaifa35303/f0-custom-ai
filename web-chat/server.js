@@ -14,6 +14,8 @@ const TYPES = {
   '.png': 'image/png',
   '.webmanifest': 'application/manifest+json',
   '.json': 'application/json; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8',
+  '.txt': 'text/plain; charset=utf-8',
 };
 
 /**
@@ -112,7 +114,13 @@ async function handleChat(req, res) {
   const file = payload.file && typeof payload.file.content === 'string' ? payload.file : null;
 
   try {
-    const text = await answer(asked.at(-1).content, emit, { previous, previousAnswer, model, file });
+    const text = await answer(asked.at(-1).content, emit, {
+      messages,
+      previous,
+      previousAnswer,
+      model,
+      file,
+    });
     emit('final', { text });
   } catch (err) {
     emit('error', { text: err.message });
@@ -123,7 +131,8 @@ async function handleChat(req, res) {
 }
 
 async function serveStatic(req, res) {
-  const path = new URL(req.url, 'http://localhost').pathname;
+  let path = new URL(req.url, 'http://localhost').pathname;
+  if (path === '/sitemap' || path === '/sitemap/') path = '/sitemap.xml';
   // pathname always starts with '/', and join plus the prefix check below is
   // what actually stops '../' from escaping the public folder.
   const file = normalize(join(PUBLIC, path === '/' ? 'index.html' : path.slice(1)));

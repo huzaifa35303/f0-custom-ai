@@ -776,12 +776,14 @@ function escapeHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-/** Just enough markdown for chat: escape everything, then add the few tags back. */
+/** Comprehensive ChatGPT / Gemini / Claude style Markdown renderer with tables, lists, quotes, headings, and code preview. */
 function render(md) {
+  if (!md) return '';
   const esc = escapeHtml;
-
   const blocks = [];
-  let out = md.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, rawCode) => {
+
+  // 1. Extract code blocks ```lang ... ```
+  let text = md.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, rawCode) => {
     const code = rawCode.trim();
     const l = (lang || 'code').toLowerCase();
     const isHtmlOrSvg = ['html', 'svg', 'xml'].includes(l);
@@ -801,27 +803,185 @@ function render(md) {
     return `\u0000${blocks.length - 1}\u0000`;
   });
 
-  out = esc(out)
-    .replace(/`([^`\n]+)`/g, '<code>$1</code>')
-    .replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/^#{1,6}\s+(.+)$/gm, '<h3>$1</h3>');
+  // 2. Escape HTML entities
+  text = esc(text);
 
-  out = out
-    .split(/\n{2,}/)
-    .map((para) => {
-      const lines = para.split('\n');
-      if (lines.every((l) => /^\s*[-*]\s+/.test(l))) {
-        return `<ul>${lines.map((l) => `<li>${l.replace(/^\s*[-*]\s+/, '')}</li>`).join('')}</ul>`;
-      }
-      if (lines.every((l) => /^\s*\d+[.)]\s+/.test(l))) {
-        return `<ol>${lines.map((l) => `<li>${l.replace(/^\s*\d+[.)]\s+/, '')}</li>`).join('')}</ol>`;
-      }
-      if (/^<(h3|pre|ul|ol|div)/.test(para.trim()) || para.includes('\u0000')) return para;
-      return `<p>${lines.join('<br>')}</p>`;
-    })
-    .join('\n');
+  // 3. Inline elements parser: bold, italic, code, links, del
+  const parseInline = (s) => {
+    return s
+      .replace(/`([^`\n]+)`/g, '<code>$1</code>')
+      .replace(/\*\*\*([^*]+)\*\*\*/g, '<strong><em>$1</em></strong>')
+      .replace(/___([^_]+)___/g, '<strong><em>$1</em></strong>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/__([^_]+)__/g, '<strong>$1</strong>')
+      .replace(/\*([^*\n]+)\*/g, '<em>$1</em>')
+      .replace(/_([^_\n]+)_/g, '<em>$1</em>')
+      .replace(/~~([^~]+)~~/g, '<del>$1</del>')
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  };
 
-  return out.replace(/\u0000(\d+)\u0000/g, (_, i) => blocks[Number(i)]);
+  const parseRow = (line) => {
+    let cells = line.split('|').map((c) => c.trim());
+    if (cells[0] === '') cells.shift();
+    if (cells.length && cells[cells.length - 1] === '') cells.pop();
+    return cells;
+  };
+
+  // 4. Line by line block parsing (headings, blockquotes, tables, horizontal rules, lists, paragraphs)
+  const sections = text.split(/\n{2,}/);
+  const outSections = [];
+
+  for (const sec of sections) {
+    const trimmedSec = sec.trim();
+    if (!trimmedSec) continue;
+
+    if (/^\u0000\d+\u0000$/.test(trimmedSec)) {
+      outSections.push(trimmedSec);
+      continue;
+    }
+
+    const lines = sec.split('\n');
+    let currentList = null; // 'ul' or 'ol'
+    let currentListItems = [];
+    let tableBuffer = [];
+    const elements = [];
+
+    const flushList = () => {
+      if (currentList && currentListItems.length) {
+        elements.push(`<${currentList}>${currentListItems.map((it) => `<li>${parseInline(it)}</li>`).join('')}</${currentList}>`);
+        currentList = null;
+        currentListItems = [];
+      }
+    };
+
+    let pBuffer = [];
+    const flushP = () => {
+      if (pBuffer.length) {
+        elements.push(`<p>${parseInline(pBuffer.join('<br>'))}</p>`);
+        pBuffer = [];
+      }
+    };
+
+    const flushTable = () => {
+      if (!tableBuffer.length) return;
+      const rawLines = tableBuffer;
+      tableBuffer = [];
+      let hasHeader = false;
+      if (rawLines.length >= 2 && /^\s*\|?\s*:?-+:?\s*(\|?\s*:?-+:?\s*)+\|?\s*$/.test(rawLines[1])) {
+        hasHeader = true;
+      }
+
+      let tableHtml = '<div class="table-wrap"><table>';
+      if (hasHeader) {
+        const headerCells = parseRow(rawLines[0]);
+        tableHtml += '<thead><tr>' + headerCells.map((c) => `<th>${parseInline(c)}</th>`).join('') + '</tr></thead>';
+        tableHtml += '<tbody>';
+        for (let i = 2; i < rawLines.length; i++) {
+          const cells = parseRow(rawLines[i]);
+          tableHtml += '<tr>' + cells.map((c) => `<td>${parseInline(c)}</td>`).join('') + '</tr>';
+        }
+        tableHtml += '</tbody>';
+      } else {
+        tableHtml += '<tbody>';
+        for (let i = 0; i < rawLines.length; i++) {
+          const cells = parseRow(rawLines[i]);
+          if (cells.length >= 2) {
+            tableHtml += '<tr><td class="table-key"><code>' + parseInline(cells[0]) + '</code></td><td>' + parseInline(cells.slice(1).join(' - ')) + '</td></tr>';
+          } else if (cells.length === 1) {
+            tableHtml += '<tr><td colspan="2">' + parseInline(cells[0]) + '</td></tr>';
+          }
+        }
+        tableHtml += '</tbody>';
+      }
+      tableHtml += '</table></div>';
+      elements.push(tableHtml);
+    };
+
+    for (const rawLine of lines) {
+      const line = rawLine.trim();
+
+      if (/^\u0000\d+\u0000$/.test(line)) {
+        flushP();
+        flushList();
+        flushTable();
+        elements.push(line);
+        continue;
+      }
+
+      // Table row (lines starting with '|')
+      if (line.startsWith('|')) {
+        flushP();
+        flushList();
+        tableBuffer.push(line);
+        continue;
+      } else if (tableBuffer.length) {
+        flushTable();
+      }
+
+      // Headings
+      const hMatch = line.match(/^(#{1,4})\s+(.+)$/);
+      if (hMatch) {
+        flushP();
+        flushList();
+        const level = hMatch[1].length;
+        elements.push(`<h${level}>${parseInline(hMatch[2])}</h${level}>`);
+        continue;
+      }
+
+      // Horizontal rule
+      if (/^(\-{3,}|\*{3,}|_{3,})$/.test(line)) {
+        flushP();
+        flushList();
+        elements.push('<hr>');
+        continue;
+      }
+
+      // Blockquote
+      if (line.startsWith('&gt;') || line.startsWith('>')) {
+        flushP();
+        flushList();
+        const quoteText = line.replace(/^(&gt;|>)\s?/, '');
+        elements.push(`<blockquote>${parseInline(quoteText)}</blockquote>`);
+        continue;
+      }
+
+      // Unordered list item (- item, * item, + item)
+      const ulMatch = line.match(/^[-*+]\s+(.+)$/);
+      if (ulMatch) {
+        flushP();
+        if (currentList !== 'ul') {
+          flushList();
+          currentList = 'ul';
+        }
+        currentListItems.push(ulMatch[1]);
+        continue;
+      }
+
+      // Ordered list item (1. item)
+      const olMatch = line.match(/^\d+[.)]\s+(.+)$/);
+      if (olMatch) {
+        flushP();
+        if (currentList !== 'ol') {
+          flushList();
+          currentList = 'ol';
+        }
+        currentListItems.push(olMatch[1]);
+        continue;
+      }
+
+      // Normal text line
+      flushList();
+      pBuffer.push(line);
+    }
+
+    flushP();
+    flushList();
+    flushTable();
+    outSections.push(elements.join('\n'));
+  }
+
+  // Restore placeholders
+  return outSections.join('\n').replace(/\u0000(\d+)\u0000/g, (_, i) => blocks[Number(i)]);
 }
 
 // Global delegated click for code block actions (Copy & Live Preview)

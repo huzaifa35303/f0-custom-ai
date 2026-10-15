@@ -5,4 +5,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://f0undr-ai.vercel.app/sitemap.xml
+Sitemap: https://f0undr-ai.vercel.app/sitemap
 Sitemap: https://f0undr.vercel.app/sitemap.xml

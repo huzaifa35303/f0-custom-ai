@@ -152,32 +152,49 @@ function subject(question) {
 }
 
 // A question that leans on the one before it: a pronoun with no antecedent, or
-// a fragment too short to search on its own.
-const PRONOUN = /\b(he|him|his|she|her|hers|it|its|they|them|their|that|this|those|there)\b/i;
-const FRAGMENT = /^(and|also|what about|how about|why|and what|ok(ay)? and)\b/i;
+const PRONOUN = /\b(he|him|his|she|her|hers|it|its|they|them|their|that|this|those|these|there)\b/i;
+const FRAGMENT = /^(and|also|what about|how about|why|and what|ok(ay)? and|so|then)\b/i;
+const FOLLOWUP_QUESTION =
+  /^(who\s+(make|made|created|founded|owns?|built|runs?)|when\s+(was\s+it\s+)?(launched|released|founded|born|created|started)|where\s+(is\s+it\s+)?(from|located|based)|how\s+(does\s+it\s+work|much|old|to\s+use)|what\s+(about|features?|version|price|cost|is\s+the\s+difference)|is\s+it\s+(free|open\s*source|safe|good|better)|can\s+it\s+|tell\s+me\s+more|give\s+examples?)\b/i;
 
 /**
  * Fold the previous question's subject into this one.
  *
- * "who is the CEO of OpenAI" then "how old is he" searches for *how old is he*
- * and finds nothing, because the web has no idea who "he" is. Carrying the
- * earlier subject across turns is what makes a sequence of questions feel like
- * a conversation rather than a series of unrelated lookups.
+ * "what is gemini" then "who make it" or "when was it launched" carries "gemini"
+ * into the follow-up question so search engines and the AI understand what
+ * entity is being asked about across conversation turns.
  */
-function resolveFollowUp(question, previous) {
+function resolveFollowUp(question, previous, previousAnswer = '', messages = []) {
   const q = question.trim();
-  if (!previous) return q;
+  if (!previous && (!messages || !messages.length)) return q;
 
-  const topic = subject(previous);
+  let topic = subject(previous);
+  if (!topic && messages && messages.length > 1) {
+    for (let i = messages.length - 2; i >= 0; i--) {
+      if (messages[i]?.role === 'user') {
+        const sub = subject(messages[i].content);
+        if (sub && sub.length > 2 && !PRONOUN.test(sub)) {
+          topic = sub;
+          break;
+        }
+      }
+    }
+  }
+
   if (!topic) return q;
 
-  // Only a pronoun or an opening like "what about" earns the previous subject.
-  // Judging by length instead would drag it into "capital of France", which is
-  // short but perfectly self-contained.
-  if (!PRONOUN.test(q) && !FRAGMENT.test(q)) return q;
+  // Question contains a pronoun: e.g. "who make it", "what is its speed", "how old is he"
+  if (PRONOUN.test(q)) {
+    const swapped = q.replace(PRONOUN, topic);
+    return swapped === q ? `${q} ${topic}`.trim() : swapped;
+  }
 
-  const swapped = q.replace(PRONOUN, topic);
-  return swapped === q ? `${q} ${topic}`.trim() : swapped;
+  // Follow-up question starters or fragments: e.g. "who make", "who made", "when launched", "is it free"
+  if (FOLLOWUP_QUESTION.test(q) || FRAGMENT.test(q)) {
+    return `${q} ${topic}`.trim();
+  }
+
+  return q;
 }
 
 /**
@@ -307,7 +324,7 @@ function directness(sentence, shape, head, asked) {
 export async function answer(
   question,
   emit = () => {},
-  { previous = '', previousAnswer = '', model = 'genni 1', file = null } = {}
+  { messages = [], previous = '', previousAnswer = '', model = 'genni 1', file = null } = {}
 ) {
   const say = (text) => {
     emit('token', { text });
@@ -342,6 +359,7 @@ export async function answer(
       const rewritten = await generateAI({
         question,
         context: fileContext + previousAnswer,
+        conversation: messages,
         model,
         onStatus: (s) => emit('status', s),
         onThought: (t) => emit('thought', { text: t }),
@@ -364,6 +382,7 @@ export async function answer(
     const aiRecall = await generateAI({
       question,
       context: fileContext + known.join('\n'),
+      conversation: messages,
       model,
       onStatus: (s) => emit('status', s),
       onThought: (t) => emit('thought', { text: t }),
@@ -374,7 +393,8 @@ export async function answer(
   }
 
   emit('status', { text: 'Searching the web' });
-  const query = stripRequest(resolveFollowUp(question, previous))
+  const resolvedFollowUp = resolveFollowUp(question, previous, previousAnswer, messages);
+  const query = stripRequest(resolvedFollowUp)
     .replace(/\s+/g, ' ')
     .trim()
     .slice(0, 300);
@@ -398,8 +418,9 @@ export async function answer(
 
   if (contextText.length > 50 || fileContext) {
     const aiAnswer = await generateAI({
-      question,
+      question: resolvedFollowUp !== question ? `${question} (Context: regarding ${topic || resolvedFollowUp})` : question,
       context: fileContext + contextText,
+      conversation: messages,
       model,
       onStatus: (s) => emit('status', s),
       onThought: (t) => emit('thought', { text: t }),
@@ -413,8 +434,9 @@ export async function answer(
   // If search was completely empty, still attempt direct AI generation for reasoning / general questions
   if (!results.length && !summary) {
     const directAi = await generateAI({
-      question,
+      question: resolvedFollowUp !== question ? `${question} (Context: regarding ${topic || resolvedFollowUp})` : question,
       context: fileContext,
+      conversation: messages,
       model,
       onStatus: (s) => emit('status', s),
       onThought: (t) => emit('thought', { text: t }),

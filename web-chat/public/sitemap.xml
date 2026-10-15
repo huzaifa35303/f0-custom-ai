@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://f0undr-ai.vercel.app/</loc>
     <lastmod>2026-10-15</lastmod>
-    <changefreq>daily</changefreq>
+    <changefreq>hourly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://f0undr-ai.vercel.app/icon-512.png</image:loc>
+      <image:title>f0undr Ai - Conversational Intelligence and Deep Reasoning</image:title>
+      <image:caption>f0undr Ai conversational intelligence platform with live search and reasoning</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://f0undr-ai.vercel.app/sitemap</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://f0undr.vercel.app/</loc>
