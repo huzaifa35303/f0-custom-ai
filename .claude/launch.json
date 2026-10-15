@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "web-chat",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--watch", "web-chat/server.js"],
+      "port": 3000
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "f0undr-ai",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "f0undr Ai - ChatGPT-style chatbot that answers from live web search. No model, no API key, no dependencies.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "ask": "node ask.js"
+  }
+}

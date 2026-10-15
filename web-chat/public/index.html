@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>f0undr Ai</title>
+    <!-- Inter for the interface, JetBrains Mono for code. The stack falls back
+         to the system UI font, so the app still looks right offline. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>f0undr Ai</h1>
+      <span id="status" class="status">checking…</span>
+      <button id="reset" type="button">New chat</button>
+    </header>
+
+    <main id="thread" aria-live="polite">
+      <div class="welcome">
+        <h2>Ask f0undr Ai anything</h2>
+        <p>Every answer is looked up on the web as you ask, then written out in plain language.</p>
+      </div>
+    </main>
+
+    <form id="composer">
+      <textarea id="input" rows="1" placeholder="Send a message…" autocomplete="off" autofocus></textarea>
+      <button id="send" type="submit" aria-label="Send">↑</button>
+    </form>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

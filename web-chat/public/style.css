@@ -1,0 +1,431 @@
+/* ---------------------------------------------------------------- tokens */
+
+:root {
+  --bg: #fcfcfd;
+  --surface: #ffffff;
+  --raised: #f4f4f6;
+  --line: #e6e6ea;
+  --line-soft: #efeff2;
+  --text: #15151a;
+  --text-soft: #43434d;
+  --muted: #71717f;
+  --accent: #0d8f6f;
+  --accent-soft: #0d8f6f14;
+  --danger: #c0392b;
+
+  /* Inter's own metrics; the stack degrades to the platform UI font offline. */
+  /* Inter covers Latin. The rest of the chain carries Devanagari, Gurmukhi and
+     Nastaliq, which Inter has no glyphs for, using fonts already on the system. */
+  --sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Noto Sans Devanagari', 'Noto Sans Gurmukhi', 'Noto Nastaliq Urdu',
+    'Nirmala UI', 'Jameel Noori Nastaleeq', 'Urdu Typesetting', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, monospace;
+
+  --measure: 44rem;
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(16, 16, 24, 0.04), 0 8px 24px -16px rgba(16, 16, 24, 0.18);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #131316;
+    --surface: #1a1a1e;
+    --raised: #232328;
+    --line: #2b2b31;
+    --line-soft: #232328;
+    --text: #f0f0f3;
+    --text-soft: #c7c7d1;
+    --muted: #8e8e9c;
+    --accent: #2dd4a7;
+    --accent-soft: #2dd4a71a;
+    --danger: #f87171;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -16px rgba(0, 0, 0, 0.6);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15.5px;
+  line-height: 1.68;
+  font-feature-settings: 'cv05' 1, 'ss01' 1, 'calt' 1; /* friendlier l, a, ligatures */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------------------------------------------------------------- header */
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px;
+  height: 56px;
+  flex-shrink: 0;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--line-soft);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+header h1 {
+  font-size: 14px;
+  font-weight: 650;
+  letter-spacing: -0.012em;
+  margin: 0;
+}
+
+.status {
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+  padding: 3px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 50vw;
+}
+.status.good {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: transparent;
+}
+.status.bad {
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+  border-color: transparent;
+}
+
+header button {
+  margin-left: auto;
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--text-soft);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+header button:hover {
+  background: var(--raised);
+  border-color: var(--line);
+}
+
+/* ---------------------------------------------------------------- thread */
+
+main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 20px 12px;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+.welcome {
+  max-width: var(--measure);
+  margin: 14vh auto 0;
+  text-align: center;
+}
+.welcome h2 {
+  font-size: 28px;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  margin: 0 0 10px;
+}
+.welcome p {
+  margin: 0 auto;
+  max-width: 32rem;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.msg {
+  max-width: var(--measure);
+  margin: 0 auto 26px;
+  display: flex;
+  gap: 14px;
+  animation: rise 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .msg {
+    animation: none;
+  }
+  main {
+    scroll-behavior: auto;
+  }
+}
+
+/* The person's turn: a compact bubble on the right. */
+.msg.user {
+  justify-content: flex-end;
+}
+.msg.user .body {
+  background: var(--raised);
+  border: 1px solid var(--line-soft);
+  padding: 11px 16px;
+  border-radius: var(--radius) var(--radius) 4px var(--radius);
+  max-width: 85%;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--text);
+  font-size: 15px;
+}
+
+/* The answer: full width, set for reading rather than for chatting. */
+.msg.assistant .body {
+  flex: 1;
+  min-width: 0;
+  color: var(--text-soft);
+  letter-spacing: -0.003em;
+}
+
+.avatar {
+  flex-shrink: 0;
+  width: 27px;
+  height: 27px;
+  margin-top: 2px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  user-select: none;
+}
+
+/* ----------------------------------------------------------- answer body */
+
+.body > :first-child {
+  margin-top: 0;
+}
+.body > :last-child {
+  margin-bottom: 0;
+}
+
+.body p {
+  margin: 0 0 1.1em;
+  overflow-wrap: break-word;
+}
+
+.body strong {
+  font-weight: 620;
+  color: var(--text);
+}
+
+.body ul,
+.body ol {
+  margin: 0 0 1.1em;
+  padding-left: 1.35em;
+}
+.body li {
+  margin-bottom: 0.4em;
+}
+.body li::marker {
+  color: var(--muted);
+}
+
+.body h3 {
+  font-size: 15.5px;
+  font-weight: 650;
+  letter-spacing: -0.012em;
+  color: var(--text);
+  margin: 1.6em 0 0.6em;
+}
+
+.body code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  background: var(--raised);
+  border: 1px solid var(--line-soft);
+  border-radius: 5px;
+  padding: 0.1em 0.38em;
+  color: var(--text);
+}
+
+.body pre {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 0 0 1.1em;
+  overflow-x: auto;
+  box-shadow: var(--shadow);
+}
+.body pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ------------------------------------------------------------ status note */
+
+.note {
+  max-width: var(--measure);
+  margin: -14px auto 22px;
+  padding-left: 41px; /* clears the avatar column */
+  font-size: 13.5px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.note .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+.note.error {
+  color: var(--danger);
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.caret::after {
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  background: var(--accent);
+  border-radius: 1px;
+  vertical-align: text-bottom;
+  margin-left: 3px;
+  animation: blink 1.05s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* -------------------------------------------------------------- composer */
+
+form {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: var(--measure);
+  width: 100%;
+  margin: 0 auto;
+  padding: 10px 20px 22px;
+  background: linear-gradient(to top, var(--bg) 55%, transparent);
+}
+
+textarea {
+  flex: 1;
+  resize: none;
+  max-height: 180px;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.55;
+  box-shadow: var(--shadow);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+textarea::placeholder {
+  color: var(--muted);
+}
+textarea:focus {
+  outline: none;
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  box-shadow: var(--shadow), 0 0 0 3px var(--accent-soft);
+}
+
+#send {
+  width: 38px;
+  height: 38px;
+  margin-bottom: 2px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity 0.15s, transform 0.1s;
+}
+#send:hover:not(:disabled) {
+  opacity: 0.9;
+}
+#send:active:not(:disabled) {
+  transform: scale(0.94);
+}
+#send:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* ---------------------------------------------------------------- mobile */
+
+@media (max-width: 640px) {
+  main {
+    padding: 24px 16px 12px;
+  }
+  form {
+    padding: 8px 16px 16px;
+  }
+  .msg {
+    gap: 10px;
+  }
+  .note {
+    padding-left: 33px;
+  }
+  .welcome {
+    margin-top: 10vh;
+  }
+  .welcome h2 {
+    font-size: 24px;
+  }
+}
