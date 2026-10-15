@@ -114,7 +114,9 @@ const INTENTS = [
   {
     name: 'languages',
     requires: SELF,
-    test: /\b(do|can) (you|u) (speak|know|understand|talk)\b|\bwhat languages?\b|\b(urdu|hindi|punjabi|panjabi|english)\s+(aati|ati|aandi|andi|janta|jante|jaante|bolte|bol sakte|samajh)\b|\bkya tum (urdu|hindi|punjabi) \b|اردو آتی|हिंदी आती|ਪੰਜਾਬੀ ਆਉਂਦੀ/i,
+    // "do you know" has to be followed by a language, or it swallows
+    // "what do you know", which is a question about the brain.
+    test: /\b(do|can) (you|u) (speak|know|understand|talk)\b[^.?]{0,20}\b(urdu|hindi|punjabi|panjabi|english|languages?)\b|\bwhat languages?\b|\b(urdu|hindi|punjabi|panjabi|english)\s+(aati|ati|aandi|andi|janta|jante|jaante|bolte|bol sakte|samajh)\b|\bkya tum (urdu|hindi|punjabi) \b|اردو آتی|हिंदी आती|ਪੰਜਾਬੀ ਆਉਂਦੀ/i,
     replies: {
       en: 'English, Urdu, Hindi and Punjabi — write in whichever you like and I will answer in the same one.',
       roman: 'English, Urdu, Hindi aur Punjabi — jis mein chahein likhein, main usi mein jawab doonga.',

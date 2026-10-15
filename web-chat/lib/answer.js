@@ -2,6 +2,8 @@ import { config } from './config.js';
 import { searchWeb, wikipediaSummary } from './search.js';
 import { clean } from './clean.js';
 import { chatReply } from './chat.js';
+import { detectCommand, applyCommand } from './commands.js';
+import { detectBrainCommand, runBrainCommand, recall } from './brain.js';
 
 const STOPWORDS = new Set(
   `a an the and or but if then than that this these those of in on at to for from by with about into over after before
@@ -280,12 +282,39 @@ function directness(sentence, shape, head, asked) {
  * That makes it good at facts and useless at reasoning, which is the trade this
  * app is making.
  */
-export async function answer(question, emit = () => {}, { previous = '' } = {}) {
+export async function answer(
+  question,
+  emit = () => {},
+  { previous = '', previousAnswer = '' } = {}
+) {
+  const say = (text) => {
+    emit('token', { text });
+    return text;
+  };
+
   const canned = chatReply(question);
-  if (canned) {
-    emit('token', { text: canned });
-    return canned;
+  if (canned) return say(canned);
+
+  // Teaching, forgetting, or asking what it knows.
+  const brainCommand = detectBrainCommand(question);
+  if (brainCommand) return say(await runBrainCommand(brainCommand));
+
+  // An instruction about the answer above, not a question for the web.
+  let wanted = config.maxSentences;
+  const command = detectCommand(question);
+  if (command) {
+    const result = applyCommand(command, previousAnswer);
+    if (!result.rerun) return say(result.text);
+    // "more" needs fresh material, so the earlier question is asked again,
+    // this time with room for twice as much of it.
+    if (previous) question = previous;
+    wanted = config.maxSentences * 2;
   }
+
+  // Anything taught beats anything found: you know your own business, a
+  // search result does not.
+  const known = await recall(question);
+  if (known.length) return say(known.join(' '));
 
   emit('status', { text: 'Searching the web' });
   const query = resolveFollowUp(question, previous).replace(/\s+/g, ' ').trim().slice(0, 300);
@@ -363,7 +392,7 @@ export async function answer(question, emit = () => {}, { previous = '' } = {}) 
   const seen = [new Set(words(lead.sentence))];
 
   for (const item of pool) {
-    if (chosen.length >= config.maxSentences) break;
+    if (chosen.length >= wanted) break;
     if (item === lead) continue;
     const tokens = new Set(words(item.sentence));
     if (seen.some((other) => overlap(tokens, other) > 0.6)) continue;
