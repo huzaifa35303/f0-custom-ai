@@ -1156,6 +1156,7 @@ async function ask(text) {
   const autoWantsImage = isAuto && /^(?:generate|create|draw|paint)\s+(?:an?\s+)?(?:image|picture|photo|wallpaper|illustration)\s+of\b/i.test(text.trim()) && !/(?:code|html|css|js|canvas|react|app|game|svg|script)/i.test(text);
   const autoNeedsReasoning = isAuto && !autoWantsImage && (Boolean(userFile) || /(code|debug|function|algorithm|math|solve|step by step|prove|analyze|detailed|explain why)/i.test(text));
   const isGenni2 = currentModel === 'genni 2' || autoNeedsReasoning;
+  const isNorth = currentModel === 'north-mini-code' || currentModel === 'cohere/north-mini-code:free';
   const isReasoningModel = isGenni2 || isNorth || isGenni3 || autoWantsImage;
   let noteText = (isGenni3 || autoWantsImage)
     ? 'Omni Studio (Thinking & Creating)'
@@ -1520,6 +1521,7 @@ function render(md) {
 
   // 1. Extract code blocks ```lang ... ``` and ```mermaid ... ```
   text = text.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, rawCode) => {
+    const l = (lang || '').toLowerCase();
     const code = rawCode.trim();
     // If model wrapped markdown image inside ```markdown or ```, unwrap it so it displays as an image card
     if (['markdown', 'md', ''].includes(l) && code.startsWith('![')) {
