@@ -1080,8 +1080,7 @@ async function ask(text) {
   body.classList.add('caret');
   const isAuto = currentModel === 'auto';
   const isGenni3 = currentModel === 'genni 3';
-  const isNorth = currentModel === 'north-mini-code' || currentModel === 'cohere/north-mini-code:free';
-  const autoWantsImage = isAuto && /(?:(?:generate|draw|create|paint|sketch|design|make|render|show me|give me|produce|visualize)\s+(?:an?\s+)?(?:image|picture|photo|wallpaper|logo|art|portrait|illustration|drawing|graphic|poster|visual)|^(?:image|picture|photo|wallpaper|logo|portrait|art)\s+of\b)/i.test(text);
+  const autoWantsImage = isAuto && /^(?:generate|create|draw|paint)\s+(?:an?\s+)?(?:image|picture|photo|wallpaper|illustration)\s+of\b/i.test(text.trim()) && !/(?:code|html|css|js|canvas|react|app|game|svg|script)/i.test(text);
   const autoNeedsReasoning = isAuto && !autoWantsImage && (Boolean(userFile) || /(code|debug|function|algorithm|math|solve|step by step|prove|analyze|detailed|explain why)/i.test(text));
   const isGenni2 = currentModel === 'genni 2' || autoNeedsReasoning;
   const isReasoningModel = isGenni2 || isNorth || isGenni3 || autoWantsImage;

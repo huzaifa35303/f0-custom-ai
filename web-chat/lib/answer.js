@@ -398,8 +398,10 @@ export async function answer(
     return say(known.join(' '));
   }
 
-  // Direct visual image generation check (for genni 3 and image creation requests)
-  const isImageRequest = /(?:(?:generate|draw|create|paint|sketch|design|make|render|show me|give me|produce|visualize)\s+(?:an?\s+)?(?:image|picture|photo|wallpaper|logo|art|portrait|illustration|drawing|graphic|poster|visual)|^(?:image|picture|photo|wallpaper|logo|portrait|art)\s+of\b)/i.test(question);
+  // Strict visual image generation check (ONLY when explicitly and unambiguously asked for an image/photo/drawing)
+  const isImageRequest =
+    /^(?:generate|create|draw|paint)\s+(?:an?\s+)?(?:image|picture|photo|wallpaper|illustration)\s+of\b|^(?:image|picture|photo|wallpaper)\s+of\b/i.test(question.trim()) &&
+    !/(?:code|html|css|js|canvas|react|app|game|svg|script|function|calculator|timer|stopwatch|website|page|component|fix|error|solve|prove)/i.test(question);
   if (isImageRequest && (model === 'genni 3' || model === 'auto')) {
     emit('status', { text: 'Designing visual prompt & creating image' });
     const imageAi = await generateAI({
