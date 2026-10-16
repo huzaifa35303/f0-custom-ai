@@ -1022,6 +1022,8 @@ main {
   color: #8b5cf6;
   border-color: #8b5cf6;
   background: color-mix(in srgb, #8b5cf6 12%, transparent);
+}
+
 .composer-icon-btn.mic-btn {
   margin-right: 4px;
 }
