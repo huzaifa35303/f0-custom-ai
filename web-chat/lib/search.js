@@ -207,17 +207,26 @@ export async function wikipediaSummary(query) {
   }
 }
 
-// Open a result and keep its readable text.
-async function readPage(result) {
+/**
+ * Direct Live Web Access: fetch and extract clean readable text from any URL.
+ */
+export async function fetchUrlText(url, maxChars = 5000) {
   try {
-    const res = await get(result.url, { timeout: 8000 });
+    const targetUrl = /^https?:\/\//i.test(url) ? url : `https://${url}`;
+    const res = await get(targetUrl, { timeout: 9000 });
     const type = res.headers.get('content-type') || '';
-    if (!type.includes('html') && !type.includes('text')) return '';
-    const text = stripTags(await res.text());
-    return text.length > 200 ? text.slice(0, config.charsPerPage) : '';
+    if (!type.includes('html') && !type.includes('text') && !type.includes('json')) return '';
+    const raw = await res.text();
+    const text = type.includes('json') ? raw : stripTags(raw);
+    return text.length > 60 ? text.slice(0, maxChars) : '';
   } catch {
     return '';
   }
+}
+
+// Open a result and keep its readable text.
+async function readPage(result) {
+  return fetchUrlText(result.url, config.charsPerPage);
 }
 
 /**

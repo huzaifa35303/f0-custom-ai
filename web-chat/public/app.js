@@ -553,6 +553,7 @@ function selectChat(id) {
       const body = addMessage(msg.role);
       if (msg.role === 'assistant') {
         renderMessageContent(body, msg.content);
+        attachMessageActions(body, msg.content);
       } else {
         const textContainer = document.createElement('div');
         textContainer.textContent = msg.content;
@@ -1013,6 +1014,78 @@ form.addEventListener('submit', (e) => {
   ask(text);
 });
 
+// ---------------------------------------------------------------- Voice Hearing (Microphone Input)
+const micBtn = document.getElementById('mic-btn');
+let voiceRecognition = null;
+let isHearingVoice = false;
+
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  voiceRecognition = new SpeechRec();
+  voiceRecognition.continuous = false;
+  voiceRecognition.interimResults = true;
+  voiceRecognition.lang = navigator.language || 'en-US';
+
+  voiceRecognition.onstart = () => {
+    isHearingVoice = true;
+    micBtn?.classList.add('listening');
+    input.placeholder = '🧠 Hearing you... speak now';
+  };
+
+  voiceRecognition.onresult = (event) => {
+    let interim = '';
+    let final = '';
+    for (let i = event.resultIndex; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        final += event.results[i][0].transcript;
+      } else {
+        interim += event.results[i][0].transcript;
+      }
+    }
+    const heard = final || interim;
+    if (heard) {
+      input.value = heard;
+      input.dispatchEvent(new Event('input'));
+    }
+  };
+
+  voiceRecognition.onerror = (e) => {
+    console.warn('Voice hearing error:', e.error);
+    stopVoiceHearing();
+  };
+
+  voiceRecognition.onend = () => {
+    stopVoiceHearing();
+  };
+}
+
+function startVoiceHearing() {
+  if (!voiceRecognition) {
+    alert('Voice hearing is not supported in this browser. Please try Chrome, Edge, or Safari.');
+    return;
+  }
+  try {
+    voiceRecognition.start();
+  } catch (err) {
+    voiceRecognition.stop();
+  }
+}
+
+function stopVoiceHearing() {
+  isHearingVoice = false;
+  micBtn?.classList.remove('listening');
+  setModel(currentModel);
+}
+
+micBtn?.addEventListener('click', (e) => {
+  e.preventDefault();
+  if (isHearingVoice) {
+    voiceRecognition?.stop();
+  } else {
+    startVoiceHearing();
+  }
+});
+
 async function checkHealth() {
   if (!statusPill) return;
   try {
@@ -1115,8 +1188,8 @@ async function ask(text) {
             thoughtBox = document.createElement('details');
             thoughtBox.className = 'thought-box';
             thoughtBox.open = true;
-            const spark = isNorth ? '{ }' : ((isGenni3 || autoWantsImage) ? '◈' : '⚡');
-            const titleText = isNorth ? 'Code Reasoning' : ((isGenni3 || autoWantsImage) ? 'Omni Reasoning' : 'Deep Thinking');
+            const spark = isNorth ? '{ }' : '🧠';
+            const titleText = isNorth ? 'Code Reasoning' : 'f0undr Brain (Cognitive Deliberation)';
             thoughtBox.innerHTML = `
               <summary class="thought-summary">
                 <span class="thought-sparkle">${spark}</span>
@@ -1141,7 +1214,7 @@ async function ask(text) {
             const dot = thoughtBox.querySelector('.thought-dot');
             if (dot) dot.remove();
             const title = thoughtBox.querySelector('.thought-title');
-            if (title) title.textContent = 'Thought Process (Completed)';
+            if (title) title.textContent = '🧠 f0undr Brain (Cognitive Thought Completed)';
           }
           answer += msg.text;
           renderMessageContent(body, answer);
@@ -1156,7 +1229,7 @@ async function ask(text) {
             const dot = thoughtBox.querySelector('.thought-dot');
             if (dot) dot.remove();
             const title = thoughtBox.querySelector('.thought-title');
-            if (title) title.textContent = 'Thought Process (Completed)';
+            if (title) title.textContent = '🧠 f0undr Brain (Cognitive Thought Completed)';
           }
           renderMessageContent(body, answer);
           scroll();
@@ -1175,6 +1248,7 @@ async function ask(text) {
   body.classList.remove('caret');
 
   if (answer) {
+    attachMessageActions(body, answer);
     history.push({ role: 'assistant', content: answer });
     const currentChat = chats.find((c) => c.id === activeChatId);
     if (currentChat) {
@@ -1219,6 +1293,117 @@ function renderMessageContent(body, md) {
   }
   answerContainer.innerHTML = render(md);
   renderMermaidDiagrams(answerContainer);
+}
+
+// ---------------------------------------------------------------- Message Actions & Voice Output
+let activeSpeakingBtn = null;
+
+function speakAssistantAnswer(text, btn) {
+  if (!('speechSynthesis' in window)) {
+    alert('Voice speech synthesis is not supported in this browser.');
+    return;
+  }
+
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+    if (activeSpeakingBtn) {
+      activeSpeakingBtn.classList.remove('speaking');
+      activeSpeakingBtn.innerHTML = '🔊 Speak';
+    }
+    if (activeSpeakingBtn === btn) {
+      activeSpeakingBtn = null;
+      return;
+    }
+  }
+
+  // Strip code blocks and raw symbols so the speech sounds conversational and human
+  const spokenText = text
+    .replace(/```[\s\S]*?```/g, ' [Code block omitted] ')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\$\$[\s\S]*?\$\$/g, ' [Mathematical formula] ')
+    .replace(/\$([^\$]+)\$/g, '$1')
+    .replace(/[*_~#\[\]]/g, '')
+    .replace(/https?:\/\/\S+/g, 'link')
+    .trim();
+
+  if (!spokenText) return;
+
+  const utterance = new SpeechSynthesisUtterance(spokenText.slice(0, 3000));
+  utterance.rate = 1.05;
+  utterance.pitch = 1.0;
+
+  const voices = window.speechSynthesis.getVoices();
+  const naturalVoice = voices.find((v) => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Guy'))) || voices[0];
+  if (naturalVoice) utterance.voice = naturalVoice;
+
+  utterance.onstart = () => {
+    activeSpeakingBtn = btn;
+    btn.classList.add('speaking');
+    btn.innerHTML = '⏹ Stop';
+  };
+
+  utterance.onend = () => {
+    btn.classList.remove('speaking');
+    btn.innerHTML = '🔊 Speak';
+    activeSpeakingBtn = null;
+  };
+
+  utterance.onerror = () => {
+    btn.classList.remove('speaking');
+    btn.innerHTML = '🔊 Speak';
+    activeSpeakingBtn = null;
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function attachMessageActions(body, text) {
+  let actionsBar = body.querySelector('.msg-actions');
+  if (!actionsBar) {
+    actionsBar = document.createElement('div');
+    actionsBar.className = 'msg-actions';
+
+    // Copy Button
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.className = 'msg-action-btn copy-msg-btn';
+    copyBtn.innerHTML = '📋 Copy';
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(text).then(() => {
+        copyBtn.innerHTML = '✓ Copied';
+        setTimeout(() => { copyBtn.innerHTML = '📋 Copy'; }, 1500);
+      });
+    });
+
+    // Speak Button (Text to Speech)
+    const speakBtn = document.createElement('button');
+    speakBtn.type = 'button';
+    speakBtn.className = 'msg-action-btn speak-msg-btn';
+    speakBtn.innerHTML = '🔊 Speak';
+    speakBtn.addEventListener('click', () => {
+      speakAssistantAnswer(text, speakBtn);
+    });
+
+    actionsBar.appendChild(copyBtn);
+    actionsBar.appendChild(speakBtn);
+    body.appendChild(actionsBar);
+  } else {
+    const copyBtn = actionsBar.querySelector('.copy-msg-btn');
+    const speakBtn = actionsBar.querySelector('.speak-msg-btn');
+    if (copyBtn) {
+      copyBtn.onclick = () => {
+        navigator.clipboard.writeText(text).then(() => {
+          copyBtn.innerHTML = '✓ Copied';
+          setTimeout(() => { copyBtn.innerHTML = '📋 Copy'; }, 1500);
+        });
+      };
+    }
+    if (speakBtn) {
+      speakBtn.onclick = () => {
+        speakAssistantAnswer(text, speakBtn);
+      };
+    }
+  }
 }
 
 function renderMermaidDiagrams(container) {

@@ -1,5 +1,5 @@
 import { config } from './config.js';
-import { searchWeb, wikipediaSummary } from './search.js';
+import { searchWeb, wikipediaSummary, fetchUrlText } from './search.js';
 import { clean } from './clean.js';
 import { chatReply } from './chat.js';
 import { calculate } from './calc.js';
@@ -398,12 +398,31 @@ export async function answer(
     return say(known.join(' '));
   }
 
+  // Live Universal Web URL Access: If user mentions ANY website URL, fetch its live readable contents directly!
+  const directUrls = (question.match(/https?:\/\/[^\s<>"'()]+/gi) || []);
+  let fetchedUrlContext = '';
+  if (directUrls.length > 0) {
+    try {
+      const urlHost = new URL(directUrls[0]).hostname;
+      emit('status', { text: `Accessing live web page (${urlHost})` });
+      const pages = await Promise.all(
+        directUrls.slice(0, 3).map(async (u) => {
+          const content = await fetchUrlText(u, 4500);
+          return content ? `=== LIVE WEBPAGE CONTENT [${u}] ===\n${content}` : '';
+        })
+      );
+      fetchedUrlContext = pages.filter(Boolean).join('\n\n');
+    } catch {}
+  }
+
+  const combinedContext = [fileContext, fetchedUrlContext].filter(Boolean).join('\n\n');
+
   // Direct Claude-grade Intent Routing:
   // For coding, Canvas web apps, in-house visual art & SVG graphics, debugging, math,
-  // creative writing (poetry/stories/Urdu shayari), or document analysis:
+  // creative writing (poetry/stories/Urdu shayari), live URL reading, or document analysis:
   // Route DIRECTLY to generateAI without wasting seconds on irrelevant web search!
   const isDirectAiIntent =
-    Boolean(fileContext) ||
+    Boolean(combinedContext) ||
     model === 'north-mini-code' ||
     // In-house visual art, drawings, graphics, logos, SVG & Canvas visual designs
     /(?:(?:draw|paint|sketch|design|render|generate|create)\s+(?:an?\s+)?(?:svg|canvas|logo|graphic|illustration|art|drawing|vector|visual|diagram|flowchart|mermaid|sequence|workflow|architecture)|vector graphic|css art)/i.test(question) ||
@@ -430,7 +449,7 @@ export async function answer(
     });
     const directAi = await generateAI({
       question: resolvedFollowUp !== question ? `${question} (Context: regarding ${resolvedFollowUp})` : question,
-      context: fileContext,
+      context: combinedContext,
       conversation: messages,
       model,
       studioStyle,
@@ -471,7 +490,7 @@ export async function answer(
   // Grounded AI generation with live web results (always attempt AI generation)
   const aiAnswer = await generateAI({
     question: resolvedFollowUp !== question ? `${question} (Context: regarding ${topic || resolvedFollowUp})` : question,
-    context: fileContext + (contextText ? `\n\nLive Search Knowledge:\n${contextText}` : ''),
+    context: (combinedContext ? combinedContext + '\n\n' : '') + (contextText ? `Live Search Knowledge:\n${contextText}` : ''),
     conversation: messages,
     model,
     studioStyle,
@@ -491,7 +510,7 @@ export async function answer(
   if (!results.length && !summary) {
     const directFallback = await generateAI({
       question: resolvedFollowUp !== question ? `${question} (Context: regarding ${topic || resolvedFollowUp})` : question,
-      context: fileContext,
+      context: combinedContext,
       conversation: messages,
       model,
       studioStyle,
