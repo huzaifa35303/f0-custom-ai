@@ -324,7 +324,7 @@ function directness(sentence, shape, head, asked) {
 export async function answer(
   question,
   emit = () => {},
-  { messages = [], previous = '', previousAnswer = '', model = 'genni 1', file = null, studioStyle = 'Default', aspectRatio = null, personalization = null } = {}
+  { messages = [], previous = '', previousAnswer = '', model = 'genni 1', file = null, studioStyle = 'Default', aspectRatio = null, personalization = null, memories = [], persona = 'general' } = {}
 ) {
   const say = (text) => {
     emit('token', { text });
@@ -362,6 +362,8 @@ export async function answer(
         conversation: messages,
         model,
         personalization,
+        memories,
+        persona,
         onStatus: (s) => emit('status', s),
         onThought: (t) => emit('thought', { text: t }),
         onToken: (c) => emit('token', { text: c }),
@@ -386,6 +388,8 @@ export async function answer(
       conversation: messages,
       model,
       personalization,
+      memories,
+      persona,
       onStatus: (s) => emit('status', s),
       onThought: (t) => emit('thought', { text: t }),
       onToken: (c) => emit('token', { text: c }),
@@ -406,6 +410,8 @@ export async function answer(
       studioStyle,
       aspectRatio,
       personalization,
+      memories,
+      persona,
       onStatus: (s) => emit('status', s),
       onThought: (t) => emit('thought', { text: t }),
       onToken: (c) => emit('token', { text: c }),
@@ -413,8 +419,54 @@ export async function answer(
     if (imageAi) return clean(imageAi);
   }
 
-  emit('status', { text: 'Searching the web' });
+  // Direct Claude-grade Intent Routing:
+  // For coding, web app creation (Canvas), debugging, math derivations, logic proofs,
+  // creative writing (poetry/stories/Urdu shayari), or document analysis:
+  // Route DIRECTLY to generateAI without wasting seconds on irrelevant web search!
+  const isDirectAiIntent =
+    Boolean(fileContext) ||
+    model === 'north-mini-code' ||
+    // Coding / Canvas apps / interactive games / tools
+    /(?:(?:make|create|build|generate|code|program|design|develop|write|implement)\s+(?:an?\s+)?(?:web\s*app|app|canvas|game|tool|calculator|timer|stopwatch|clock|dashboard|page|website|portfolio|todo|widget|component|simulation|ui|interface|form|script|function|class|api)|(?:html|css|javascript|js|python|react|vue|node|sql|c\+\+|java)\s+(?:code|script|app|program)|snake game|tic tac toe|pong|flappy bird|tetris|stopwatch|calculator|timer app)/i.test(question) ||
+    // Debugging, error fixing, code audits
+    /(?:(?:fix|debug|correct|repair|solve|trace|audit)\s+(?:this|my|the)?\s*(?:code|error|bug|issue|exception|crash|script|function)|error:|exception:|traceback:|^fix\b|syntax error|typeerror|referenceerror)/i.test(question) ||
+    // Creative writing, stories, poetry, Urdu shayari
+    /(?:write\s+(?:a|an)?\s*(?:poem|story|essay|script|dialogue|lyrics|rap|shair|shayari|afsaana|ghazal)|poem on|story about|mujhe\s+(?:ek\s+)?(?:shair|shayari|kahaani|kahani)\s+sunao)/i.test(question) ||
+    // Pure math equations, proofs, logic puzzles
+    /(?:prove\s+that|derive\s+|step by step|solve for [a-z]|integral of|derivative of|equation:|limit of|factorize)/i.test(question) ||
+    // Architecture diagrams / flowcharts
+    /(?:draw|render|generate|create)\s+(?:a\s+)?(?:diagram|flowchart|mermaid|sequence|workflow|architecture)/i.test(question) ||
+    // Common short app triggers
+    /^(?:calculator|stopwatch|timer|clock|snake|snake game|tic tac toe|todo|todo app|portfolio|counter)\b/i.test(question);
+
   const resolvedFollowUp = resolveFollowUp(question, previous, previousAnswer, messages);
+
+  if (isDirectAiIntent) {
+    emit('status', {
+      text: model === 'genni 3'
+        ? 'Omni creating & thinking'
+        : (model === 'genni 2'
+            ? 'Deep thinking'
+            : (model === 'north-mini-code' ? 'Reasoning (North Mini Code)' : 'Thinking'))
+    });
+    const directAi = await generateAI({
+      question: resolvedFollowUp !== question ? `${question} (Context: regarding ${resolvedFollowUp})` : question,
+      context: fileContext,
+      conversation: messages,
+      model,
+      studioStyle,
+      aspectRatio,
+      personalization,
+      memories,
+      persona,
+      onStatus: (s) => emit('status', s),
+      onThought: (t) => emit('thought', { text: t }),
+      onToken: (c) => emit('token', { text: c }),
+    });
+    if (directAi) return clean(directAi);
+  }
+
+  emit('status', { text: 'Searching the web' });
   const query = stripRequest(resolvedFollowUp)
     .replace(/\s+/g, ' ')
     .trim()
@@ -437,27 +489,28 @@ export async function answer(
   if (summary) contextPieces.push(`Wikipedia (${summary.title}):\n${summary.text}`);
   const contextText = contextPieces.join('\n\n');
 
-  if (contextText.length > 50 || fileContext) {
-    const aiAnswer = await generateAI({
-      question: resolvedFollowUp !== question ? `${question} (Context: regarding ${topic || resolvedFollowUp})` : question,
-      context: fileContext + contextText,
-      conversation: messages,
-      model,
-      studioStyle,
-      aspectRatio,
-      personalization,
-      onStatus: (s) => emit('status', s),
-      onThought: (t) => emit('thought', { text: t }),
-      onToken: (c) => emit('token', { text: c }),
-    });
-    if (aiAnswer) {
-      return clean(aiAnswer);
-    }
+  // Grounded AI generation with live web results (always attempt AI generation)
+  const aiAnswer = await generateAI({
+    question: resolvedFollowUp !== question ? `${question} (Context: regarding ${topic || resolvedFollowUp})` : question,
+    context: fileContext + (contextText ? `\n\nLive Search Knowledge:\n${contextText}` : ''),
+    conversation: messages,
+    model,
+    studioStyle,
+    aspectRatio,
+    personalization,
+    memories,
+    persona,
+    onStatus: (s) => emit('status', s),
+    onThought: (t) => emit('thought', { text: t }),
+    onToken: (c) => emit('token', { text: c }),
+  });
+  if (aiAnswer) {
+    return clean(aiAnswer);
   }
 
-  // If search was completely empty, still attempt direct AI generation for reasoning / general questions
+  // If search was completely empty or AI failed, try direct AI fallback
   if (!results.length && !summary) {
-    const directAi = await generateAI({
+    const directFallback = await generateAI({
       question: resolvedFollowUp !== question ? `${question} (Context: regarding ${topic || resolvedFollowUp})` : question,
       context: fileContext,
       conversation: messages,
@@ -465,11 +518,13 @@ export async function answer(
       studioStyle,
       aspectRatio,
       personalization,
+      memories,
+      persona,
       onStatus: (s) => emit('status', s),
       onThought: (t) => emit('thought', { text: t }),
       onToken: (c) => emit('token', { text: c }),
     });
-    if (directAi) return clean(directAi);
+    if (directFallback) return clean(directFallback);
 
     return limited
       ? 'The search engine is throttling this machine right now, so I could not look that up. Give it a minute and ask again.'

@@ -136,6 +136,8 @@ async function handleChat(req, res) {
       studioStyle: payload.studioStyle,
       aspectRatio: payload.aspectRatio,
       personalization: payload.personalization,
+      memories: payload.memories,
+      persona: payload.persona,
     });
     emit('final', { text });
   } catch (err) {

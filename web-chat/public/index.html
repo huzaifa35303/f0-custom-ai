@@ -142,7 +142,7 @@
     <!-- Mermaid.js for Flowcharts, Diagrams & Mind Maps -->
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
 
-    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/style.css?v=2.3" />
   </head>
   <body>
     <noscript>
@@ -202,13 +202,17 @@
                 <span class="popover-icon">✨</span>
                 <span>Try Plus free</span>
               </button>
-              <button type="button" class="popover-item" id="popover-personalization-btn">
-                <span class="popover-icon">⏱</span>
-                <span>Personalization</span>
-              </button>
               <button type="button" class="popover-item" id="popover-profile-btn">
                 <span class="popover-icon">👤</span>
                 <span>Profile</span>
+              </button>
+              <button type="button" class="popover-item" id="popover-memory-btn">
+                <span class="popover-icon">🧠</span>
+                <span>General Memory</span>
+              </button>
+              <button type="button" class="popover-item" id="popover-personalization-btn">
+                <span class="popover-icon">⏱</span>
+                <span>Personalization</span>
               </button>
               <button type="button" class="popover-item" id="popover-settings-btn">
                 <span class="popover-icon">⚙</span>
@@ -433,6 +437,65 @@
                 </div>
               </div>
             </div>
+
+            <!-- AI Persona Selector Pill & Dropdown (Feature F) -->
+            <div class="persona-picker-container" id="persona-picker-container">
+              <button type="button" class="persona-picker-trigger" id="persona-picker-trigger" aria-haspopup="true" aria-expanded="false" title="Switch AI Persona">
+                <span class="persona-trigger-icon" id="persona-trigger-icon">🎭</span>
+                <span class="persona-trigger-name" id="persona-trigger-name">General</span>
+                <svg class="persona-trigger-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+
+              <div class="persona-dropdown-menu hidden" id="persona-dropdown-menu" role="menu">
+                <div class="persona-dropdown-header">
+                  <span>AI Personas &amp; Workspaces</span>
+                </div>
+                <div class="persona-dropdown-list">
+                  <button type="button" class="persona-item selected" data-persona="general" role="menuitem">
+                    <span class="persona-icon">✦</span>
+                    <div class="persona-info">
+                      <span class="persona-title">General Assistant</span>
+                      <span class="persona-desc">Balanced, smart helper across all tasks</span>
+                    </div>
+                  </button>
+                  <button type="button" class="persona-item" data-persona="architect" role="menuitem">
+                    <span class="persona-icon">💻</span>
+                    <div class="persona-info">
+                      <span class="persona-title">Senior Architect</span>
+                      <span class="persona-desc">Production code, modular design &amp; Canvas apps</span>
+                    </div>
+                  </button>
+                  <button type="button" class="persona-item" data-persona="creative" role="menuitem">
+                    <span class="persona-icon">🎨</span>
+                    <div class="persona-info">
+                      <span class="persona-title">Creative Director</span>
+                      <span class="persona-desc">Visual aesthetics, prompt design &amp; UI styling</span>
+                    </div>
+                  </button>
+                  <button type="button" class="persona-item" data-persona="researcher" role="menuitem">
+                    <span class="persona-icon">📚</span>
+                    <div class="persona-info">
+                      <span class="persona-title">Deep Researcher</span>
+                      <span class="persona-desc">Exhaustive analysis, facts &amp; citations</span>
+                    </div>
+                  </button>
+                  <button type="button" class="persona-item" data-persona="bughunter" role="menuitem">
+                    <span class="persona-icon">🔍</span>
+                    <div class="persona-info">
+                      <span class="persona-title">Bug Hunter</span>
+                      <span class="persona-desc">Code audit, security checks &amp; auto debugging</span>
+                    </div>
+                  </button>
+                  <button type="button" class="persona-item" data-persona="urdu" role="menuitem">
+                    <span class="persona-icon">✍️</span>
+                    <div class="persona-info">
+                      <span class="persona-title">Urdu / Bilingual</span>
+                      <span class="persona-desc">Urdu adab, Roman Urdu, poetry &amp; translation</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- File Attachment Staging Preview (for genni 2) -->
@@ -544,6 +607,14 @@
 
           <!-- Canvas Actions -->
           <div class="canvas-actions">
+            <!-- Feature B: Auto-Fix Error with genni 3 button -->
+            <button type="button" class="canvas-fix-btn hidden" id="canvas-fix-btn" title="Auto-Fix error with genni 3">
+              <span>🛠 Fix Error</span>
+            </button>
+            <!-- Feature B: Open in Standalone Tab (1-click share / test) -->
+            <button type="button" class="canvas-action-btn" id="canvas-open-tab-btn" title="Open in Standalone Full Tab (Share)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </button>
             <button type="button" class="canvas-action-btn" id="canvas-refresh-btn" title="Rerun / Refresh Preview">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
             </button>
@@ -576,6 +647,16 @@
 
           <!-- View 3: Live Console Logs -->
           <div class="canvas-view hidden" id="canvas-console-view">
+            <!-- Feature B: Error banner with 1-click Auto-Fix with genni 3 -->
+            <div class="canvas-error-banner hidden" id="canvas-error-banner">
+              <div class="canvas-error-text">
+                <span class="canvas-error-icon">⚠️</span>
+                <span id="canvas-error-msg">Runtime error occurred</span>
+              </div>
+              <button type="button" class="canvas-error-fix-btn" id="canvas-error-fix-btn">
+                <span>🛠 Fix with genni 3</span>
+              </button>
+            </div>
             <div class="canvas-console-toolbar">
               <span>Console Output</span>
               <button type="button" class="canvas-console-clear" id="canvas-console-clear">Clear</button>
@@ -745,37 +826,141 @@
       </div>
     </div>
 
-    <!-- Settings Modal -->
+    <!-- Settings Modal with Tabs (Profile, General Memory, Personalization, Data) -->
     <div id="settings-modal" class="auth-modal hidden" role="dialog" aria-modal="true" aria-label="Settings">
       <div class="auth-modal-backdrop" id="settings-backdrop"></div>
-      <div class="auth-modal-card">
+      <div class="auth-modal-card settings-modal-card">
         <button type="button" class="auth-modal-close" id="settings-close" aria-label="Close modal">&times;</button>
-        <div class="auth-modal-header">
-          <span class="popover-icon" style="font-size:24px;">⚙</span>
-          <h3>Settings</h3>
-          <p class="auth-modal-sub">Manage your preferences, appearance, and chat data.</p>
+        <div class="auth-modal-header settings-header-clean">
+          <div class="settings-title-wrap">
+            <span class="settings-main-icon">⚙️</span>
+            <div>
+              <h3>Settings &amp; Profile</h3>
+              <p class="auth-modal-sub" id="settings-user-desc">Manage your profile, general memory, and preferences.</p>
+            </div>
+          </div>
         </div>
-        <div class="settings-content">
-          <div class="settings-row">
-            <div>
-              <div class="settings-label">User Account</div>
-              <div class="settings-desc" id="settings-user-desc">Logged in as Huzaifa</div>
+
+        <!-- Settings Navigation Tabs -->
+        <div class="settings-tabs-bar" role="tablist">
+          <button type="button" class="settings-tab-btn active" data-settings-tab="profile" role="tab" aria-selected="true">
+            <span class="tab-icon">👤</span>
+            <span>Profile</span>
+          </button>
+          <button type="button" class="settings-tab-btn" data-settings-tab="memory" role="tab" aria-selected="false">
+            <span class="tab-icon">🧠</span>
+            <span>General Memory</span>
+            <span class="tab-badge" id="settings-memory-badge">3</span>
+          </button>
+          <button type="button" class="settings-tab-btn" data-settings-tab="personalization" role="tab" aria-selected="false">
+            <span class="tab-icon">⏱</span>
+            <span>Personalization</span>
+          </button>
+          <button type="button" class="settings-tab-btn" data-settings-tab="data" role="tab" aria-selected="false">
+            <span class="tab-icon">⚙️</span>
+            <span>Data</span>
+          </button>
+        </div>
+
+        <div class="settings-tab-panes">
+          <!-- Pane 1: Profile & Account -->
+          <div class="settings-pane active" id="settings-pane-profile">
+            <div class="profile-card-display">
+              <div class="profile-avatar-large" id="settings-profile-avatar">HU</div>
+              <div class="profile-info-main">
+                <div class="profile-name-row">
+                  <input type="text" id="settings-name-input" class="settings-name-input" placeholder="Your Display Name" />
+                  <button type="button" id="settings-name-save-btn" class="settings-action-btn primary-action">Save Name</button>
+                </div>
+                <div class="settings-desc" id="settings-profile-email">huzaifa@foundr.ai</div>
+                <div class="profile-tier-badge">Official Models: <strong>genni 1, 2 &amp; 3 (Free Forever)</strong></div>
+              </div>
             </div>
-            <button type="button" class="settings-action-btn" id="settings-auth-switch-btn">Switch</button>
+
+            <div class="settings-row" style="margin-top:14px;">
+              <div>
+                <div class="settings-label">Switch Account</div>
+                <div class="settings-desc">Log out or log in to a different account</div>
+              </div>
+              <button type="button" class="settings-action-btn" id="settings-auth-switch-btn">Switch / Log out</button>
+            </div>
           </div>
-          <div class="settings-row">
-            <div>
-              <div class="settings-label">Theme Appearance</div>
-              <div class="settings-desc">Dark Slate (Default)</div>
+
+          <!-- Pane 2: General & Long-Term Memory (Feature D) -->
+          <div class="settings-pane hidden" id="settings-pane-memory">
+            <div class="settings-memory-section">
+              <div class="settings-section-header">
+                <div>
+                  <div class="settings-label">General &amp; Long-Term Memory</div>
+                  <div class="settings-desc">f0undr Ai remembers these facts and details about you across all chats for tailored answers.</div>
+                </div>
+                <button type="button" class="settings-danger-btn" id="settings-clear-memories-btn">Clear All</button>
+              </div>
+
+              <!-- Add Memory Bar -->
+              <div class="memory-add-bar">
+                <input type="text" id="memory-add-input" placeholder="Add a memory fact (e.g. 'I build web apps using React and Python')…" />
+                <button type="button" class="memory-add-btn" id="memory-add-btn">+ Add</button>
+              </div>
+
+              <!-- Memories List -->
+              <div class="memory-list" id="settings-memory-list">
+                <!-- Rendered dynamically -->
+              </div>
+
+              <div class="memory-tip-card">
+                <span class="tip-icon">💡</span>
+                <span><strong>Pro-tip:</strong> You can also teach f0undr Ai directly in chat anytime by saying <em>"Remember that..."</em> or <em>"Keep in mind that..."</em>!</span>
+              </div>
             </div>
-            <span class="badge-active">Dark</span>
           </div>
-          <div class="settings-row">
-            <div>
-              <div class="settings-label">Clear All Conversations</div>
-              <div class="settings-desc">Permanently delete stored local chats</div>
+
+          <!-- Pane 3: Personalization & Custom Instructions -->
+          <div class="settings-pane hidden" id="settings-pane-personalization">
+            <div class="personalization-pane-content">
+              <div class="settings-form-group">
+                <label for="settings-user-bio" class="settings-label">User Context &amp; Background</label>
+                <p class="settings-desc">What would you like f0undr Ai to know about you to provide better responses?</p>
+                <textarea id="settings-user-bio" class="settings-textarea" rows="3" placeholder="e.g. Software engineer based in Pakistan, building modern SaaS applications and AI tools..."></textarea>
+              </div>
+
+              <div class="settings-form-group" style="margin-top:12px;">
+                <label for="settings-response-style" class="settings-label">Custom Response Style</label>
+                <p class="settings-desc">How would you like f0undr Ai to respond?</p>
+                <textarea id="settings-response-style" class="settings-textarea" rows="3" placeholder="e.g. Direct, articulate, clean markdown, code inside single-file Canvas artifacts, bilingual Urdu when prompted..."></textarea>
+              </div>
+
+              <div style="display:flex; justify-content:flex-end; margin-top:14px;">
+                <button type="button" id="settings-save-personalization-btn" class="settings-action-btn primary-action">Save Instructions</button>
+              </div>
             </div>
-            <button type="button" class="settings-danger-btn" id="settings-clear-chats-btn">Clear All</button>
+          </div>
+
+          <!-- Pane 4: Data Controls -->
+          <div class="settings-pane hidden" id="settings-pane-data">
+            <div class="settings-row">
+              <div>
+                <div class="settings-label">Theme Appearance</div>
+                <div class="settings-desc">Dark Slate (Default f0undr Atelier theme)</div>
+              </div>
+              <span class="badge-active">Dark</span>
+            </div>
+
+            <div class="settings-row">
+              <div>
+                <div class="settings-label">Export Chat History</div>
+                <div class="settings-desc">Download a backup JSON of all saved conversations</div>
+              </div>
+              <button type="button" class="settings-action-btn" id="settings-export-chats-btn">Export Data</button>
+            </div>
+
+            <div class="settings-row">
+              <div>
+                <div class="settings-label">Clear All Conversations</div>
+                <div class="settings-desc">Permanently wipe all locally stored conversations</div>
+              </div>
+              <button type="button" class="settings-danger-btn" id="settings-clear-chats-btn">Clear All</button>
+            </div>
           </div>
         </div>
       </div>
@@ -795,6 +980,6 @@
       </div>
     </div>
 
-    <script type="module" src="/app.js"></script>
+    <script type="module" src="/app.js?v=2.3"></script>
   </body>
 </html>

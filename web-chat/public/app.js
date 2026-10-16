@@ -197,9 +197,239 @@ let contextChatId = null;
 let history = [];
 let busy = false;
 
+// ---------------------------------------------------------------- AI Personas (Feature F)
+const PERSONA_STORAGE_KEY = 'foundr_ai_persona_v2';
+const personaPickerContainer = document.getElementById('persona-picker-container');
+const personaPickerTrigger = document.getElementById('persona-picker-trigger');
+const personaTriggerIcon = document.getElementById('persona-trigger-icon');
+const personaTriggerName = document.getElementById('persona-trigger-name');
+const personaDropdownMenu = document.getElementById('persona-dropdown-menu');
+const personaItems = document.querySelectorAll('.persona-item');
+
+const PERSONA_CONFIG = {
+  general: { name: 'General', icon: '✦' },
+  architect: { name: 'Senior Architect', icon: '💻' },
+  creative: { name: 'Creative Director', icon: '🎨' },
+  researcher: { name: 'Deep Researcher', icon: '📚' },
+  bughunter: { name: 'Bug Hunter', icon: '🔍' },
+  urdu: { name: 'Urdu / Bilingual', icon: '✍️' }
+};
+
+let currentPersona = loadPersona();
+
+function loadPersona() {
+  try {
+    const saved = localStorage.getItem(PERSONA_STORAGE_KEY);
+    if (saved && PERSONA_CONFIG[saved]) return saved;
+  } catch {}
+  return 'general';
+}
+
+function setPersona(personaKey) {
+  if (!PERSONA_CONFIG[personaKey]) personaKey = 'general';
+  currentPersona = personaKey;
+  try {
+    localStorage.setItem(PERSONA_STORAGE_KEY, personaKey);
+  } catch {}
+
+  const meta = PERSONA_CONFIG[personaKey];
+  if (personaTriggerName) personaTriggerName.textContent = meta.name;
+  if (personaTriggerIcon) personaTriggerIcon.textContent = meta.icon;
+
+  personaItems.forEach((btn) => {
+    btn.classList.toggle('selected', btn.getAttribute('data-persona') === personaKey);
+  });
+
+  closePersonaDropdown();
+}
+
+function openPersonaDropdown() {
+  closeModelDropdown();
+  toolsPopover?.classList.add('hidden');
+  personaDropdownMenu?.classList.remove('hidden');
+  personaPickerContainer?.classList.add('open');
+  personaPickerTrigger?.setAttribute('aria-expanded', 'true');
+}
+
+function closePersonaDropdown() {
+  personaDropdownMenu?.classList.add('hidden');
+  personaPickerContainer?.classList.remove('open');
+  personaPickerTrigger?.setAttribute('aria-expanded', 'false');
+}
+
+function togglePersonaDropdown() {
+  if (personaDropdownMenu?.classList.contains('hidden')) {
+    openPersonaDropdown();
+  } else {
+    closePersonaDropdown();
+  }
+}
+
+function initPersonaSystem() {
+  setPersona(currentPersona);
+
+  personaPickerTrigger?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    togglePersonaDropdown();
+  });
+
+  personaItems.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const p = btn.getAttribute('data-persona');
+      if (p) setPersona(p);
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (personaPickerContainer && !personaPickerContainer.contains(e.target)) {
+      closePersonaDropdown();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && personaDropdownMenu && !personaDropdownMenu.classList.contains('hidden')) {
+      closePersonaDropdown();
+    }
+  });
+}
+
+// ---------------------------------------------------------------- Persistent Long-Term Memory (Feature D)
+const MEMORY_STORAGE_KEY = 'foundr_ai_memories_v2';
+const settingsClearMemoriesBtn = document.getElementById('settings-clear-memories-btn');
+const memoryAddInput = document.getElementById('memory-add-input');
+const memoryAddBtn = document.getElementById('memory-add-btn');
+const settingsMemoryList = document.getElementById('settings-memory-list');
+
+let memories = loadMemories();
+
+function loadMemories() {
+  try {
+    const raw = localStorage.getItem(MEMORY_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed;
+    }
+  } catch {}
+  return [
+    'User prefers clean, elegant, modular code architecture and interactive Canvas apps.',
+    'User communicates in English and Urdu / Roman Urdu.',
+    'User prefers direct, intelligent, high-density explanations without fluff.'
+  ];
+}
+
+function saveMemories(newMemories) {
+  memories = Array.isArray(newMemories) ? newMemories : [];
+  try {
+    localStorage.setItem(MEMORY_STORAGE_KEY, JSON.stringify(memories));
+  } catch {}
+  renderMemorySettingsList();
+}
+
+function addMemory(text) {
+  const cleanText = (text || '').trim();
+  if (!cleanText) return;
+  if (!memories.some((m) => m.toLowerCase() === cleanText.toLowerCase())) {
+    memories.unshift(cleanText);
+    saveMemories(memories);
+  }
+}
+
+function deleteMemory(index) {
+  if (index >= 0 && index < memories.length) {
+    memories.splice(index, 1);
+    saveMemories(memories);
+  }
+}
+
+function renderMemorySettingsList() {
+  const settingsMemoryBadge = document.getElementById('settings-memory-badge');
+  if (settingsMemoryBadge) {
+    settingsMemoryBadge.textContent = String(memories.length);
+  }
+  if (!settingsMemoryList) return;
+  if (!memories.length) {
+    settingsMemoryList.innerHTML = '<div class="memory-empty-state" style="padding:16px;text-align:center;color:var(--muted);font-size:12px;">No long-term memories stored yet. Add memories above or tell f0undr Ai to "remember that..." in chat.</div>';
+    return;
+  }
+
+  settingsMemoryList.innerHTML = memories.map((m, idx) => `
+    <div class="memory-item">
+      <span class="memory-item-text">${escapeHtml(m)}</span>
+      <button type="button" class="memory-item-delete" data-memory-index="${idx}" title="Delete memory">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+      </button>
+    </div>
+  `).join('');
+}
+
+function detectAndSaveMemories(userText) {
+  if (!userText || typeof userText !== 'string') return null;
+  const match = userText.match(/^(?:remember\s+(?:that\s+|to\s+|:\s*)?|please\s+remember\s+(?:that\s+|to\s+|:\s*)?|keep\s+in\s+mind\s+(?:that\s+|:\s*)?|note\s+(?:that\s+|:\s*)?|yaad\s+rakhna\s+(?:k[ei]\s+)?|my\s+name\s+is\s+|i\s+prefer\s+|i\s+always\s+(?:use|code|work|want|like|prefer)\s+|i\s+work\s+as\s+(?:an?\s+)?|i\s+am\s+(?:an?\s+)?(?:developer|engineer|coder|designer|student|writer|creator)\b)(.+)/i);
+  if (match && match[1]) {
+    const memoryFact = userText.trim().replace(/^(?:please\s+)?(?:remember|yaad\s+rakhna)\s+(?:that|to|k[ei])?\s*:?\s*/i, '').trim();
+    if (memoryFact.length >= 4 && memoryFact.length <= 300) {
+      addMemory(memoryFact);
+      showMemoryUpdatedPill(memoryFact);
+      return memoryFact;
+    }
+  }
+  return null;
+}
+
+function showMemoryUpdatedPill(fact) {
+  const pill = document.createElement('div');
+  pill.className = 'memory-updated-pill';
+  pill.innerHTML = `
+    <span class="memory-pill-icon">🧠</span>
+    <span class="memory-pill-text">Memory updated: <em>${escapeHtml(fact.slice(0, 48))}${fact.length > 48 ? '…' : ''}</em></span>
+  `;
+  thread.appendChild(pill);
+  scroll();
+}
+
+function initMemorySystem() {
+  renderMemorySettingsList();
+
+  memoryAddBtn?.addEventListener('click', () => {
+    if (memoryAddInput && memoryAddInput.value.trim()) {
+      addMemory(memoryAddInput.value.trim());
+      memoryAddInput.value = '';
+    }
+  });
+
+  memoryAddInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (memoryAddInput.value.trim()) {
+        addMemory(memoryAddInput.value.trim());
+        memoryAddInput.value = '';
+      }
+    }
+  });
+
+  settingsClearMemoriesBtn?.addEventListener('click', () => {
+    if (confirm('Clear all long-term memories? f0undr Ai will no longer recall these facts in future chats.')) {
+      saveMemories([]);
+    }
+  });
+
+  settingsMemoryList?.addEventListener('click', (e) => {
+    const delBtn = e.target.closest('.memory-item-delete');
+    if (delBtn) {
+      const idx = parseInt(delBtn.getAttribute('data-memory-index'), 10);
+      if (!isNaN(idx)) {
+        deleteMemory(idx);
+      }
+    }
+  });
+}
+
 // Initialize app
 initSidebar();
 initUserSystem();
+initPersonaSystem();
+initMemorySystem();
 checkHealth();
 
 // Service Worker for offline PWA
@@ -672,6 +902,8 @@ function toggleModelDropdown() {
 
 function openModelDropdown() {
   if (!modelDropdownMenu) return;
+  closePersonaDropdown();
+  toolsPopover?.classList.add('hidden');
   modelDropdownMenu.classList.remove('hidden');
   modelPickerContainer?.classList.add('open');
   modelPickerTrigger?.setAttribute('aria-expanded', 'true');
@@ -759,7 +991,9 @@ function formatFileSize(bytes) {
 
 input.addEventListener('input', () => {
   input.style.height = 'auto';
-  input.style.height = Math.min(input.scrollHeight, 180) + 'px';
+  const newH = Math.min(input.scrollHeight, 180);
+  input.style.height = newH + 'px';
+  input.style.overflowY = input.scrollHeight > 180 ? 'auto' : 'hidden';
 });
 
 input.addEventListener('keydown', (e) => {
@@ -775,6 +1009,7 @@ form.addEventListener('submit', (e) => {
   if (!text || busy) return;
   input.value = '';
   input.style.height = 'auto';
+  input.style.overflowY = 'hidden';
   ask(text);
 });
 
@@ -798,6 +1033,7 @@ async function ask(text) {
   busy = true;
   send.disabled = true;
   document.querySelector('.welcome')?.remove();
+  detectAndSaveMemories(text);
 
   // If we don't have an active conversation, create one now
   if (!activeChatId) {
@@ -866,7 +1102,9 @@ async function ask(text) {
       messages: history,
       model: currentModel,
       file: userFile,
-      personalization: userPersonalization
+      personalization: userPersonalization,
+      memories: loadMemories(),
+      persona: currentPersona
     }, (msg) => {
       switch (msg.event) {
         case 'status':
@@ -874,34 +1112,33 @@ async function ask(text) {
           break;
         case 'thought':
           if (note.isConnected) note.remove();
-          if (isReasoningModel) {
-            if (!thoughtBox) {
-              thoughtBox = document.createElement('details');
-              thoughtBox.className = 'thought-box';
-              thoughtBox.open = true;
-              const spark = isNorth ? '{ }' : ((isGenni3 || autoWantsImage) ? '◈' : '⚡');
-              const titleText = isNorth ? 'Code Reasoning' : ((isGenni3 || autoWantsImage) ? 'Omni Reasoning' : 'Deep Thinking');
-              thoughtBox.innerHTML = `
-                <summary class="thought-summary">
-                  <span class="thought-sparkle">${spark}</span>
-                  <span class="thought-title">${titleText}</span>
-                  <span class="thought-dot"></span>
-                </summary>
-                <div class="thought-content"></div>
-              `;
-              body.appendChild(thoughtBox);
-              thoughtContent = thoughtBox.querySelector('.thought-content');
-            }
-            if (thoughtContent) {
-              thoughtContent.textContent += msg.text;
-            }
-            scroll();
+          if (!thoughtBox) {
+            thoughtBox = document.createElement('details');
+            thoughtBox.className = 'thought-box';
+            thoughtBox.open = true;
+            const spark = isNorth ? '{ }' : ((isGenni3 || autoWantsImage) ? '◈' : '⚡');
+            const titleText = isNorth ? 'Code Reasoning' : ((isGenni3 || autoWantsImage) ? 'Omni Reasoning' : 'Deep Thinking');
+            thoughtBox.innerHTML = `
+              <summary class="thought-summary">
+                <span class="thought-sparkle">${spark}</span>
+                <span class="thought-title">${titleText}</span>
+                <span class="thought-dot"></span>
+              </summary>
+              <div class="thought-content"></div>
+            `;
+            body.appendChild(thoughtBox);
+            thoughtContent = thoughtBox.querySelector('.thought-content');
           }
+          if (thoughtContent) {
+            thoughtContent.textContent += msg.text;
+          }
+          scroll();
           break;
         case 'token':
           if (note.isConnected) note.remove();
           if (thoughtBox && !thoughtBox.dataset.finalized) {
             thoughtBox.dataset.finalized = 'true';
+            thoughtBox.open = false;
             const dot = thoughtBox.querySelector('.thought-dot');
             if (dot) dot.remove();
             const title = thoughtBox.querySelector('.thought-title');
@@ -916,6 +1153,7 @@ async function ask(text) {
           answer = msg.text;
           if (thoughtBox && !thoughtBox.dataset.finalized) {
             thoughtBox.dataset.finalized = 'true';
+            thoughtBox.open = false;
             const dot = thoughtBox.querySelector('.thought-dot');
             if (dot) dot.remove();
             const title = thoughtBox.querySelector('.thought-title');
@@ -1535,9 +1773,15 @@ function initUserSystem() {
   });
 
   // User Popover buttons
+  const popoverMemoryBtn = document.getElementById('popover-memory-btn');
+  popoverMemoryBtn?.addEventListener('click', () => {
+    userPopover?.classList.add('hidden');
+    openSettingsModal('memory');
+  });
+
   popoverUserCard?.addEventListener('click', () => {
     userPopover?.classList.add('hidden');
-    openSettingsModal();
+    openSettingsModal('profile');
   });
 
   popoverPlusBtn?.addEventListener('click', () => {
@@ -1551,17 +1795,72 @@ function initUserSystem() {
 
   popoverPersonalizationBtn?.addEventListener('click', () => {
     userPopover?.classList.add('hidden');
-    openPersonalizationModal();
+    openSettingsModal('personalization');
   });
 
   popoverProfileBtn?.addEventListener('click', () => {
     userPopover?.classList.add('hidden');
-    openSettingsModal();
+    openSettingsModal('profile');
   });
 
   popoverSettingsBtn?.addEventListener('click', () => {
     userPopover?.classList.add('hidden');
-    openSettingsModal();
+    openSettingsModal('profile');
+  });
+
+  // Settings Tabs listener
+  document.querySelectorAll('[data-settings-tab]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const tab = btn.getAttribute('data-settings-tab');
+      if (tab) switchSettingsTab(tab);
+    });
+  });
+
+  // Settings Name Save
+  const settingsNameSaveBtn = document.getElementById('settings-name-save-btn');
+  const settingsNameInput = document.getElementById('settings-name-input');
+  settingsNameSaveBtn?.addEventListener('click', () => {
+    const newName = (settingsNameInput?.value || '').trim();
+    if (newName) {
+      currentUser.name = newName.charAt(0).toUpperCase() + newName.slice(1);
+      currentUser.initials = newName.slice(0, 2).toUpperCase();
+      saveUser();
+      settingsNameSaveBtn.textContent = 'Saved!';
+      setTimeout(() => { settingsNameSaveBtn.textContent = 'Save Name'; }, 1500);
+    }
+  });
+
+  // Settings Personalization Save
+  const settingsSavePersonalizationBtn = document.getElementById('settings-save-personalization-btn');
+  const settingsUserBio = document.getElementById('settings-user-bio');
+  const settingsResponseStyle = document.getElementById('settings-response-style');
+  settingsSavePersonalizationBtn?.addEventListener('click', () => {
+    const bio = settingsUserBio?.value.trim() || '';
+    const style = settingsResponseStyle?.value.trim() || '';
+    savePersonalization(bio, style);
+    settingsSavePersonalizationBtn.textContent = 'Saved!';
+    setTimeout(() => { settingsSavePersonalizationBtn.textContent = 'Save Instructions'; }, 1500);
+  });
+
+  // Settings Export Chats
+  const settingsExportChatsBtn = document.getElementById('settings-export-chats-btn');
+  settingsExportChatsBtn?.addEventListener('click', () => {
+    const exportData = {
+      exportedAt: new Date().toISOString(),
+      user: currentUser,
+      memories,
+      personalization: userPersonalization,
+      chats
+    };
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `foundr-ai-backup-${Date.now()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   });
 
   popoverHelpBtn?.addEventListener('click', () => {
@@ -1604,6 +1903,8 @@ function initUserSystem() {
   // Composer "+" Tools Popover (Image 2)
   toolsMenuBtn?.addEventListener('click', (e) => {
     e.stopPropagation();
+    closeModelDropdown();
+    closePersonaDropdown();
     toolsPopover?.classList.toggle('hidden');
   });
 
@@ -1766,13 +2067,58 @@ function closePersonalizationModal() {
   personalizationModal?.classList.add('hidden');
 }
 
-function openSettingsModal() {
+function openSettingsModal(defaultTab = 'profile') {
   if (settingsUserDesc) {
     settingsUserDesc.textContent = currentUser.isGuest
       ? 'Browsing on Guest Account'
       : `Logged in as ${currentUser.name} (${currentUser.email || 'Free Account'})`;
   }
+
+  const settingsNameInput = document.getElementById('settings-name-input');
+  const settingsProfileEmail = document.getElementById('settings-profile-email');
+  const settingsProfileAvatar = document.getElementById('settings-profile-avatar');
+  const settingsUserBio = document.getElementById('settings-user-bio');
+  const settingsResponseStyle = document.getElementById('settings-response-style');
+
+  if (settingsNameInput) settingsNameInput.value = currentUser.name || '';
+  if (settingsProfileEmail) settingsProfileEmail.textContent = currentUser.email || 'huzaifa@foundr.ai';
+  if (settingsProfileAvatar) {
+    settingsProfileAvatar.textContent = currentUser.isGuest ? 'G' : (currentUser.initials || 'HU');
+  }
+
+  if (settingsUserBio) settingsUserBio.value = userPersonalization.bio || '';
+  if (settingsResponseStyle) settingsResponseStyle.value = userPersonalization.style || '';
+
+  renderMemorySettingsList();
+  switchSettingsTab(defaultTab);
   settingsModal?.classList.remove('hidden');
+}
+
+function switchSettingsTab(tabName) {
+  const tabs = document.querySelectorAll('[data-settings-tab]');
+  tabs.forEach((btn) => {
+    const isTarget = btn.getAttribute('data-settings-tab') === tabName;
+    btn.classList.toggle('active', isTarget);
+    btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+  });
+
+  const paneMap = {
+    profile: document.getElementById('settings-pane-profile'),
+    memory: document.getElementById('settings-pane-memory'),
+    personalization: document.getElementById('settings-pane-personalization'),
+    data: document.getElementById('settings-pane-data')
+  };
+
+  Object.entries(paneMap).forEach(([key, pane]) => {
+    if (pane) {
+      pane.classList.toggle('hidden', key !== tabName);
+      pane.classList.toggle('active', key === tabName);
+    }
+  });
+
+  if (tabName === 'memory') {
+    renderMemorySettingsList();
+  }
 }
 
 function closeSettingsModal() {
@@ -1801,6 +2147,8 @@ const canvasCopyBtn = document.getElementById('canvas-copy-btn');
 const canvasDownloadBtn = document.getElementById('canvas-download-btn');
 const canvasFullscreenBtn = document.getElementById('canvas-fullscreen-btn');
 const canvasCloseBtn = document.getElementById('canvas-close-btn');
+const canvasOpenTabBtn = document.getElementById('canvas-open-tab-btn');
+const canvasFixBtn = document.getElementById('canvas-fix-btn');
 
 const canvasPreviewView = document.getElementById('canvas-preview-view');
 const canvasCodeView = document.getElementById('canvas-code-view');
@@ -1809,9 +2157,13 @@ const canvasIframe = document.getElementById('canvas-iframe');
 const canvasCodeContent = document.getElementById('canvas-code-content');
 const canvasConsoleLogs = document.getElementById('canvas-console-logs');
 const canvasConsoleClear = document.getElementById('canvas-console-clear');
+const canvasErrorBanner = document.getElementById('canvas-error-banner');
+const canvasErrorMsg = document.getElementById('canvas-error-msg');
+const canvasErrorFixBtn = document.getElementById('canvas-error-fix-btn');
 
 let currentCanvasArtifact = null;
 let canvasConsoleErrorCount = 0;
+let lastCanvasError = '';
 
 function openCanvas({ title = 'Interactive Canvas', code = '', lang = 'html', badge = 'App' }) {
   if (!canvasPanel) return;
@@ -1892,6 +2244,9 @@ function prepareCanvasHtml(code, lang) {
   window.onerror = function(msg, url, line) {
     send('error', [msg + (line ? ' (line ' + line + ')' : '')]);
   };
+  window.addEventListener('unhandledrejection', function(e) {
+    send('error', [(e.reason ? (e.reason.message || String(e.reason)) : 'Unhandled Promise Rejection')]);
+  });
 })();
 <\/script>
 `;
@@ -1928,6 +2283,43 @@ function clearCanvasConsole() {
     canvasConsoleCount.classList.add('hidden');
     canvasConsoleCount.textContent = '0';
   }
+  hideCanvasError();
+}
+
+function showCanvasError(errorText) {
+  lastCanvasError = errorText || 'Runtime error in script';
+  if (canvasErrorMsg) canvasErrorMsg.textContent = lastCanvasError;
+  canvasErrorBanner?.classList.remove('hidden');
+  canvasFixBtn?.classList.remove('hidden');
+}
+
+function hideCanvasError() {
+  lastCanvasError = '';
+  canvasErrorBanner?.classList.add('hidden');
+  canvasFixBtn?.classList.add('hidden');
+}
+
+function autoFixCanvasWithGenni3() {
+  if (!currentCanvasArtifact || !currentCanvasArtifact.code || busy) return;
+  const errText = lastCanvasError || 'Runtime exception caught in sandbox console';
+  hideCanvasError();
+  // Ensure we switch to genni 3 flagship for debugging & repair
+  setModel('genni 3');
+
+  const fixPrompt = `Please debug and repair the following interactive Canvas app code. It encountered a runtime error:\n\n` +
+    `**Runtime Error Log:**\n\`\`\`\n${errText}\n\`\`\`\n\n` +
+    `**Current Code:**\n\`\`\`${currentCanvasArtifact.lang || 'html'}\n${currentCanvasArtifact.code}\n\`\`\`\n\n` +
+    `Fix all syntax and runtime issues, ensure full error safety, and return the complete, working single-file HTML code in a \`\`\`html block so it runs smoothly in Canvas.`;
+
+  ask(fixPrompt);
+}
+
+function openCanvasInNewTab() {
+  if (!currentCanvasArtifact || !currentCanvasArtifact.code) return;
+  const fullHtml = prepareCanvasHtml(currentCanvasArtifact.code, currentCanvasArtifact.lang);
+  const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  window.open(url, '_blank');
 }
 
 function addCanvasLog(level, text) {
@@ -1943,6 +2335,9 @@ function addCanvasLog(level, text) {
     if (canvasConsoleCount && !canvasTabConsole?.classList.contains('active')) {
       canvasConsoleCount.textContent = String(canvasConsoleErrorCount);
       canvasConsoleCount.classList.remove('hidden');
+    }
+    if (level === 'error') {
+      showCanvasError(text);
     }
   }
 }
@@ -1970,6 +2365,10 @@ canvasRefreshBtn?.addEventListener('click', () => {
 
 canvasFullscreenBtn?.addEventListener('click', toggleCanvasFullscreen);
 canvasCloseBtn?.addEventListener('click', closeCanvas);
+
+canvasOpenTabBtn?.addEventListener('click', openCanvasInNewTab);
+canvasFixBtn?.addEventListener('click', autoFixCanvasWithGenni3);
+canvasErrorFixBtn?.addEventListener('click', autoFixCanvasWithGenni3);
 
 canvasCopyBtn?.addEventListener('click', () => {
   if (!currentCanvasArtifact) return;
