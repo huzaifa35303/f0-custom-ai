@@ -1336,8 +1336,8 @@ function render(md) {
   // 1. Extract code blocks ```lang ... ``` and ```mermaid ... ```
   text = text.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, rawCode) => {
     const code = rawCode.trim();
-    // If model wrapped a visual image inside ```markdown or ```, unwrap it so it displays as an image card
-    if (['markdown', 'md', ''].includes(l) && (code.includes('image.pollinations.ai') || code.startsWith('!['))) {
+    // If model wrapped markdown image inside ```markdown or ```, unwrap it so it displays as an image card
+    if (['markdown', 'md', ''].includes(l) && code.startsWith('![')) {
       return `\n\n${code}\n\n`;
     }
 
@@ -1410,29 +1410,6 @@ function render(md) {
               `<span class="generated-image-caption">◈ ${cleanAlt}</span>` +
               '<div class="generated-image-actions">' +
                 `<button type="button" class="generated-image-btn zoom-btn" data-url="${cleanUrl}" data-caption="${cleanAlt}">Zoom</button>` +
-                `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" class="generated-image-btn">Full Res</a>` +
-                `<a href="${cleanUrl}" download="foundr-ai-art.jpg" target="_blank" class="generated-image-btn">Download</a>` +
-              '</div>' +
-            '</div>' +
-          '</div>'
-        );
-      })
-      .replace(/(?<!src=")(https?:\/\/image\.pollinations\.ai\/prompt\/[^\s<>"']+)/gi, (match, url) => {
-        const cleanUrl = url
-          .replace(/&amp;/g, '&')
-          .replace(/&quot;/g, '')
-          .replace(/"/g, '')
-          .trim()
-          .replace(/\s+/g, '%20');
-        return (
-          '<div class="generated-image-card">' +
-            '<div class="generated-image-container zoomable-image-wrap" data-url="' + cleanUrl + '" data-caption="f0undr Ai Visual Creation">' +
-              `<img src="${cleanUrl}" alt="f0undr Ai Visual Creation" loading="lazy" />` +
-            '</div>' +
-            '<div class="generated-image-bar">' +
-              '<span class="generated-image-caption">◈ Visual Creation</span>' +
-              '<div class="generated-image-actions">' +
-                `<button type="button" class="generated-image-btn zoom-btn" data-url="${cleanUrl}" data-caption="f0undr Ai Visual Creation">Zoom</button>` +
                 `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" class="generated-image-btn">Full Res</a>` +
                 `<a href="${cleanUrl}" download="foundr-ai-art.jpg" target="_blank" class="generated-image-btn">Download</a>` +
               '</div>' +

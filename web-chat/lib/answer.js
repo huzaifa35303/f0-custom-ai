@@ -398,36 +398,15 @@ export async function answer(
     return say(known.join(' '));
   }
 
-  // Strict visual image generation check (ONLY when explicitly and unambiguously asked for an image/photo/drawing)
-  const isImageRequest =
-    /^(?:generate|create|draw|paint)\s+(?:an?\s+)?(?:image|picture|photo|wallpaper|illustration)\s+of\b|^(?:image|picture|photo|wallpaper)\s+of\b/i.test(question.trim()) &&
-    !/(?:code|html|css|js|canvas|react|app|game|svg|script|function|calculator|timer|stopwatch|website|page|component|fix|error|solve|prove)/i.test(question);
-  if (isImageRequest && (model === 'genni 3' || model === 'auto')) {
-    emit('status', { text: 'Designing visual prompt & creating image' });
-    const imageAi = await generateAI({
-      question,
-      context: fileContext,
-      conversation: messages,
-      model: 'genni 3',
-      studioStyle,
-      aspectRatio,
-      personalization,
-      memories,
-      persona,
-      onStatus: (s) => emit('status', s),
-      onThought: (t) => emit('thought', { text: t }),
-      onToken: (c) => emit('token', { text: c }),
-    });
-    if (imageAi) return clean(imageAi);
-  }
-
   // Direct Claude-grade Intent Routing:
-  // For coding, web app creation (Canvas), debugging, math derivations, logic proofs,
+  // For coding, Canvas web apps, in-house visual art & SVG graphics, debugging, math,
   // creative writing (poetry/stories/Urdu shayari), or document analysis:
   // Route DIRECTLY to generateAI without wasting seconds on irrelevant web search!
   const isDirectAiIntent =
     Boolean(fileContext) ||
     model === 'north-mini-code' ||
+    // In-house visual art, drawings, graphics, logos, SVG & Canvas visual designs
+    /(?:(?:draw|paint|sketch|design|render|generate|create)\s+(?:an?\s+)?(?:svg|canvas|logo|graphic|illustration|art|drawing|vector|visual|diagram|flowchart|mermaid|sequence|workflow|architecture)|vector graphic|css art)/i.test(question) ||
     // Coding / Canvas apps / interactive games / tools
     /(?:(?:make|create|build|generate|code|program|design|develop|write|implement)\s+(?:an?\s+)?(?:web\s*app|app|canvas|game|tool|calculator|timer|stopwatch|clock|dashboard|page|website|portfolio|todo|widget|component|simulation|ui|interface|form|script|function|class|api)|(?:html|css|javascript|js|python|react|vue|node|sql|c\+\+|java)\s+(?:code|script|app|program)|snake game|tic tac toe|pong|flappy bird|tetris|stopwatch|calculator|timer app)/i.test(question) ||
     // Debugging, error fixing, code audits
@@ -436,8 +415,6 @@ export async function answer(
     /(?:write\s+(?:a|an)?\s*(?:poem|story|essay|script|dialogue|lyrics|rap|shair|shayari|afsaana|ghazal)|poem on|story about|mujhe\s+(?:ek\s+)?(?:shair|shayari|kahaani|kahani)\s+sunao)/i.test(question) ||
     // Pure math equations, proofs, logic puzzles
     /(?:prove\s+that|derive\s+|step by step|solve for [a-z]|integral of|derivative of|equation:|limit of|factorize)/i.test(question) ||
-    // Architecture diagrams / flowcharts
-    /(?:draw|render|generate|create)\s+(?:a\s+)?(?:diagram|flowchart|mermaid|sequence|workflow|architecture)/i.test(question) ||
     // Common short app triggers
     /^(?:calculator|stopwatch|timer|clock|snake|snake game|tic tac toe|todo|todo app|portfolio|counter)\b/i.test(question);
 

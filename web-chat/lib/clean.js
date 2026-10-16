@@ -22,12 +22,6 @@ export function clean(text) {
     return `__IMG_TOKEN_${images.length - 1}__`;
   });
 
-  // Protect any bare pollinations image URLs
-  out = out.replace(/(?<!\()https?:\/\/image\.pollinations\.ai\/prompt\/[^\s)"<>]+/gi, (url) => {
-    const safeUrl = url.trim().replace(/\s+/g, '%20');
-    images.push(`![Generated Visual](${safeUrl})`);
-    return `__IMG_TOKEN_${images.length - 1}__`;
-  });
 
   // Protect markdown links: [label](https://...)
   const links = [];

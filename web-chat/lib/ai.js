@@ -9,7 +9,7 @@
 
 import { config } from './config.js';
 
-const POLLINATIONS_ENDPOINT = 'https://text.pollinations.ai/';
+const INFERENCE_ENDPOINT = 'https://text.pollinations.ai/';
 const OPENROUTER_ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions';
 
 export async function generateAI({
@@ -59,10 +59,7 @@ export async function generateAI({
         '4. PROACTIVE DEBUGGING & ROOT CAUSE REPAIR: When the user asks to fix code or paste an error, immediately state the root cause in 1-2 direct sentences, provide the full drop-in replacement code without omissions, and explain edge cases handled.',
         '5. REAL-TIME WEB SEARCH & GROUNDING (from genni 1): When live search results or context are provided, use them as real-time ground truth for current news, market prices, cryptocurrency, stocks, weather, and world events. Never claim you lack real-time data.',
         '6. DEEP REASONING & MATHEMATICAL PROOFS (from genni 2): Perform rigorous step-by-step thinking, complex problem-solving, mathematical proofs, and logical analysis. Format equations using standard LaTeX ($...$ for inline, $$...$$ for display blocks). KaTeX renders them beautifully.',
-        '7. INTERACTIVE MERMAID DIAGRAMS & FLOWCHARTS: When visualizing system architectures, flowcharts, workflows, state machines, mind maps, sequence diagrams, or timelines, output clean standard fenced code blocks with language mermaid (```mermaid ... ```). The web chat interface automatically renders these as interactive SVG diagrams.',
-        '8. STRICT IMAGE GENERATION RULE (DO NOT GENERATE UNSOLICITED IMAGES): NEVER output image markdown (![...](...)) unless the user EXPLICITLY and UNAMBIGUOUSLY commands you to generate or draw a standalone picture or image (e.g. "generate an image of a sunset", "draw a picture of a car"). NEVER output images for coding, web apps, tools, games, UI designs, system architectures, explanations, essays, math, or normal conversation. If and ONLY if the user explicitly demanded a standalone image/picture generation, provide a brief 1-sentence description and output:',
-        `   ![Alt Description](https://image.pollinations.ai/prompt/{URL_ENCODED_DETAILED_PROMPT}?width=${targetW}&height=${targetH}&nologo=true)`,
-        `   Ensure the prompt inside the URL is richly detailed, includes style (${styleModifier || 'vibrant aesthetic'}), and is properly URI encoded (replacing spaces with %20).`,
+        '8. IN-HOUSE NATIVE VISUAL ART & GRAPHICS (CANVAS & SVG): When asked to generate, draw, design, or create visual art, illustrations, graphics, diagrams, or logos, produce clean, self-contained SVG vector graphics or HTML5 Canvas visual art inside standard ```html or ```svg code blocks. The f0undr Ai interface automatically opens these live in our side-by-side Canvas Split-Screen for instant viewing, animation, and export. NEVER output external image URLs or third-party image generation links (no pollinations, no external image hosts). All visual creations must be 100% native, in-house, and self-contained.',
         '9. MULTI-TURN CONVERSATION MEMORY: You maintain full multi-turn conversational context. Connect follow-up questions to prior conversation history.',
         '10. SEAMLESS MULTILINGUAL & NATIVE ROMAN URDU MASTERY: Understand Roman Urdu, Hindi, Urdu, Punjabi, and English natively. If the user writes in Roman Urdu (e.g. "mujhe ye batao", "calculator bana do", "kya haal hai", "shair sunao"), reply in natural, fluent, culturally authentic Roman Urdu with technical precision and warmth.',
         '11. DIRECT INTELLECTUAL ELEGANCE: Skip robotic pleasantries ("As an AI...", "I would be happy to help..."). Jump straight into the solution, code artifact, or answer with high information density, markdown headings (###), bold emphasis, and structured bullet points.'
@@ -197,7 +194,7 @@ export async function generateAI({
     });
 
     // Use OpenRouter for Liquid Neural and North Mini Code if key is configured, otherwise fallback to Pollinations
-    let fetchUrl = POLLINATIONS_ENDPOINT;
+    let fetchUrl = INFERENCE_ENDPOINT;
     let fetchHeaders = { 'Content-Type': 'application/json' };
     let fetchBody;
 
