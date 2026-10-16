@@ -3,7 +3,7 @@ const form = document.getElementById('composer');
 const input = document.getElementById('input');
 const send = document.getElementById('send');
 const statusPill = document.getElementById('status');
-const resetBtn = document.getElementById('reset');
+const resetBtn = document.getElementById('sidebar-new-btn');
 
 const modelPickerContainer = document.getElementById('model-picker-container');
 const modelPickerTrigger = document.getElementById('model-picker-trigger');
@@ -21,7 +21,7 @@ const moreModelsContainer = document.getElementById('more-models-container');
 const moreModelsTrigger = document.getElementById('more-models-trigger');
 const modelMenuItems = document.querySelectorAll('[data-model-option]');
 
-const attachBtn = document.getElementById('attach-btn');
+const attachBtn = document.getElementById('tools-menu-btn');
 const fileInput = document.getElementById('file-input');
 const filePreview = document.getElementById('file-attachment-preview');
 const attachedFileName = document.getElementById('attached-file-name');

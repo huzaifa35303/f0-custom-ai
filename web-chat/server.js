@@ -83,7 +83,7 @@ async function handleChat(req, res) {
   const messages = (payload.messages || [])
     .filter((m) => ['user', 'assistant'].includes(m?.role) && typeof m.content === 'string')
     .slice(-20)
-    .map((m) => ({ role: m.role, content: m.content.slice(0, 2000) }));
+    .map((m) => ({ role: m.role, content: m.content.slice(0, 20000) }));
 
   if (!messages.length || messages.at(-1).role !== 'user') {
     return json(res, 400, { error: 'Send a conversation ending in a user message.' });
@@ -170,7 +170,7 @@ function readBody(req) {
     let data = '';
     req.on('data', (c) => {
       data += c;
-      if (data.length > 1e6) reject(new Error('Body too large'));
+      if (data.length > 5e6) reject(new Error('Body too large'));
     });
     req.on('end', () => resolve(data));
     req.on('error', reject);

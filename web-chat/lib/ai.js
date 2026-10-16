@@ -272,12 +272,13 @@ export async function generateAI({
           const payload = JSON.parse(trimmed.slice(6));
           const delta = payload.choices?.[0]?.delta || {};
 
-          if (delta.reasoning) {
+          const reasoningChunk = delta.reasoning || delta.reasoning_content || delta.thought;
+          if (reasoningChunk) {
             if (!hasReasoned) {
               hasReasoned = true;
               onStatus({ text: isGenni3 ? 'Omni reasoning' : (isGenni2 ? 'Deep thinking' : (isNorthMiniCode ? 'Code reasoning' : 'Reasoning')) });
             }
-            onThought(delta.reasoning);
+            onThought(reasoningChunk);
           }
 
           if (delta.content) {
